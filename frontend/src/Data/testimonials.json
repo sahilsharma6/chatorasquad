@@ -1,0 +1,38 @@
+[
+    {
+      "name": "Ama Ampomah",
+      "title": "CEO & Founder Inc",
+      "text": "Lorem ipsum dolor sit amet consectetur. Tortor massa nisi quam sit. Vitae congue ultrices neque pellentibus mi in quipque. Leo in cursus enim magna. Proin iaculis phasellus ipsum sagittis ac eu aliquam quis. Ornare tincidunt tempus semper.",
+      "rating": 5,
+      "image": "https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?s=1024x1024&w=is&k=20&c=iGtRKCTRSvPVl3eOIpzzse5SvQFfImkV0TZuFh-74ps="
+    },
+    {
+      "name": "Kweku Adams",
+      "title": "CEO & Founder LLC",
+      "text": "Lorem ipsum dolor sit amet consectetur. Tortor massa nisi quam sit. Vitae congue ultrices neque pellentibus mi in quipque. Leo in cursus enim magna. Proin iaculis phasellus ipsum sagittis ac eu aliquam quis. Ornare tincidunt.",
+      "rating": 5,
+      "image": "https://media.istockphoto.com/id/1388253782/photo/positive-successful-millennial-business-professional-man-head-shot-portrait.webp?s=1024x1024&w=is&k=20&c=v0FzN5RD19wlMvrkpUE6QKHaFTt5rlDSqoUV1vrFbN4="
+    },
+    {
+      "name": "Linda Owusu",
+      "title": "Marketing Manager",
+      "text": "Suspendisse potenti. Curabitur elementum magna sed nunc tristique, et consectetur orci facilisis. Integer facilisis ligula quis massa tincidunt, vitae sodales nunc fermentum. Nulla facilisi.",
+      "rating": 4,
+      "image": "https://media.istockphoto.com/id/1476170969/photo/portrait-of-young-man-ready-for-job-business-concept.webp?s=1024x1024&w=is&k=20&c=8mgK2Kq73o8DIjazvLmEGkhx2p_7P5r3mvpbIM6q5cA="
+    },
+    {
+      "name": "Michael Owusu",
+      "title": "Software Engineer",
+      "text": "Quisque eget lacus non lectus scelerisque tincidunt. Vestibulum euismod sapien et lorem gravida, nec sagittis enim malesuada. Etiam efficitur augue eu neque sollicitudin feugiat.",
+      "rating": 5,
+      "image": "https://media.istockphoto.com/id/1437816897/photo/business-woman-manager-or-human-resources-portrait-for-career-success-company-we-are-hiring.webp?s=1024x1024&w=is&k=20&c=iGtRKCTRSvPVl3eOIpzzse5SvQFfImkV0TZuFh-74ps="
+    },
+    {
+      "name": "Akosua Mensah",
+      "title": "UI/UX Designer",
+      "text": "Phasellus fringilla metus nec justo sodales, ut ultricies ligula tristique. Cras dictum mollis dui, non tincidunt purus feugiat quis. Pellentesque viverra, velit nec dictum faucibus, nisi libero convallis est, nec volutpat nulla erat nec justo.",
+      "rating": 3,
+      "image": "https://images.unsplash.com/photo-1653379671988-b32fceafb5e5?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+  ]
+  
