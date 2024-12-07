@@ -105,7 +105,7 @@ export default function TestimonialsCarousel() {
             <button
               key={index}
               className={`w-4 h-4 rounded-full transition-colors duration-200 ${
-                currentIndex === index ? "bg-blue-600" : "bg-gray-300"
+                currentIndex === index ? "bg-orange-500" : "bg-gray-300"
               }`}
               onClick={() => {
                 setDirection(index > currentIndex ? 1 : -1);

@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="mx-auto px-4 py-8">
+    <footer className="mx-auto px-4 py-8 ">
       <div className="grid grid-cols-1 md:grid-cols-[40%,20%,20%,20%] lg:grid-cols-[40%,20%,20%,20%] gap-6">
         {/* Logo and Description */}
         <div className="flex flex-col col-span-1 gap-4">
@@ -75,7 +75,7 @@ export default function Footer() {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <CiFacebook size={32} />
+              <CiFacebook size={32} className='hover:bg-orange-500 hover:rounded-full hover:text-white'/>
             </motion.a>
             <motion.a 
               href="https://instagram.com" 
@@ -85,7 +85,7 @@ export default function Footer() {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <FaInstagram size={32}/>
+              <FaInstagram size={32} className='hover:bg-orange-500 hover:rounded-full hover:text-white'/>
             </motion.a>
             <motion.a 
               href="https://twitter.com" 
@@ -95,7 +95,7 @@ export default function Footer() {
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <RiTwitterLine size={32} />
+              <RiTwitterLine size={32} className='hover:bg-orange-500 hover:rounded-full hover:text-white' />
             </motion.a>
           </div>
         </div>
