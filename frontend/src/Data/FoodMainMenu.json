@@ -1,0 +1,74 @@
+[
+    {
+      "id": 1,
+      "name": "Chinese Pasta",
+      "price": 15.99,
+      "description": "It's a testament to our.",
+      "image": "https://img.freepik.com/free-photo/top-view-stir-fried-noodles-with-shrimps-soy-sauce-spring-onion-plate_141793-3826.jpg?t=st=1733827070~exp=1733830670~hmac=b42a6abe489bfc2c0d481c5e970bd47d12ee671ae64b1b1276bf8e8aaf5a1690&w=740",
+      "category": "pasta"
+    },
+    {
+      "id": 2,
+      "name": "Chicken Fried Rice",
+      "price": 10.99,
+      "description": "It's a testament to our.",
+      "image": "https://img.freepik.com/premium-photo/rice-with-meat-green-onions-red-plate_288431-731.jpg?w=740",
+      "category": "fast-food"
+    },
+    {
+      "id": 3,
+      "name": "Cheese Burger",
+      "price": 115.99,
+      "description": "It's a testament to our.",
+      "image": "https://media.gettyimages.com/id/1446965529/photo/homemade-burger-and-chips.webp?s=1024x1024&w=gi&k=20&c=gjGxzhjYNT5JwQM-x6gq1f835qc_KKOUACqnAUfa0yU=",
+      "category": "fast-food"
+    },
+    {
+      "id": 4,
+      "name": "Chicken Noodles",
+      "price": 154.99,
+      "description": "It's a testament to our.",
+      "image": "https://img.freepik.com/free-photo/udon-noodles-with-chicken-peppers-japanese-cuisine_2829-11269.jpg?t=st=1733827124~exp=1733830724~hmac=3b08319e815a74f92aa115606900f2db330e0298f9e260e35d6355ac114679f7&w=740",
+      "category": "pasta"
+    },
+    {
+      "id": 5,
+      "name": "Chicken Biryani",
+      "price": 65.99,
+      "description": "It's a testament to our.",
+      "image": "https://media.istockphoto.com/id/1058029096/photo/chicken-biryani.webp?s=1024x1024&w=is&k=20&c=WsbuHWOyKZJ0q09ZI-gZbUZYVTF1LE2aeo3RK2UierU=",
+      "category": "fast-food"
+    },
+    {
+      "id": 6,
+      "name": "Chicken White Rice",
+      "price": 135.99,
+      "description": "It's a testament to our.",
+      "image": "https://media.istockphoto.com/id/537375718/photo/chicken-tikka-masala-indian-traditional-spicy-meat-food-and-rice.jpg?s=612x612&w=0&k=20&c=9Ng06kvtx5w_Ome_t1f58htgoMR1-76osDgDlhJFdFs=",
+      "category": "fast-food"
+    },
+    {
+      "id": 7,
+      "name": "Spatial Burger",
+      "price": 95.99,
+      "description": "It's a testament to our.",
+      "image": "https://img.freepik.com/free-photo/side-view-chicken-burger-deep-fired-chicken-fillet-with-tomato-cheese-lettuce-burger-buns_141793-4816.jpg?t=st=1733838560~exp=1733842160~hmac=dd0ad0a258cf7801b8d81354ad7af20131c985f70621ce5bebeca07e2c8d0676&w=740",
+      "category": "fast-food"
+    },
+    {
+      "id": 8,
+      "name": "Vegetables Burger",
+      "price": 75.99,
+      "description": "It's a testament to our.",
+      "image": "https://media.istockphoto.com/id/159248709/photo/the-quinoa-burger.jpg?s=612x612&w=0&k=20&c=O7d3XqSlP9yQA4x0aFvwodiFzLFOxKS4eoWeiLpET5Y=",
+      "category": "fast-food"
+    },
+    {
+      "id":9,
+      "name": "Wellness Shots",
+      "price": 75.99,
+      "description": "It's a testament to our.",
+      "image": "https://images.pexels.com/photos/1337825/pexels-photo-1337825.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "category": "Drink & Juice"
+    }
+  ]

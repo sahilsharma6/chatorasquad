@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./Pages/Home";
 import SignupLoginForm from "./components/Login&Signup";
+import Menu from "./Pages/Menu";
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<SignupLoginForm/>}/>
+        <Route path="/menu" element={<Menu />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,33 @@
+[
+    {
+      "name": "Chicken Fried Rice",
+      "price": 100.99,
+      "image": "https://img.freepik.com/premium-photo/rice-with-meat-green-onions-red-plate_288431-731.jpg?w=740",
+      "description": "Lorem, Ipsum Dolor..."
+    },
+    {
+      "name": "Chinese Pasta",
+      "price": 15.99,
+      "image": "https://img.freepik.com/free-photo/top-view-stir-fried-noodles-with-shrimps-soy-sauce-spring-onion-plate_141793-3826.jpg?t=st=1733827070~exp=1733830670~hmac=b42a6abe489bfc2c0d481c5e970bd47d12ee671ae64b1b1276bf8e8aaf5a1690&w=740",
+      "description": "Lorem, Ipsum Dolor...",
+      "featured": true
+    },
+    {
+      "name": "Cheese Burger",
+      "price": 26.99,
+      "image": "https://media.gettyimages.com/id/1446965529/photo/homemade-burger-and-chips.webp?s=1024x1024&w=gi&k=20&c=gjGxzhjYNT5JwQM-x6gq1f835qc_KKOUACqnAUfa0yU=",
+      "description": "Lorem, Ipsum Dolor..."
+    },
+    {
+      "name": "Chicken Noodles",
+      "price": 39,
+      "image": "https://img.freepik.com/free-photo/udon-noodles-with-chicken-peppers-japanese-cuisine_2829-11269.jpg?t=st=1733827124~exp=1733830724~hmac=3b08319e815a74f92aa115606900f2db330e0298f9e260e35d6355ac114679f7&w=740",
+      "description": "Lorem, Ipsum Dolor..."
+    },
+    {
+      "name": "Neapolitan Pizza",
+      "price": 20.99,
+      "image": "https://media.istockphoto.com/id/1414575281/photo/a-delicious-and-tasty-italian-pizza-margherita-with-tomatoes-and-buffalo-mozzarella.jpg?s=612x612&w=0&k=20&c=v8mdiAa_5NaRYtIscClXe85lLzkx7loSd9_pJWt9G2o=",
+      "description": "Lorem, Ipsum Dolor..."
+    }
+  ]
