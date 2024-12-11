@@ -1,0 +1,35 @@
+[
+    {
+      "id": 1,
+      "name": "Margherita Pizza",
+      "restaurant": "Pizza Palace",
+      "price": 299,
+      "originalPrice": 599,
+      "discount": 50,
+      "delivery": "Today, 7:30 PM | Free",
+      "image": "https://thumbs.dreamstime.com/z/traditional-italian-food-margherita-pizza-italian-food-margherita-pizza-delicious-pizza-mozzarella-cheese-tomatoes-basil-117236353.jpg?w=992",
+      "quantity": 1
+    },
+    {
+      "id": 2,
+      "name": "Veggie Burger",
+      "restaurant": "Burger World",
+      "price": 149,
+      "originalPrice": 249,
+      "discount": 40,
+      "delivery": "Today, 6:00 PM | Free",
+      "image": "https://img.freepik.com/free-photo/front-view-vegetarian-burger-counter-with-tomatoes_23-2148784525.jpg?t=st=1733913912~exp=1733917512~hmac=69834bb91abb886f15da908fb204a57ae369349b1eaa13fb76c7551169e95891&w=740",
+      "quantity": 1
+    },
+    {
+      "id": 3,
+      "name": "Pasta Alfredo",
+      "restaurant": "Pasta Paradise",
+      "price": 349,
+      "originalPrice": 449,
+      "discount": 22,
+      "delivery": "Tomorrow, 12:00 PM | Free",
+      "image": "https://media.istockphoto.com/id/466379520/photo/chicken-alfredo.jpg?s=612x612&w=0&k=20&c=SShq88wfHjLeiO7ia-yJwGzAnkot0kCuLS6uGNTdmQ4=",
+      "quantity": 1
+    }
+  ]
