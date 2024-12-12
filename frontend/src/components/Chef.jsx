@@ -16,7 +16,7 @@ function Chef() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-600 pt-6">
          <div  className="flex items-center space-x-3 p-2 " >
-                <div className="w-5 md:w-8 lg:w-6 h-5 md:h-4 lg:h-6 bg-orange-500 rounded-full flex items-center justify-center text-white">
+                <div className="w-5 h-5 p-2 bg-orange-500 rounded-full flex items-center justify-center text-white">
                   ✓
                 </div>
                 <span className="text-sm sm:text-base">
@@ -24,7 +24,7 @@ function Chef() {
                 </span>
          </div>
          <div  className="flex items-center space-x-3 p-2 " >
-                <div className="w-5 md:w-8 lg:w-6 h-5 md:h-4 lg:h-6 bg-orange-500 rounded-full flex items-center justify-center text-white">
+                <div className="w-5 h-5 p-2 bg-orange-500 rounded-full flex items-center justify-center text-white">
                   ✓
                 </div>
                 <span className="text-sm sm:text-base">
@@ -32,7 +32,7 @@ function Chef() {
                 </span>
          </div>
          <div  className="flex items-center space-x-3 p-2 " >
-                <div className="w-5 md:w-8 lg:w-6 h-5 md:h-4 lg:h-6 bg-orange-500 rounded-full flex items-center justify-center text-white">
+                <div className="w-5 h-5 p-2 bg-orange-500 rounded-full flex items-center justify-center text-white">
                   ✓
                 </div>
                 <span className="text-sm sm:text-base">
@@ -40,7 +40,7 @@ function Chef() {
                 </span>
          </div>
          <div  className="flex items-center space-x-3 p-2 " >
-                <div className="w-5 md:w-8 lg:w-6 h-5 md:h-4 lg:h-6 bg-orange-500 rounded-full flex items-center justify-center text-white">
+                <div className="w-5 h-5 p-2 bg-orange-500 rounded-full flex items-center justify-center text-white">
                   ✓
                 </div>
                 <span className="text-sm sm:text-base">
@@ -54,9 +54,6 @@ function Chef() {
         <div className="flex space-x-4 pt-6 justify-center items-center ">
           <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow hover:bg-gray-700 transition-all">
             Menu
-          </button>
-          <button className="px-6 py-3 bg-orange-500 text-white rounded-md shadow hover:bg-orange-400 transition-all">
-            Book a Table
           </button>
         </div>
       </div>
