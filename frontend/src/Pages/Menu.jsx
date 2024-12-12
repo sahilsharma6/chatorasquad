@@ -8,12 +8,13 @@ export default function Menu(){
         <div>
            
             <div className="mt-6">
-                <h1 className="text-4xl font-bold text-center mb-3">Search Your Dishes</h1> 
-            <SearchBar />
+                {/* <h1 className="text-4xl font-bold text-center mb-3">Search Your Dishes</h1>  */}
+            {/* <SearchBar /> */}
+            <FoodMainMenu />
             </div>
             <FoodMenuSlider />
             <FoodMenu />
-            <FoodMainMenu />
+            
         </div>
         
     )
