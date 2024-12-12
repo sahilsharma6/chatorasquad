@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import CartItems from '../components/CartItems';
-import { ShieldCheck } from 'lucide-react';
-import CartItemsData from '../Data/CartItems.json'
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import CartItems from "../components/CartItems";
+import { ShieldCheck } from "lucide-react";
+import CartItemsData from "../Data/CartItems.json";
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState(CartItemsData);
@@ -44,8 +44,8 @@ const ViewCart = () => {
             removeItem={removeItem}
           />
         ))}
-            {/* Add-on Card */}
-            <motion.div
+        {/* Add-on Card */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -54,7 +54,9 @@ const ViewCart = () => {
           <div className="flex justify-between items-center">
             <div>
               <h4 className="font-semibold">Add Extra Cheese</h4>
-              <p className="text-sm text-gray-600">Make your pizza more cheesy</p>
+              <p className="text-sm text-gray-600">
+                Make your pizza more cheesy
+              </p>
               <p className="mt-1">
                 <span className="font-semibold">₹40</span>
                 <span className="text-sm text-gray-500 ml-2">Optional</span>
@@ -81,15 +83,25 @@ const ViewCart = () => {
         <h3 className="font-semibold mb-4">Price Details</h3>
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span>Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)</span>
-            <span>₹{cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0)}</span>
+            <span>
+              Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
+              items)
+            </span>
+            <span>
+              ₹
+              {cartItems.reduce(
+                (sum, item) => sum + item.price * item.quantity,
+                0
+              )}
+            </span>
           </div>
           <div className="flex justify-between text-green-600">
             <span>Discount</span>
             <span>
               - ₹
               {cartItems.reduce(
-                (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+                (sum, item) =>
+                  sum + (item.originalPrice - item.price) * item.quantity,
                 0
               )}
             </span>
@@ -115,7 +127,9 @@ const ViewCart = () => {
         </div>
         <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
           <ShieldCheck size={58} className="fill-slate-700 text-white sha" />
-          <span>Safe and Secure Payments. Easy returns. 100% Authentic products.</span>
+          <span>
+            Safe and Secure Payments. Easy returns. 100% Authentic products.
+          </span>
         </div>
       </div>
     </div>

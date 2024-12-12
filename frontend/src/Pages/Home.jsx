@@ -10,14 +10,14 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div>
-        <Hero />
-        <Welcome />
-        <Chef />
-       <TestimonialsCarousel />
-       <GMap />
-      </div>
-      <Footer / >
+
+      <Hero />
+      <Welcome />
+      <Chef />
+      <TestimonialsCarousel />
+      <GMap />
+
+      <Footer />
     </>
   );
 };
