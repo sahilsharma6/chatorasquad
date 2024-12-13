@@ -2,7 +2,7 @@ import React from 'react';
 
 function Chef() {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center bg-white py-12 px-6 md:px-16 lg:px-24 md:pt-40 pt-20">
+    <div className="flex flex-col md:flex-row items-center justify-center bg-white py-12 px-6 md:px-16 lg:px-24  pt-20">
       <div className="relative w-full md:w-3/4 px-4 md:px-8 lg:px-28">
         <h2 className="text-4xl  font-bold text-gray-800 text-center p-4 md:p-8">
           Our Expert Chef
