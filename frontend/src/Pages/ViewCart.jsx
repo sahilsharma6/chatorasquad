@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import CartItems from "../components/CartItems";
 import { ShieldCheck } from "lucide-react";
 import CartItemsData from "../Data/CartItems.json";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState(CartItemsData);
@@ -20,6 +22,8 @@ const ViewCart = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="max-w-5xl mx-auto p-4 bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
       {/* Left Box (65% Width) */}
       <div className="flex-1 min-h-screen overflow-y-auto shadow px-4 py-4">
@@ -133,6 +137,8 @@ const ViewCart = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 };
 
