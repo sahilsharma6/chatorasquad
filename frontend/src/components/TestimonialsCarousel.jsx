@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaStar } from "react-icons/fa";
 import testimonials from '../Data/testimonials.json'
 
-
 export default function TestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -43,10 +42,7 @@ export default function TestimonialsCarousel() {
   }, [isPaused, currentIndex]);
 
   return (
-    <div
-      className="w-full bg-gray-50 h-auto flex flex-col items-center justify-center p-8 mb-10"
-     
-    >
+    <div className="w-full bg-gray-50 h-auto flex flex-col items-center justify-center p-8 mb-10">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Our Happy Customers</h2>
@@ -60,9 +56,9 @@ export default function TestimonialsCarousel() {
             <div className="w-full h-full bg-gray-300 rounded-full"></div>
           </div>
 
-          <AnimatePresence initial={false} custom={direction} >
+          <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              key={currentIndex}
+              key={currentIndex} // Ensures that key is stable and unique
               custom={direction}
               variants={slideVariants}
               initial="enter"
@@ -74,8 +70,11 @@ export default function TestimonialsCarousel() {
               }}
               className="absolute w-full max-w-xl"
             >
-              <div className="bg-white rounded-2xl shadow-lg p-6"  onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}>
+              <div
+                className="bg-white rounded-2xl shadow-lg p-6"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
                 <div className="flex justify-center mb-4">
                   <img
                     src={testimonials[currentIndex].image}
@@ -85,7 +84,7 @@ export default function TestimonialsCarousel() {
                 </div>
                 <div className="flex justify-center mb-4">
                   {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                     <FaStar key={i} className="w-5 h-5 text-yellow-400" />
+                    <FaStar key={i} className="w-5 h-5 text-yellow-400" />
                   ))}
                 </div>
                 <p className="text-gray-600 text-center mb-4">
