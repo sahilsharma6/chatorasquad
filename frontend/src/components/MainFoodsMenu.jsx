@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import MainMenuData from '../Data/FoodMainMenu.json'
-import { Utensils } from 'lucide-react';
+import MainMenuData from '../Data/FoodMainMenu.json';
+import { Utensils, Search, Filter, X } from 'lucide-react';
 
 const categories = [
   { id: 'fast-food', name: 'Fast Food', icon: '🍔' },
@@ -10,70 +10,176 @@ const categories = [
   { id: 'pasta', name: 'PASTA', icon: '🍝' },
 ];
 
-
+const priceRanges = [
+  { id: 'all', label: 'All Prices' },
+  { id: 'low', label: 'Under $10' },
+  { id: 'mid', label: '$10 - $20' },
+  { id: 'high', label: 'Above $20' },
+];
 
 const FoodMainMenu = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [menuItems,setMenuItems]=useState(MainMenuData)
-  
-  const filteredItems = selectedCategory === 'all' 
-    ? menuItems 
-    : menuItems.filter(item => item.category === selectedCategory);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPriceRange, setSelectedPriceRange] = useState('all');
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+
+  // Memoized filtering to improve performance
+  const filteredItems = useMemo(() => {
+    return MainMenuData.filter((item) => {
+      const matchesCategory =
+        selectedCategory === 'all' || item.category === selectedCategory;
+      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesPrice =
+        selectedPriceRange === 'all' ||
+        (selectedPriceRange === 'low' && item.price < 10) ||
+        (selectedPriceRange === 'mid' && item.price >= 10 && item.price <= 20) ||
+        (selectedPriceRange === 'high' && item.price > 20);
+
+      return matchesCategory && matchesSearch && matchesPrice;
+    });
+  }, [selectedCategory, searchQuery, selectedPriceRange]);
+
+  // Reset filters
+  const resetFilters = () => {
+    setSelectedCategory('all');
+    setSearchQuery('');
+    setSelectedPriceRange('all');
+    setIsMobileFiltersOpen(false);
+  };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 bg-orange-50 shadow-lg">
+    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-12 bg-orange-50 shadow-lg">
       {/* Header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-6 sm:mb-12">
         <div className="flex items-center justify-center gap-2 mb-2">
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center"
           >
-            <span className="text-white text-sm"><Utensils /> </span>
-          </motion.div>
-          <h2 className="text-orange-500 font-semibold">FOOD MENU</h2>
+            <span className="text-white text-xs sm:text-sm">
+              <Utensils size={16} />
+            </span>
+          </motion.div>   
+          <h2 className="text-orange-500 font-semibold text-sm sm:text-base">FOOD MENU</h2>
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center"
           >
-            <span className="text-white text-sm"><Utensils /> </span>
+            <span className="text-white text-xs sm:text-sm">
+              <Utensils size={16} />
+            </span>
           </motion.div>
         </div>
-        <h1 className="text-4xl font-bold mb-8">ChatoraSquad Foods Menu</h1>
+        <h1 className="text-2xl sm:text-4xl font-bold mb-4 sm:mb-8">ChatoraSquad Foods Menu</h1>
 
-        {/* Categories */}
-        <div className="flex justify-center gap-8 mb-12 flex-wrap">
+        {/* Mobile Filter Toggle */}
+        <div className="md:hidden flex justify-center mb-4">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className={`px-4 py-2 rounded-full ${
-              selectedCategory === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100'
-            }`}
-            onClick={() => setSelectedCategory('all')}
+            onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg flex items-center gap-2"
           >
-            All
+            <Filter size={20} />
+            {isMobileFiltersOpen ? 'Close Filters' : 'Open Filters'}
           </motion.button>
-          {categories.map((category) => (
+        </div>
+
+        {/* Categories and Filters Container */}
+        <div className={`
+          ${isMobileFiltersOpen ? 'block' : 'hidden'} 
+          md:block space-y-4 md:space-y-0
+        `}>
+          {/* Categories */}
+          <div className="flex justify-center gap-2 sm:gap-4 md:gap-8 mb-4 sm:mb-8 flex-wrap">
             <motion.button
-              key={category.id}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full ${
-                selectedCategory === category.id ? 'bg-orange-500 text-white' : 'bg-gray-100'
+              className={`px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
+                selectedCategory === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100'
               }`}
-              onClick={() => setSelectedCategory(category.id)}
+              onClick={() => setSelectedCategory('all')}
             >
-              <span className="text-xl">{category.icon}</span>
-              <span>{category.name}</span>
+              All
             </motion.button>
-          ))}
+            {categories.map((category) => (
+              <motion.button
+                key={category.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
+                  selectedCategory === category.id ? 'bg-orange-500 text-white' : 'bg-gray-100'
+                }`}
+                onClick={() => setSelectedCategory(category.id)}
+              >
+                <span className="text-base sm:text-xl">{category.icon}</span>
+                <span>{category.name}</span>
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4 sm:mb-8">
+            {/* Search Input */}
+            <div className="relative w-full sm:w-2/5">
+              <input
+                type="text"
+                placeholder="Search for food..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-orange-500"
+              />
+              <Search 
+                className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                size={16} 
+              />
+            </div>
+
+            {/* Price Range Dropdown */}
+            <div className="relative w-full sm:w-1/5">
+              <select
+                value={selectedPriceRange}
+                onChange={(e) => setSelectedPriceRange(e.target.value)}
+                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-orange-500 appearance-none"
+              >
+                {priceRanges.map((range) => (
+                  <option key={range.id} value={range.id}>
+                    {range.label}
+                  </option>
+                ))}
+              </select>
+              <Filter 
+                className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+                size={16} 
+              />
+            </div>
+
+            {/* Reset Filters Button */}
+            {(selectedCategory !== 'all' || searchQuery !== '' || selectedPriceRange !== 'all') && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={resetFilters}
+                className="px-3 py-2 text-xs sm:text-base bg-red-500 text-white rounded-lg hover:bg-red-600 transition flex items-center gap-2"
+              >
+                <X size={16} /> Reset
+              </motion.button>
+            )}
+          </div>
         </div>
+
+        {/* No Results Message */}
+        {filteredItems.length === 0 && (
+          <div className="text-center text-gray-500 mb-8 text-sm sm:text-base">
+            No items match your current filters. Try adjusting your search or filters.
+          </div>
+        )}
       </div>
 
       {/* Menu Items */}
       <motion.div
         layout
-        className="grid grid-cols-1 md:grid-cols-2 gap-8  shadow-md py-6 px-4"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8  py-4 sm:py-6 px-2 sm:px-4"
       >
         <AnimatePresence>
           {filteredItems.map((item) => (
@@ -84,9 +190,9 @@ const FoodMainMenu = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="flex items-center gap-4 p-4 rounded-xl hover:bg-orange-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-150 hover:text-white shadow-md cursor-pointer flex-wrap"
+              className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4 rounded-xl hover:bg-orange-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-150 hover:text-white shadow-md cursor-pointer flex-wrap"
             >
-              <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -94,12 +200,10 @@ const FoodMainMenu = () => {
                 />
               </div>
               <div className="flex-grow">
-                <h3 className="text-lg font-bold">{item.name}</h3>
-                <p className=" text-sm">{item.description}</p>
+                <h3 className="text-sm sm:text-lg font-bold">{item.name}</h3>
+                <p className="text-xs sm:text-sm">{item.description}</p>
               </div>
-              <div className="text-xl font-bold text-black">
-                ${item.price}
-              </div>
+              <div className="text-base sm:text-xl font-bold text-black">${item.price}</div>
             </motion.div>
           ))}
         </AnimatePresence>
