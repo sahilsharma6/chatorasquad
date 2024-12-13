@@ -2,33 +2,37 @@ import React from "react";
 
 function Welcome() {
   return (
-    <div className="flex z-0 flex-col md:flex-row items-center justify-center  p-14 bg-[#F3F3F4] w-full ">
-      <div className="relative w-auto h-auto md:h-[400px] lg:h-[450px] flex items-center justify-center ">
-        <img  src="../src/assets/Union.png" alt="Dish" className="w-auto md:w-4/5 lg:w-3/4 h-auto border-none "
-        />
-        {/* <img src="../src/assets/leaf-3.png" alt="Leaf"   className="absolute top-0 left-8 w-16 md:w-20 lg:w-24 animate-float"
-        />
-        <img  src="../src/assets/leaf-1.png"  alt="Leaf" className="absolute bottom-4 right-12 w-12 md:w-16 lg:w-20 animate-float-reverse"
-        />
-        <img src="../src/assets/leaf-2.png"  alt="Leaf"  className="absolute top-16 right-6 w-14 md:w-18 lg:w-22 animate-float"
-        /> */}
+    <div className="bg-orange-500 w-auto h-auto flex flex-wrap lg:flex-nowrap p-6 items-center justify-center text-white">
+  <div className="flex flex-col items-center justify-center space-y-4 p-8 w-auto">
+    <h1 className="text-5xl md:text-8xl font-bold mb-4 text-center w-auto">Are you starving?</h1>
+    <p className=" text-2xl md:text-4xl text-gray-700 text-center p-4 w-auto">
+      Within a few clicks, find meals that are accessible near you
+    </p>
+    <div className="bg-white justify-center space-x-4 w-auto  p-4 rounded-md h-auto">
+      <div className="flex justify-center space-x-4 w-auto md:w-64">
+        <img src="./src/assets/bike.png" alt="location" className="w-auto h-auto pt-3 pb-3" />
+        <button className="bg-white text-gray-700 py-2  rounded-md">Delivery</button>
       </div>
-
-      <div className="relative w-full md:w-1/2 h-auto md:h-[400px] lg:h-[500px] flex flex-col justify-center items-start space-y-6 p-6">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800">
-          Welcome to Our Restaurant
-        </h2>
-        <p className="text-gray-600 text-lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
-        <div className="flex space-x-4 pt-6 justify-center items-center ">
-          <button className="px-6 py-3 bg-gray-800 text-white rounded-md shadow hover:bg-gray-700 transition-all">
-            Menu
-          </button>
-        </div>
+      <hr className="w-auto" />
+      <div className="mt-6 flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0">
+        <input
+          type="text"
+          placeholder="Enter Your Zip Code"
+          className="p-2 rounded-md w-auto md:w-64 border focus:outline-none focus:ring-2 focus:ring-orange-500"
+        />
+        <button className="bg-orange-600 text-white py-2 px-4 rounded-md m-2">Check</button>
       </div>
     </div>
+  </div>
+  <div className="h-auto w-auto  p-4 hover:scale-105 transform transition duration-500 ease-in-out">
+    <img
+      src="./src/assets/bowl.png"
+      alt="food"
+      className=" w-auto h-auto md:w-96 mg:h-96 lg:h-auto lg:w-auto"
+    />
+  </div>
+</div>
+
   );
 }
 
