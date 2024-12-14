@@ -7,6 +7,7 @@ import TestimonialsCarousel from "../components/TestimonialsCarousel";
 import GMap from "../components/GMap";
 import Footer from "../components/Footer";
 import Work from "../components/Work";
+import Beforefooter from "../components/Beforefooter";
 const Home = () => {
   return (
     <>
@@ -18,7 +19,7 @@ const Home = () => {
       <Chef />
       <TestimonialsCarousel />
       <GMap />
-
+      <Beforefooter />
       <Footer />
     </>
   );
