@@ -83,7 +83,13 @@ const SignupLoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200 w-auto h-auto">
+      <img
+    src="./src/assets/signup.png"
+    alt="Background"
+    className="absolute z-0 w-full h-full object-cover" 
+  />
+  <div className="relative z-10 bg-[#333333]  w-auto p-8 md:p-20 h-auto rounded-lg shadow-2xl justify-center items-center flex flex-col">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -91,10 +97,10 @@ const SignupLoginForm = () => {
         className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-md"
       >
         {/* Toggle Buttons */}
-        <div className="flex">
+        <div className="flex ">
           <button
             onClick={() => setIsLogin(true)}
-            className={`w-1/2 p-4 font-bold transition-colors duration-300 ${
+            className={`w-full p-4 font-bold transition-colors duration-300 ${
               isLogin
                 ? "bg-orange-500 text-white"
                 : "bg-orange-100 text-orange-600"
@@ -104,7 +110,7 @@ const SignupLoginForm = () => {
           </button>
           <button
             onClick={() => setIsLogin(false)}
-            className={`w-1/2 p-4 font-bold transition-colors duration-300 ${
+            className={`w-full p-4 font-bold transition-colors duration-300 ${
               !isLogin
                 ? "bg-orange-500 text-white"
                 : "bg-orange-100 text-orange-600"
@@ -210,6 +216,7 @@ const SignupLoginForm = () => {
           </form>
         </div>
       </motion.div>
+      </div>
     </div>
   );
 };
