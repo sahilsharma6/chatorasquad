@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "name": "Margherita Pizza",
+    "date": "2024-12-15",
+    "type":"Non Veg",
+    "time": "12:30 PM",
+    "status": "Delivered",
+    "image": "https://thumbs.dreamstime.com/z/traditional-italian-food-margherita-pizza-italian-food-margherita-pizza-delicious-pizza-mozzarella-cheese-tomatoes-basil-117236353.jpg?w=992",
+    "price":299
+  },
+  {
+    "id": 2,
+    "name": "Cheeseburger",
+    "date": "2024-12-15",
+    "type":"Non Veg",
+    "time": "01:00 PM",
+    "status": "On the way",
+    "image": "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "price":199
+  },
+  {
+    "id": 3,
+    "name": "Pasta Alfredo",
+    "date": "2024-12-14",
+    "type":"Non Veg",
+    "time": "07:45 PM",
+    "status": "Cancelled",
+    "image": "https://as1.ftcdn.net/v2/jpg/09/84/20/42/1000_F_984204271_hH0RCvQx3cwTSNqPeaWAiw1yqBzZqzAJ.jpg",
+    "price":699
+  },
+  {
+    "id": 4,
+    "name": "Caesar Salad",
+    "date": "2024-12-14",
+    "time": "06:30 PM",
+    "type":"Veg",
+    "status": "Delivered",
+    "image": "https://img.freepik.com/free-photo/caesar-salad-with-fried-shrimps_140725-6065.jpg?t=st=1734272370~exp=1734275970~hmac=80bd7d38eaaf534a296ec9f3ce608d02a14ad00739e9cbad191d903101e0be33&w=360",
+    "price":339
+  },
+  {
+    "id": 5,
+    "name": "Tandoori Chicken",
+    "date": "2024-12-13",
+    "type":"Non Veg",
+    "time": "08:15 PM",
+    "status": "Returned",
+    "image": "https://media.istockphoto.com/id/1396604313/photo/roasted-whole-chicken-legs-with-condiment-directly-above-photo.jpg?s=612x612&w=0&k=20&c=JDs72E-fX5SdcBQREta58T82W8zO_rFiKC7d1WwEEUE=",
+    "price":989
+  },
+  {
+    "id": 6,
+    "name": "Chocolate Cake",
+    "date": "2024-12-12",
+    "type":" Veg",
+    "time": "03:30 PM",
+    "status": "Delivered",
+    "image": "https://plus.unsplash.com/premium_photo-1715015439764-1e8d37d5c6c9?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "price":859
+  },
+  {
+    "id": 7,
+    "name": "Grilled Sandwich",
+    "date": "2024-12-12",
+    "type":" Veg",
+    "time": "11:45 AM",
+    "status": "On the way",
+    "image": "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "price":330
+  },
+  {
+    "id": 8,
+    "name": "Veggie Wrap",
+    "date": "2024-12-11",
+    "type":" Veg",
+    "time": "01:20 PM",
+    "status": "Cancelled",
+    "image": "https://www.culinaryhill.com/wp-content/uploads/2023/08/Ultimate-Veggie-Wrap-Culinary-Hill-hero.jpg",
+    "price":430
+  },
+
+  {
+    "id": 9,
+    "name": "Spicy Tacos",
+    "date": "2023-12-10",
+    "type":"Non Veg",
+    "time": "06:00 PM",
+    "status": "Returned",
+    "image": "https://img.freepik.com/premium-photo/mexican-spicy-tacos_599862-19377.jpg?w=740",
+    "price":230
+  }
+]

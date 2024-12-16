@@ -1,13 +1,26 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import CartItems from "../components/CartItems";
-import { ShieldCheck } from "lucide-react";
-import CartItemsData from "../Data/CartItems.json";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
+import React, { useState,useEffect } from 'react';
+import { motion } from 'framer-motion';
+import CartItems from '../../components/CartItems';
+import { ShieldCheck } from 'lucide-react';
+import CartItemsData from '../../Data/CartItems.json'
+import Loader from '../../components/Loader';
+import NoResults from '../../components/NoResults';
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState(CartItemsData);
+  const [loading, setLoading] = useState(true); // State to manage loader
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCartItems(CartItemsData);
+      setLoading(false);
+    }, 1300); // Mock loading for 2 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const updateQuantity = (id, newQuantity) => {
     setCartItems((prevItems) =>
@@ -20,6 +33,13 @@ const ViewCart = () => {
   const removeItem = (id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
   };
+  if(loading){
+    return <Loader /> 
+  }
+
+  if(cartItems.length<1){
+    return <NoResults img={'https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90'} title={'Your Cart is Empty'} des={'Cart is Empty Please Go To Menu and Add to Cart Some dishes'}/>
+  }
 
   return (
     <>

@@ -1,0 +1,80 @@
+{
+    "product": {
+      "name": "Neapolitan Pizza",
+      "images": [
+        "https://plus.unsplash.com/premium_photo-1673439304183-8840bd0dc1bf?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://plus.unsplash.com/premium_photo-1673439305009-821f62df6d31?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "https://cdn.pixabay.com/photo/2024/04/23/09/32/ai-generated-8714517_960_720.jpg",
+        "https://images.pexels.com/photos/4109111/pexels-photo-4109111.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      ],
+      "highlights": ["Size: 26 cm x 26 cm"],
+      "specifications": {
+        "general": [
+          { "label": "Dishes Name", "value": "Pizza" },
+          { "label": "Pack of", "value": "1" },
+          { "label": "Type", "value": "Non Veg" },
+          { "label": "Net Quantity", "value": "300g" }
+        ]
+      },
+      "bankOffers": [
+        {
+          "title": "Bank Offer 5%",
+          "description": "Unlimited Cashback on Flipkart Axis Bank Credit Card",
+          "tnc": "T&C"
+        },
+        {
+          "title": "Bank Offer 10%",
+          "description": "off up to ₹750 on Axis Bank Credit Cards (incl. migrated ones), on orders of ₹2,500 and above",
+          "tnc": "T&C"
+        },
+        {
+          "title": "Bank Offer 10%",
+          "description": "off up to ₹1,000 on BOBCARD transactions, on orders of ₹3,500 and above",
+          "tnc": "T&C"
+        }
+      ],
+      "description": "A traditional Italian-style pizza originating from Naples, characterized by a thin crust, soft center, and fresh toppings such as San Marzano tomatoes, mozzarella (preferably buffalo mozzarella), and basil.",
+      "price": {
+        "special": 269,
+        "original": 1499
+      },
+      "reviews":[
+        {
+        "title":"Very Tasty",
+        "description":"Very good Dishes",
+        "date":"2024-12-23"
+        ,"rating":4
+      },
+      {
+        "rating": 5,
+        "title": "Best Pizza Ever!",
+        "description": "The crust was crispy, the toppings were fresh, and the cheese was perfectly melted. Highly recommend!",
+        "date": "2024-12-12"
+      },
+      {
+        "rating": 4,
+        "title": "Delicious but a bit oily",
+        "description": "Loved the flavors and the ingredients, but it was slightly oily for my preference.",
+        "date": "2024-12-11"
+      },
+      {
+        "rating": 3,
+        "title": "Average Taste",
+        "description": "The pizza was okay, but the base was a little too thick, and the sauce lacked flavor.",
+        "date": "2024-12-10"
+      },
+      {
+        "rating": 2,
+        "title": "Disappointed",
+        "description": "The pizza was cold by the time it arrived, and the toppings were not as described.",
+        "date": "2024-12-09"
+      },
+      {
+        "rating": 1,
+        "title": "Terrible Experience",
+        "description": "The pizza was burnt, and the delivery was late. Would not order again.",
+        "date": "2024-12-08"
+      }
+    ]
+    }
+  }

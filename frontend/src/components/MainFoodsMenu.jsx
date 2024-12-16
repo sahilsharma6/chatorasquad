@@ -179,7 +179,7 @@ const FoodMainMenu = () => {
       {/* Menu Items */}
       <motion.div
         layout
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 shadow-md py-4 sm:py-6 px-2 sm:px-4"
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8  py-4 sm:py-6 px-2 sm:px-4"
       >
         <AnimatePresence>
           {filteredItems.map((item) => (
