@@ -1,10 +1,10 @@
 import React, { useState,useEffect } from 'react';
 import { motion } from 'framer-motion';
-import CartItems from '../components/CartItems';
+import CartItems from '../../components/CartItems';
 import { ShieldCheck } from 'lucide-react';
-import CartItemsData from '../Data/CartItems.json'
-import Loader from '../components/Loader';
-import NoResults from '../components/NoResults';
+import CartItemsData from '../../Data/CartItems.json'
+import Loader from '../../components/Loader';
+import NoResults from '../../components/NoResults';
 
 const ViewCart = () => {
   const [cartItems, setCartItems] = useState(CartItemsData);

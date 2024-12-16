@@ -42,9 +42,9 @@ const RatingsAndReviews = ({ product }) => {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+          className="px-4 py-2 border rounded-lg hover:bg-gray-50 border-orange-500"
         >
-          Rate Product
+          Rate The Dish
         </motion.button>
       </div>
 
