@@ -8,12 +8,12 @@ import SearchBar from "../components/SearchBar";
 import Loader from "../components/Loader";
 
 export default function Menu(){
-    const [loading, setLoading] = useState(true); // State to manage loader
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000); // Mock loading for 2 seconds
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -23,7 +23,7 @@ export default function Menu(){
   }
     return (
        <> 
-       <Navbar />
+    
        <div>
            
        <div className="mt-6">

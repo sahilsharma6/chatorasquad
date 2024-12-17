@@ -11,7 +11,10 @@ import Beforefooter from "../components/Beforefooter";
 const Home = () => {
   return (
     <>
-      <Navbar />
+
+  
+      <Hero />
+
       <Welcome />
       <Work />
       <Chef />

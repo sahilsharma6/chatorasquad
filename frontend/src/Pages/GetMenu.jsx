@@ -9,8 +9,8 @@ const GetMenu = () => {
     const [selectedImage, setSelectedImage] = useState(0);
     const [isWishlist, setIsWishlist] = useState(false);
     const [isZoomed, setIsZoomed] = useState(false);
-    const [product, setProduct] = useState(getMenuData.product); // State to hold product data
-    const [loading, setLoading] = useState(true); // State to manage loader
+    const [product, setProduct] = useState(getMenuData.product); 
+    const [loading, setLoading] = useState(true); 
 
     //   setProduct(getMenuData)
 
@@ -18,7 +18,7 @@ const GetMenu = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1300); // Mock loading for 2 seconds
+    }, 1300); 
 
     return () => clearTimeout(timer);
   }, []);
@@ -27,7 +27,7 @@ const GetMenu = () => {
   }
 
     const { name, images, highlights, specifications, bankOffers, description, price,reviews } = product;
-    console.log(product);
+    // console.log(product);
 
 
     return (
