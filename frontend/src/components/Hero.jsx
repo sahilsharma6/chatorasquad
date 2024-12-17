@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import HeroImg1 from "../assets/heroimage1.png";
 import HeroImg2 from "../assets/heroimage2.png";
@@ -51,12 +52,12 @@ const HeroSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <button className="bg-gray-900 text-white px-6 py-2 rounded-tl-lg rounded-br-lg hover:bg-gray-700">
+          <Link to="/menu" className="bg-gray-900 text-white px-6 py-2 rounded-tl-lg rounded-br-lg hover:bg-gray-700">
             Menu
-          </button>
-          <button className="bg-orange-500 text-white px-6 py-2 rounded-tl-lg rounded-br-lg hover:bg-orange-600">
-            Order
-          </button>
+          </Link>
+          <Link to="/orders" className="bg-orange-500 text-white px-6 py-2 rounded-tl-lg rounded-br-lg hover:bg-orange-600">
+            Orders
+          </Link>
         </motion.div>
 
         {/* Social Icons */}
