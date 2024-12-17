@@ -2,7 +2,7 @@ import React from "react";
 
 function Welcome() {
   return (
-    <div className="bg-orange-500 w-auto h-auto flex flex-wrap lg:flex-nowrap p-6 items-center justify-center text-white">
+    <div className="bg-yellow-400 w-auto h-auto flex flex-wrap lg:flex-nowrap p-6 items-center justify-center text-white">
   <div className="flex flex-col items-center justify-center space-y-4 p-8 w-auto">
     <h1 className="text-5xl md:text-8xl font-bold mb-4 text-center w-auto">Are you starving?</h1>
     <p className=" text-2xl md:text-4xl text-gray-700 text-center p-4 w-auto">
