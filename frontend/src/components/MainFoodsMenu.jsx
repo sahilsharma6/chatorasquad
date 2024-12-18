@@ -48,22 +48,22 @@ const FoodMainMenu = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-12 bg-orange-50 shadow-lg">
+    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-12 bg-yellow-50 shadow-lg">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-12">
         <div className="flex items-center justify-center gap-2 mb-2">
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
             <span className="text-white text-xs sm:text-sm">
               <Utensils size={16} />
             </span>
           </motion.div>   
-          <h2 className="text-orange-500 font-semibold text-sm sm:text-base">FOOD MENU</h2>
+          <h2 className="text-yellow-500 font-semibold text-sm sm:text-base">FOOD MENU</h2>
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
             <span className="text-white text-xs sm:text-sm">
               <Utensils size={16} />
@@ -78,7 +78,7 @@ const FoodMainMenu = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg flex items-center gap-2"
+            className="px-4 py-2 bg-yellow-500 text-white rounded-lg flex items-center gap-2"
           >
             <Filter size={20} />
             {isMobileFiltersOpen ? 'Close Filters' : 'Open Filters'}
@@ -96,7 +96,7 @@ const FoodMainMenu = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
-                selectedCategory === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100'
+                selectedCategory === 'all' ? 'bg-yellow-500 text-white' : 'bg-gray-100'
               }`}
               onClick={() => setSelectedCategory('all')}
             >
@@ -108,7 +108,7 @@ const FoodMainMenu = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
-                  selectedCategory === category.id ? 'bg-orange-500 text-white' : 'bg-gray-100'
+                  selectedCategory === category.id ? 'bg-yellow-500 text-white' : 'bg-gray-100'
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
               >
@@ -127,7 +127,7 @@ const FoodMainMenu = () => {
                 placeholder="Search for food..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-orange-500"
+                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-yellow-500"
               />
               <Search 
                 className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
@@ -140,7 +140,7 @@ const FoodMainMenu = () => {
               <select
                 value={selectedPriceRange}
                 onChange={(e) => setSelectedPriceRange(e.target.value)}
-                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-orange-500 appearance-none"
+                className="w-full pl-8 sm:pl-10 pr-4 py-2 text-xs sm:text-base border rounded-lg focus:outline-none focus:ring focus:border-yellow-500 appearance-none"
               >
                 {priceRanges.map((range) => (
                   <option key={range.id} value={range.id}>
@@ -190,7 +190,7 @@ const FoodMainMenu = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4 rounded-xl hover:bg-orange-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-150 hover:text-white shadow-md cursor-pointer flex-wrap"
+              className="flex items-center gap-2 sm:gap-4 p-2 sm:p-4 rounded-xl hover:bg-yellow-500 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-150 hover:text-white shadow-md cursor-pointer flex-wrap"
             >
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                 <img

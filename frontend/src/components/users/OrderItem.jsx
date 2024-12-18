@@ -11,7 +11,7 @@ const OrderItem = ({ order,index }) => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-orange-50 rounded-lg shadow mb-4 p-4"
+                    className="bg-yellow-50 rounded-lg shadow mb-4 p-4"
                   >
                     <div className="flex items-start space-x-4 flex-wrap">
                       <img

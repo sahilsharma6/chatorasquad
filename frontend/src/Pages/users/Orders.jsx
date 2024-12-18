@@ -111,11 +111,11 @@ const OrdersPage = () => {
               <motion.div 
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="bg-orange-50 rounded-lg shadow mb-4"
+                className="bg-yellow-50 rounded-lg shadow mb-4"
               >
                 <div className="p-4 flex items-center space-x-2">
                   <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-                  <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+                  <button className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
                     Search Orders
                   </button>
                 </div>

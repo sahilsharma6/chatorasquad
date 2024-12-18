@@ -35,14 +35,14 @@ const RatingsAndReviews = ({ product }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="pt-6 rounded-md shadow-md py-3 px-3 bg-orange-50"
+      className="pt-6 rounded-md shadow-md py-3 px-3 bg-yellow-50"
     >
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-xl font-medium">Ratings & Reviews</h2>
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="px-4 py-2 border rounded-lg hover:bg-gray-50 border-orange-500"
+          className="px-4 py-2 border rounded-lg hover:bg-gray-50 border-yellow-500"
         >
           Rate The Dish
         </motion.button>
@@ -94,7 +94,7 @@ const Reviews = ({ product }) => {
         </div>
 
         {/* Right Column: Individual Reviews */}
-        <div className="flex-grow md:w-3/5 flex flex-col gap-4 border rounded-lg px-3 py-3 bg-orange-50">
+        <div className="flex-grow md:w-3/5 flex flex-col gap-4 border rounded-lg px-3 py-3 bg-yellow-50">
           {product.reviews.map((review, index) => (
             <motion.div
               key={index}

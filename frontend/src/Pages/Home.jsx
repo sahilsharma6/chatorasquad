@@ -8,11 +8,15 @@ import GMap from "../components/GMap";
 import Footer from "../components/Footer";
 import Work from "../components/Work";
 import Beforefooter from "../components/Beforefooter";
+import FoodMenuSwiper from "../components/FoodMenuSlider";
+import FoodMenu from "../components/FoodMenu";
 const Home = () => {
   return (
     <>
       <Welcome />
       <Work />
+      <FoodMenuSwiper />
+      <FoodMenu />
       <Chef />
       <TestimonialsCarousel />
       <GMap />

@@ -8,7 +8,7 @@ const DishCard = ({ dish }) => {
 
   return (
     <motion.div
-      className={`relative rounded-3xl overflow-hidden p-6 shadow-lg group bg-white hover:bg-orange-500 transition duration-300`}
+      className={`relative rounded-3xl overflow-hidden p-6 shadow-lg group bg-white hover:bg-yellow-500 transition duration-300`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
@@ -17,7 +17,7 @@ const DishCard = ({ dish }) => {
       {/* Like Button */}
       <motion.button
         className={`absolute top-4 right-4 ${
-          isLiked ? 'text-orange-500' : 'text-gray-400'
+          isLiked ? 'text-yellow-500' : 'text-gray-400'
         } group-hover:text-white`}
         onClick={() => setIsLiked(!isLiked)}
         whileTap={{ scale: 0.9 }}
@@ -77,14 +77,14 @@ const FoodMenu = () => {
         <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
           <motion.div
             whileHover={{ scale: 2 }}
-            className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
             <span className="text-white text-sm"><Utensils /> </span>
           </motion.div>
-          <h2 className="text-orange-500 font-semibold">POPULAR DISHES</h2>
+          <h2 className="text-yellow-500 font-semibold">POPULAR DISHES</h2>
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"
+            className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
             <span className="text-white text-sm"><Utensils /> </span>
           </motion.div>
