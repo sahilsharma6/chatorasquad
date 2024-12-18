@@ -33,7 +33,7 @@ const NoResults = ({img,title,des}) => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => console.log("Redirect or reset search")}
-        className="mt-6 px-6 py-3 bg-orange-500 text-white font-semibold rounded-lg shadow hover:bg-orange-600 transition-all"
+        className="mt-6 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow hover:bg-yellow-600 transition-all"
       >
        <Link to={'/menu'}>Back to Menu</Link> 
       </motion.button>

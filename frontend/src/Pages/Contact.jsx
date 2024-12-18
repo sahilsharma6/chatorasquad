@@ -18,8 +18,8 @@ const Contact = () => {
 
   return (
     <>
-      <h1 className='bg-orange-50 text-center text-3xl font-bold mt-6'>Contact Us</h1>
-      <div className="min-h-screen bg-orange-50 flex items-center justify-center p-6">
+      <h1 className='bg-yellow-50 text-center text-3xl font-bold mt-6'>Contact Us</h1>
+      <div className="min-h-screen bg-yellow-50 flex items-center justify-center p-6">
         <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
           {/* Form Section */}
           <motion.div 
@@ -33,7 +33,7 @@ const Contact = () => {
                 <input
                   type="text"
                   placeholder="First Name"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500"
                 />
               </motion.div>
 
@@ -41,7 +41,7 @@ const Contact = () => {
                 <input
                   type="text"
                   placeholder="Last Name"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500"
                 />
               </motion.div>
 
@@ -49,7 +49,7 @@ const Contact = () => {
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500"
                 />
               </motion.div>
 
@@ -57,7 +57,7 @@ const Contact = () => {
                 <input
                   type="tel"
                   placeholder="Phone Number"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500"
                 />
               </motion.div>
 
@@ -65,13 +65,13 @@ const Contact = () => {
                 <textarea
                   placeholder="What's on your mind?"
                   rows={4}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500"
                 />
               </motion.div>
 
               <motion.div variants={fadeIn} transition={{ delay: 0.6 }}>
                 <label className="block text-gray-600 mb-2">Have you tasted our dishes?</label>
-                <select className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-orange-500">
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-yellow-500">
                   <option>Yes</option>
                   <option>No</option>
                   <option>I want to try</option>
@@ -79,14 +79,14 @@ const Contact = () => {
               </motion.div>
 
               <motion.div variants={fadeIn} transition={{ delay: 0.7 }} className="flex items-center gap-2">
-                <input type="checkbox" className="w-4 h-4 accent-orange-500 bg-white checked:text-white transition-all" />
+                <input type="checkbox" className="w-4 h-4 accent-yellow-500 bg-white checked:text-white transition-all" />
                 <span className="text-gray-500 text-sm">Accept Terms and Conditions.</span>
               </motion.div>
 
               <motion.button
                 variants={fadeIn}
                 transition={{ delay: 0.8 }}
-                className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition-colors"
+                className="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 transition-colors"
               >
                 Submit
               </motion.button>
@@ -95,7 +95,7 @@ const Contact = () => {
 
           {/* Info Section */}
           <motion.div 
-            className="w-full md:w-2/5 bg-orange-50 p-8 flex flex-col justify-center"
+            className="w-full md:w-2/5 bg-yellow-50 p-8 flex flex-col justify-center"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
@@ -116,7 +116,7 @@ const Contact = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay }}
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
+                  className="text-yellow-500 hover:text-yellow-600 transition-colors"
                 >
                   <Icon size={24} />
                 </motion.a>

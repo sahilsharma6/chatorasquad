@@ -27,7 +27,7 @@ const About = () => {
         {/* Left Content */}
         <motion.div variants={fadeIn} className="space-y-6">
           <motion.h2 
-            className="text-orange-500 font-medium text-2xl tracking-wide text-center"
+            className="text-yellow-500 font-medium text-2xl tracking-wide text-center"
             variants={fadeIn}
           >
           _____ ABOUT US

@@ -54,7 +54,7 @@ const SearchBar = () => {
           <AnimatePresence>
             {isFocused && (
               <motion.div
-                className="absolute inset-0 rounded-l-lg border-2 border-orange-500"
+                className="absolute inset-0 rounded-l-lg border-2 border-yellow-500"
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
@@ -66,7 +66,7 @@ const SearchBar = () => {
 
         <motion.button
           onClick={handleSearch}
-          className="px-4 py-2 bg-orange-500 text-white rounded-r-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          className="px-4 py-2 bg-yellow-500 text-white rounded-r-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
         >
