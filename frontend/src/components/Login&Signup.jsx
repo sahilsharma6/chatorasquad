@@ -83,139 +83,143 @@ const SignupLoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-orange-200 w-auto h-auto">
-      <img
-    src="./src/assets/signup.png"
-    alt="Background"
-    className="absolute z-0 w-full h-full object-cover" 
-  />
-  <div className="relative z-10 bg-[#333333]  w-auto p-8 md:p-20 h-auto rounded-lg shadow-2xl justify-center items-center flex flex-col">
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="bg-white shadow-2xl rounded-2xl overflow-hidden w-full max-w-md"
-      >
-        {/* Toggle Buttons */}
-        <div className="flex ">
-          <button
-            onClick={() => setIsLogin(true)}
-            className={`w-full p-4 font-bold transition-colors duration-300 ${
-              isLogin
-                ? "bg-orange-500 text-white"
-                : "bg-orange-100 text-orange-600"
-            }`}
+    <div
+      className="w-full bg-cover bg-center flex items-center justify-center  text-center p-8"
+      style={{
+        backgroundImage: "url('./src/assets/signup.png')",
+      }}
+    >
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[40vh] md:h-[50vh]">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className=" w-full md:w-1/2 p-8 flex flex-col justify-center "
           >
-            Login
-          </button>
-          <button
-            onClick={() => setIsLogin(false)}
-            className={`w-full p-4 font-bold transition-colors duration-300 ${
-              !isLogin
-                ? "bg-orange-500 text-white"
-                : "bg-orange-100 text-orange-600"
-            }`}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        <div className="p-8">
-          <form onSubmit={handleSubmit}>
-            {!isLogin && (
+            <h2 className="text-xl md:text-3xl font-bold mb-6 text-gray-700">
+              {isLogin ? "Please login to your account" : "Create your account"}
+            </h2>
+            <form onSubmit={handleSubmit}>
+              {!isLogin && (
+                <div className="mb-4">
+                  <div className="flex items-center border-b-2 border-orange-300 py-2">
+                    <User className="text-orange-500 mr-3" />
+                    <input
+                      type="text"
+                      name="fullName"
+                      placeholder="Full Name"
+                      value={formData.fullName}
+                      onChange={handleChange}
+                      className="w-full bg-transparent focus:outline-none text-gray-700"
+                    />
+                  </div>
+                  {errors.fullName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.fullName}
+                    </p>
+                  )}
+                </div>
+              )}
               <div className="mb-4">
                 <div className="flex items-center border-b-2 border-orange-300 py-2">
-                  <User className="text-orange-500 mr-3" />
+                  <Mail className="text-orange-500 mr-3" />
                   <input
-                    type="text"
-                    name="fullName"
-                    placeholder="Full Name"
-                    value={formData.fullName}
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-transparent focus:outline-none text-orange-700"
+                    className="w-full bg-transparent focus:outline-none text-gray-700"
                   />
                 </div>
-                {errors.fullName && (
-                  <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                 )}
               </div>
-            )}
-
-            <div className="mb-4">
-              <div className="flex items-center border-b-2 border-orange-300 py-2">
-                <Mail className="text-orange-500 mr-3" />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-transparent focus:outline-none text-orange-700"
-                />
-              </div>
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <div className="flex items-center border-b-2 border-orange-300 py-2">
-                <Lock className="text-orange-500 mr-3" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="w-full bg-transparent focus:outline-none text-orange-700"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="focus:outline-none"
-                >
-                  {showPassword ? (
-                    <EyeOff className="text-orange-500" size={20} />
-                  ) : (
-                    <Eye className="text-orange-500" size={20} />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-              )}
-            </div>
-
-            {!isLogin && (
               <div className="mb-4">
                 <div className="flex items-center border-b-2 border-orange-300 py-2">
                   <Lock className="text-orange-500 mr-3" />
                   <input
                     type={showPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={formData.confirmPassword}
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
                     onChange={handleChange}
-                    className="w-full bg-transparent focus:outline-none text-orange-700"
+                    className="w-full bg-transparent focus:outline-none text-gray-700"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="text-orange-500" />
+                    ) : (
+                      <Eye className="text-orange-500" />
+                    )}
+                  </button>
                 </div>
-                {errors.confirmPassword && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.confirmPassword}
-                  </p>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
                 )}
               </div>
-            )}
+              {!isLogin && (
+                <div className="mb-4">
+                  <div className="flex items-center border-b-2 border-orange-300 py-2">
+                    <Lock className="text-orange-500 mr-3" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      placeholder="Confirm Password"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="w-full bg-transparent focus:outline-none text-gray-700"
+                    />
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+              )}
+              <button
+                type="submit"
+                className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition duration-300"
+              >
+                {isLogin ? "Login" : "Create Account"}
+              </button>
+            </form>
+            <p className="text-center text-sm mt-4">
+              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              <span
+                onClick={() => setIsLogin(!isLogin)}
+                className="text-orange-500 cursor-pointer hover:underline"
+              >
+                {isLogin ? "Create New" : "Login"}
+              </span>
+            </p>
+          </motion.div>
 
-            <button
-              type="submit"
-              className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition-colors duration-300"
-            >
-              {isLogin ? "Login" : "Create Account"}
-            </button>
-          </form>
+          <div
+            className="w-1/2 bg-cover bg-center  items-center justify-center text-white text-center p-2 hidden md:flex"
+            style={{
+              backgroundImage: "url('png')",
+            }}
+          >
+            <div className="w-full bg-gradient-to-r from-orange-500 to-pink-500 opacity-90 h-full flex items-center justify-center">
+              <div>
+                <h2 className="text-3xl font-bold mb-4">
+                  We are more than just a company
+                </h2>
+                <p className="text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </motion.div>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const SearchBar = () => {
   const handleSearch = () => {
     if (value.trim()) {
       console.log(`Searching for: ${value}`);
-      // Add your search action here
+    
     }
   };
 

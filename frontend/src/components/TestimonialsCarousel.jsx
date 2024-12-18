@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaStar } from "react-icons/fa";
-import testimonials from '../Data/testimonials.json'
+import testimonials from '../Data/testimonials.json';
 
 export default function TestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,29 +36,29 @@ export default function TestimonialsCarousel() {
 
   useEffect(() => {
     if (!isPaused) {
-      const interval = setInterval(() => paginate(1), 3000); // Auto-slide every 3 seconds
+      const interval = setInterval(() => paginate(1), 3000);
       return () => clearInterval(interval);
     }
   }, [isPaused, currentIndex]);
 
   return (
-    <div className="w-full bg-gray-50 h-auto flex flex-col items-center justify-center p-8 mb-10">
+    <div className="w-full bg-gray-50 h-auto flex flex-col items-center justify-center p-8 mb-10 overflow-x-hidden">
       <div className="max-w-6xl w-full">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Our Happy Customers</h2>
-          <p className="text-gray-600 mb-10"> {/* Added margin for spacing */}
+          <p className="text-gray-600 mb-10">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
           </p>
         </div>
 
-        <div className="relative h-[350px] flex items-center justify-center"> {/* Increased height */}
+        <div className="relative h-[350px] flex items-center justify-center">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-96 h-full opacity-10">
             <div className="w-full h-full bg-gray-300 rounded-full"></div>
           </div>
 
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              key={currentIndex} // Ensures that key is stable and unique
+              key={currentIndex}
               custom={direction}
               variants={slideVariants}
               initial="enter"
@@ -68,7 +68,7 @@ export default function TestimonialsCarousel() {
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 },
               }}
-              className="absolute w-full max-w-xl"
+              className="absolute w-full max-w-xl mx-auto"
             >
               <div
                 className="bg-white rounded-2xl shadow-lg p-6"

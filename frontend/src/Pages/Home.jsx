@@ -13,9 +13,6 @@ import FoodMenu from "../components/FoodMenu";
 const Home = () => {
   return (
     <>
-      <Navbar />
-
-      <Hero />
       <Welcome />
       <Work />
       <FoodMenuSwiper />
