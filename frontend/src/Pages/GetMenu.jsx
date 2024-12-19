@@ -31,7 +31,7 @@ const GetMenu = () => {
 
 
     return (
-        <div className="max-w-7xl mx-auto p-4">
+        <div className="max-w-full mx-auto px-4">
             <div className="flex flex-col md:flex-row gap-3">
                 {/* Left Column - Images */}
                 <Thumbnails images={images}

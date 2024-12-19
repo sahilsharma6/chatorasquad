@@ -48,7 +48,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
         initial="closed"
         animate={isOpen || isDesktop ? "open" : "closed"}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed   left-0 top-0 overflow-auto bottom-0 w-64 bg-white shadow-lg z-20 ${
+        className={`fixed   left-0 top-0 overflow-auto bottom-0 md:w-72  bg-white shadow-lg z-20 ${
           isDesktop ? "static translate-x-0" : ""
         }`}
       >
@@ -132,7 +132,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
           {!isDesktop && (
             <>
               <div className="mt-4">
-                <button className="flex items-center p-3 rounded-lg bg-yellow-500 text-white w-full justify-center">
+                <button className="flex items-center p-3 rounded-lg bg-orange-500 text-white w-full justify-center">
                   Recipe Guide
                 </button>
               </div>

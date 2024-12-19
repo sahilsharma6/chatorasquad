@@ -22,9 +22,9 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} isDesktop={isDesktop} />
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="flex-1 flex flex-col lg:ml-64 ">
         <Header toggleSidebar={toggleSidebar} isDesktop={isDesktop} />
-        <main className="p-4">
+        <main className="p-4 px-12">
           <h1 className="text-2xl font-bold mb-4">Analytics</h1>
         </main>
       </div>

@@ -51,7 +51,7 @@ const ViewCart = () => {
   return (
     <>
     {/* <Navbar /> */}
-    <div className="max-w-5xl mx-auto p-4 bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
+    <div className="max-w-full mx-auto p-4  bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
       {/* Left Box (65% Width) */}
       <div className="flex-1 min-h-screen overflow-y-auto shadow px-4 py-4">
         {/* Shipping and delivery options */}
@@ -60,7 +60,7 @@ const ViewCart = () => {
             <p className="text-yellow-500 text-sm">From Saved Addresses</p>
           </div>
           <div className="">
-            <button className="text-yellow-500 text-sm bg-transparent font-semibold hover:text-white py-2 px-4 border border-yellow-500 hover:border-transparent rounded hover:bg-yellow-500 transition ease-in-out delay-150 hover:-translate-y-1">
+            <button className="text-orange-500 text-sm bg-transparent font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded hover:bg-orange-500 transition ease-in-out delay-150 hover:-translate-y-1">
               Enter Delivery Location
             </button>
           </div>
@@ -93,7 +93,7 @@ const ViewCart = () => {
                 <span className="text-sm text-gray-500 ml-2">Optional</span>
               </p>
             </div>
-            <button className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors">
+            <button className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
               Add
             </button>
           </div>
@@ -103,7 +103,7 @@ const ViewCart = () => {
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full mt-4 py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors font-semibold"
+          className="w-full mt-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold"
         >
           Place Order
         </motion.button>

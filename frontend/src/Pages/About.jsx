@@ -17,7 +17,7 @@ const About = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+    <div className="max-w-full mx-auto px-16 py-4 md:py-24">
       <motion.div 
         className="grid md:grid-cols-2 gap-8 items-center"
         variants={staggerChildren}

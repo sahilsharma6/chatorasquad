@@ -22,7 +22,7 @@ const FoodMenuSwiper = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 overflow-hidden">
+    <div className="max-w-full mx-auto px-20 py-8 overflow-hidden">
       <div className="text-center mb-8">
       <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
           <motion.div

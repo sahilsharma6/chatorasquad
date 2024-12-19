@@ -48,7 +48,7 @@ const FoodMainMenu = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 sm:py-12 bg-yellow-50 shadow-lg">
+    <div className="max-w-full mx-auto px-20 py-6 sm:py-12 bg-gray-100 shadow-lg">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-12">
         <div className="flex items-center justify-center gap-2 mb-2">
@@ -78,7 +78,7 @@ const FoodMainMenu = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-            className="px-4 py-2 bg-yellow-500 text-white rounded-lg flex items-center gap-2"
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg flex items-center gap-2"
           >
             <Filter size={20} />
             {isMobileFiltersOpen ? 'Close Filters' : 'Open Filters'}
@@ -96,7 +96,7 @@ const FoodMainMenu = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className={`px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
-                selectedCategory === 'all' ? 'bg-yellow-500 text-white' : 'bg-gray-100'
+                selectedCategory === 'all' ? 'bg-orange-500 text-white' : 'bg-gray-100'
               }`}
               onClick={() => setSelectedCategory('all')}
             >
@@ -108,7 +108,7 @@ const FoodMainMenu = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`flex items-center gap-1 sm:gap-2 px-2 py-1 sm:px-4 sm:py-2 text-xs sm:text-base rounded-full ${
-                  selectedCategory === category.id ? 'bg-yellow-500 text-white' : 'bg-gray-100'
+                  selectedCategory === category.id ? 'bg-orange-500 text-white' : 'bg-gray-100'
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
               >
