@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Share, Heart, MapPin, Info, ShieldCheck, Gem } from 'lucide-react';
 export default function GetMenuDetails({price,bankOffers,highlights,description,specifications,name}){
     return (
-        <div className="md:w-1/2 shadow-lg  py-6 px-6 bg-orange-50 rounded">
+        <div className="md:w-1/2 shadow-lg  py-6 px-6 bg-gray-100 rounded">
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-medium">{name}</h1>
             <Share className="w-6 h-6 text-gray-500 cursor-pointer" />

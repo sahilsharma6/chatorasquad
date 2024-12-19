@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Share, Heart, MapPin, Info, ShieldCheck, Gem } from 'lucide-react';
 export default function Thumbnails ({images,selectedImage,setIsWishlist,setIsZoomed,isWishlist,isZoomed,setSelectedImage}){
     return (
-        <div className="md:w-1/2 shadow-lg px-3 bg-yellow-50 sticky">
+        <div className="md:w-1/2 shadow-lg px-3 bg-gray-100 sticky">
           <div className="flex md:flex-row flex-col-reverse gap-2 ">
             {/* Thumbnails */}
             <div className="md:w-1/5 w-full md:flex-col flex flex-row gap-2 ">
@@ -53,7 +53,7 @@ export default function Thumbnails ({images,selectedImage,setIsWishlist,setIsZoo
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 bg-yellow-500 text-white py-3 rounded-lg font-semibold"
+              className="flex-1 bg-orange-500 text-white py-3 rounded-lg font-semibold"
             >
              ORDER NOW
             </motion.button>

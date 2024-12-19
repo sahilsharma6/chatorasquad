@@ -42,7 +42,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
                             <button
                               key={status}
                               onClick={() => toggleFilter('status', status)}
-                              className={`px-4 py-2 rounded-full text-sm ${filters.status.includes(status) ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'}`}
+                              className={`px-4 py-2 rounded-full text-sm ${filters.status.includes(status) ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-800'}`}
                             >
                               {status}
                             </button>
@@ -57,7 +57,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
                             <button
                               key={time}
                               onClick={() => toggleFilter('time', time)}
-                              className={`px-4 py-2 rounded-full text-sm ${filters.time.includes(time) ? 'bg-yellow-500 text-white' : 'bg-gray-100 text-gray-800'}`}
+                              className={`px-4 py-2 rounded-full text-sm ${filters.time.includes(time) ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-800'}`}
                             >
                               {time}
                             </button>
@@ -69,13 +69,13 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
                     <div className="p-4 border-t flex space-x-3">
                       <button
                         onClick={clearFilters}
-                        className="flex-1 py-3 text-yellow-500 border border-order-500 rounded-lg"
+                        className="flex-1 py-3 text-orange-500 border border-order-500 rounded-lg"
                       >
                         Clear Filter
                       </button>
                       <button
                         onClick={() => setIsFilterOpen(false)}
-                        className="flex-1 py-3 bg-yellow-500 text-white rounded-lg"
+                        className="flex-1 py-3 bg-orange-500 text-white rounded-lg"
                       >
                         Apply
                       </button>
@@ -91,7 +91,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
         <motion.div 
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-64 sticky p-4 rounded-lg shadow-md bg-yellow-50"
+          className="w-64 sticky p-4 rounded-lg shadow-md bg-gray-100"
         >
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
           
@@ -101,7 +101,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
               <label key={status} className="flex items-center space-x-2 mb-2">
                 <input
                   type="checkbox"
-                  className="rounded border-gray-300 accent-yellow-500 text-white w-4 h-4 hover:cursor-pointer"
+                  className="rounded border-gray-300 accent-orange-500 text-white w-4 h-4 hover:cursor-pointer"
                   checked={filters.status.includes(status)}
                   onChange={() => toggleFilter('status', status)}
                 />
@@ -116,7 +116,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
               <label key={time} className="flex items-center space-x-2 mb-2">
                 <input
                   type="checkbox"
-                  className="rounded border-gray-300 accent-yellow-500 w-4 h-4"
+                  className="rounded border-gray-300 accent-orange-500 w-4 h-4"
                   checked={filters.time.includes(time)}
                   onChange={() => toggleFilter('time', time)}
                 />

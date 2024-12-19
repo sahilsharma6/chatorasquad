@@ -1,6 +1,6 @@
 export default function GMap() {
     return (
-        <div className="w-full max-w-screen-lg mx-auto flex flex-col md:flex-row my-8 gap-6">
+        <div className="w-full max-w-full  px-16 flex flex-col md:flex-row my-8 gap-6">
             {/* Google Map Section */}
             <div className="relative pb-[56.25%] w-full md:w-2/3 h-0 md:h-auto">
                 <iframe
