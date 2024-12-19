@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 
 import Home from "./Pages/Home";
-import SignupLoginForm from "./components/Login&Signup";
+import LoginForm from "./components/LoginForm";
+import SignupForm from "./components/SignupForm";
 import Menu from "./Pages/Menu";
 import ViewCart from "./Pages/users/ViewCart";
 import Dashboard from "./Pages/Dashboard";
@@ -26,7 +27,8 @@ function Layout() {
       {!isAdminRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<SignupLoginForm />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<SignupForm />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/viewcart" element={<ViewCart />} />
         <Route path="/profile" element={<Dashboard />} />
