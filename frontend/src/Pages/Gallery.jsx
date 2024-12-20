@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 
 const Gallery = () => {
   const images = [
-    { src: "https://via.placeholder.com/300x200/FFDD57/ffffff?text=Butter+Chicken" },
+    { src: "https://www.restroapp.com/blog/wp-content/uploads/2020/03/online-food-ordering-statistics-RestroApp.jpg" },
     { src: "https://via.placeholder.com/300x200/FFCC33/ffffff?text=Biryani",  },
-    { src: "https://via.placeholder.com/300x200/FFB84D/ffffff?text=Paneer+Tikka" },
+    { src: "https://www.restroapp.com/blog/wp-content/uploads/2020/03/online-food-ordering-statistics-RestroApp.jpg" },
     { src: "https://via.placeholder.com/300x200/FF9933/ffffff?text=Samosa"},
-    { src: "https://via.placeholder.com/300x200/FF9E44/ffffff?text=Masala+Dosa" },
-    { src: "https://via.placeholder.com/300x200/FF8C00/ffffff?text=Chole+Bhature"},
+    { src: "https://www.restroapp.com/blog/wp-content/uploads/2020/03/online-food-ordering-statistics-RestroApp.jpg" },
+    { src: "https://www.restroapp.com/blog/wp-content/uploads/2020/03/online-food-ordering-statistics-RestroApp.jpg"},
   ];
 
   return (
