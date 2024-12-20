@@ -91,7 +91,7 @@ const Filters = ({ isMobile, filters, toggleFilter, clearFilters, statusFilters,
         <motion.div 
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className="w-64 sticky p-4 rounded-lg shadow-md bg-orange-50"
+          className="w-64 sticky p-4 rounded-lg shadow-md bg-gray-100"
         >
           <h2 className="text-xl font-semibold mb-4">Filters</h2>
           

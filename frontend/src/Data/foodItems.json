@@ -1,25 +1,25 @@
 [
     {
       "name": "Chicken Leg Piece",
-      "price": 20.99,
+      "price": 204.99,
       "image": "https://media.istockphoto.com/id/889606852/photo/chicken-tandoori-on-a-cast-iron-plate-north-indian-food.jpg?s=612x612&w=0&k=20&c=pw-159g1wzjH3oxLuqv9lYwriwzZxNwVUc0A-z3EdgU=",
       "description": "Lorem, Ipsum Dolor..."
     },
     {
       "name": "Cheese Burger",
-      "price": 26.99,
+      "price": 264.99,
       "image": "https://media.gettyimages.com/id/1446965529/photo/homemade-burger-and-chips.webp?s=1024x1024&w=gi&k=20&c=gjGxzhjYNT5JwQM-x6gq1f835qc_KKOUACqnAUfa0yU=",
       "description": "Lorem, Ipsum Dolor..."
     },
     {
       "name": "Chicken Biryani",
-      "price": 28,
+      "price": 248,
       "image": "https://media.istockphoto.com/id/1058029096/photo/chicken-biryani.webp?s=1024x1024&w=is&k=20&c=WsbuHWOyKZJ0q09ZI-gZbUZYVTF1LE2aeo3RK2UierU=",
       "description": "Lorem, Ipsum Dolor..."
     },
     {
       "name": "Chicken Fried Rice",
-      "price": 100.99,
+      "price": 1040.99,
       "image": "https://img.freepik.com/premium-photo/rice-with-meat-green-onions-red-plate_288431-731.jpg?w=740",
       "description": "Lorem, Ipsum Dolor..."
     }

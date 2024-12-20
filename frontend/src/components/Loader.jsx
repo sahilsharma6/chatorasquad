@@ -12,7 +12,7 @@ const Loader = () => {
         className="relative w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center"
       >
         {/* Plate */}
-        <div className="w-28 h-28 bg-orange-200 rounded-full flex items-center justify-center border-t-2 ">
+        <div className="w-28 h-28 bg-yellow-200 rounded-full flex items-center justify-center border-t-2 ">
          
           <motion.div
             className="absolute w-3 h-12 bg-gray-500 rounded-full"

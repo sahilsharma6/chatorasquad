@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Share, Heart, MapPin, Info, ShieldCheck, Gem } from 'lucide-react';
 export default function Thumbnails ({images,selectedImage,setIsWishlist,setIsZoomed,isWishlist,isZoomed,setSelectedImage}){
     return (
-        <div className="md:w-1/2 shadow-lg px-3 bg-orange-50 sticky">
+        <div className="md:w-1/2 shadow-lg px-3 bg-gray-100 sticky">
           <div className="flex md:flex-row flex-col-reverse gap-2 ">
             {/* Thumbnails */}
             <div className="md:w-1/5 w-full md:flex-col flex flex-row gap-2 ">

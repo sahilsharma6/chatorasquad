@@ -43,7 +43,7 @@ export default function TestimonialsCarousel() {
 
   return (
     <div className="w-full bg-gray-50 h-auto flex flex-col items-center justify-center p-8 mb-10 overflow-x-hidden">
-      <div className="max-w-6xl w-full">
+      <div className="max-w-full w-full">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Our Happy Customers</h2>
           <p className="text-gray-600 mb-10">
@@ -104,7 +104,7 @@ export default function TestimonialsCarousel() {
             <button
               key={index}
               className={`w-4 h-4 rounded-full transition-colors duration-200 ${
-                currentIndex === index ? "bg-orange-500" : "bg-gray-300"
+                currentIndex === index ? "bg-yellow-500" : "bg-gray-300"
               }`}
               onClick={() => {
                 setDirection(index > currentIndex ? 1 : -1);
