@@ -84,6 +84,10 @@ function Welcome() {
         />
       </div>
     </div>
+  </div>
+</div>
+    </div>
+  </div>
   );
 }
 
