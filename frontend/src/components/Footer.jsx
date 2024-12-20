@@ -28,9 +28,9 @@ const Footer = () => {
   
 
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 px-6 mt-6">
+    <footer className= " bg-gray-900 text-gray-300 py-12 px-6 mt-6 ">
       <motion.div 
-        className="max-w-7xl mx-auto"
+        className="max-w-full mx-auto pl-24"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
