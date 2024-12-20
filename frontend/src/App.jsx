@@ -13,6 +13,7 @@ import Orders from "./Pages/users/Orders";
 import DashboardLayout from "./Pages/admin/DashboardLayout";
 import Navbar from "./components/Navbar";
 import Gallery from "./Pages/Gallery";
+import PassUpdate from "./Pages/PassUpdate";
 
 
 function Layout() {
@@ -29,6 +30,7 @@ function Layout() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/update" element={<PassUpdate />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/viewcart" element={<ViewCart />} />
         <Route path="/profile" element={<Dashboard />} />
