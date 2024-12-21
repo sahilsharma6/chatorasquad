@@ -1,7 +1,23 @@
-import express from "express";
+dotenv.config();
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import authRoute from './routes/authRoute.js';
+import cors from 'cors';
 
 const app = express();
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.use(cors());
+
+
+app.use(express.json()); 
+app.use(cookieParser()); 
+
+app.use('/api/auth', authRoute);
+
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

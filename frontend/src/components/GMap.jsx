@@ -1,10 +1,10 @@
 export default function GMap() {
     return (
-        <div className="w-full max-w-full  px-16 flex flex-col md:flex-row my-8 gap-6">
+        <div className="w-full max-w-full  px-16 flex  items-center justify-center flex-col md:flex-row my-8 gap-10">
             {/* Google Map Section */}
-            <div className="relative pb-[56.25%] w-full md:w-2/3 h-0 md:h-auto">
+            <div className="lg:w-[50%]  w-full">
                 <iframe
-                    className="absolute top-0 left-0 w-full h-full"
+                    className=" w-full h-[400px] rounded-lg shadow-lg"
                     src="https://maps.google.com/maps?width=100%25&amp;height=400&amp;hl=en&amp;q=Noida+(Chatora%20Squad)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
                     title="Google Map"
                     allowFullScreen
