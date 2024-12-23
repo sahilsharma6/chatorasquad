@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 import {
   X,
   Home,
@@ -13,10 +14,23 @@ import {
   UserRoundPlus,
   ChevronDown,
   ChevronUp,
+  Rows4,
+  ChefHat,
+  BookmarkPlus,
+  Activity,
+  Settings,
+  BadgeHelp
 } from "lucide-react";
+import { GiOpenedFoodCan } from "react-icons/gi";
+import { PiBowlFood } from "react-icons/pi";
+import { BiSolidReport, BiSolidOffer } from "react-icons/bi";
+import { FcSalesPerformance } from "react-icons/fc";
+import { IoIosPersonAdd } from "react-icons/io";
+import SideBarItems from "./SideBarItems";
 
 const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null);
+  const location = useLocation(); // Get the current location
 
   const toggleSubmenu = (label) => {
     setActiveSubmenu((prev) => (prev === label ? null : label));
@@ -24,13 +38,55 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
 
   const sidebarVariants = {
     open: { x: 0 },
-    closed: { x: isDesktop ? 0 : -320 },
+    closed: { x: isDesktop ? 0 : -355 },
   };
 
   const submenuVariants = {
     open: { height: "auto", opacity: 1 },
     closed: { height: 0, opacity: 0 },
   };
+
+  // Define sidebar items with paths
+  const sidebarItems = [
+    { icon: Home, label: "Dashboard", path: "/admin" },
+    { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
+    {
+      icon: Book,
+      label: "Menu",
+      path: "/admin/menu",
+      hasSubmenu: true,
+      submenu: [
+        { label: "View Menu", path: "/admin/menu/view", icon: ChefHat },
+        { label: "Add Menu", path: "/admin/menu/add", icon: BookmarkPlus },
+        { label: "View Cuisines", path: "/admin/cuisines/view", icon: PiBowlFood },
+        { label: "Add Cuisine", path: "/admin/cuisines/add", icon: GiOpenedFoodCan },
+      ]
+    },
+    {
+      icon: Users,
+      label: "Customer",
+      path: "/admin/customers",
+      hasSubmenu: true,
+      submenu: [
+        { label: "Customer List", path: "/admin/customers/list", icon: FileUser },
+        { label: "Add Customers", path: "/admin/customers/add", icon: IoIosPersonAdd },
+      ],
+    },
+    { label: "Offers", path: "/admin/offers", icon: BiSolidOffer },
+    {
+      icon: BiSolidReport,
+      label: "Reports",
+      path: "/admin/reports",
+      hasSubmenu: true,
+      submenu: [
+        { label: "Sales Reports", path: "/admin/reports/sales", icon: FileUser },
+        { label: "Inventory Reports", path: "/admin/reports/inventory", icon: FcSalesPerformance },
+        { label: "Activity", path: "/admin/reports/activity", icon: Activity },
+      ],
+    },
+    { icon: BadgeHelp, label: "Help & Supports", path: "/admin/help" },
+    { icon: Settings, label: "Settings", path: "/admin/settings" },
+  ];
 
   return (
     <>
@@ -48,19 +104,16 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
         initial="closed"
         animate={isOpen || isDesktop ? "open" : "closed"}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed   left-0 top-0 overflow-auto bottom-0 md:w-72  bg-white shadow-lg z-20 ${
-          isDesktop ? "static translate-x-0" : ""
-        }`}
+        className={`fixed left-0 top-0 overflow-auto bottom-0 md:w-72 bg-white shadow-lg z-20 ${isDesktop ? "static translate-x-0" : ""
+          }`}
       >
-        <div className="flex items-start p-4 border-b justify-center    ">
-          <div className="flex flex-col ">
-            <div className="text-2xl font-bold text-yellow-500">
-              ChatoraSquad
-            </div>
+        <div className="flex items-start p-4 border-b justify-center">
+          <div className="flex flex-col">
+            <div className="text-2xl font-bold text-yellow-500">ChatoraSquad</div>
             {!isDesktop && (
               <img
                 src="https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="User avatar"
+                alt="User  avatar"
                 className="w-16 h-16 rounded-full border-4 border-yellow-500 mt-4"
               />
             )}
@@ -69,97 +122,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
             <X size={33} />
           </button>
         </div>
-        <nav className="p-4 overflow-auto h-screen">
-          {[
-            { icon: Home, label: "Dashboard", active: false },
-            { icon: ShoppingCart, label: "Orders", active: false },
-            { icon: Book, label: "Menu", active: false, hasSubmenu: true },
-            {
-              icon: Users,
-              label: "Customer",
-              active: false,
-              hasSubmenu: true,
-              submenu: [
-                { label: "Customer List", active: false, icon: FileUser },
-                { label: "Add Customer", active: false, icon: UserRoundPlus },
-              ],
-            },
-            { icon: BarChart2, label: "Analytics", active: true },
-          ].map((item, index) => (
-            <div key={index}>
-              <div
-                className={`flex items-center p-3 mb-2 rounded-lg cursor-pointer transition-colors ${
-                  item.active
-                    ? "bg-yellow-200 text-yellow-500"
-                    : "hover:bg-yellow-500 hover:text-white"
-                }`}
-                onClick={() =>
-                  item.hasSubmenu ? toggleSubmenu(item.label) : null
-                }
-              >
-                <item.icon size={28} />
-                <span className="ml-3 mr-5">{item.label}</span>
-                {item.hasSubmenu ? (
-                  activeSubmenu === item.label ? (
-                    <ChevronUp size={30} />
-                  ) : (
-                    <ChevronDown size={30} />
-                  )
-                ) : null}
-              </div>
-              {item.hasSubmenu && (
-                <motion.div
-                  variants={submenuVariants}
-                  initial="closed"
-                  animate={activeSubmenu === item.label ? "open" : "closed"}
-                  transition={{ duration: 0.3 }}
-                  className="ml-6 overflow-hidden"
-                >
-                  {item.submenu &&
-                    item.submenu.map((subItem, subIndex) => (
-                      <div
-                        key={subIndex}
-                        className="flex items-center p-2 mb-1 rounded-lg cursor-pointer transition-colors hover:bg-yellow-400 hover:text-white"
-                      >
-                        <subItem.icon size={26} />
-                        <span className="ml-3">{subItem.label}</span>
-                      </div>
-                    ))}
-                </motion.div>
-              )}
-            </div>
-          ))}
-          {!isDesktop && (
-            <>
-              <div className="mt-4">
-                <button className="flex items-center p-3 rounded-lg bg-orange-500 text-white w-full justify-center">
-                  Recipe Guide
-                </button>
-              </div>
-              <div className="mt-4">
-                {[
-                  { icon: Bell, label: "Notifications", badge: 2 },
-                  { icon: ShoppingBag, label: "Cart", badge: 3 },
-                ].map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center p-3 mb-2 rounded-lg cursor-pointer hover:bg-yellow-500 hover:text-white"
-                  >
-                    <div className="relative">
-                      <item.icon size={28} />
-                      {item.badge > 0 && (
-                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">
-                          {item.badge}
-                        </span>
-                      )}
-                    </div>
-                    <span className="ml-3">{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-        </nav>
+        <SideBarItems sidebarItems={sidebarItems} activeSubmenu={activeSubmenu} submenuVariants={submenuVariants} isDesktop={isDesktop} toggleSubmenu={toggleSubmenu} />
       </motion.div>
     </>
   );
