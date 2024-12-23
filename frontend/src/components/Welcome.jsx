@@ -72,7 +72,9 @@ function Welcome() {
           className="w-auto h-auto md:w-96 mg:h-96 lg:h-auto lg:w-auto"
         />
       </div>
+
     </div>
+
   );
 }
 
