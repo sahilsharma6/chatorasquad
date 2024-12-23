@@ -38,7 +38,7 @@ function Layout() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/admin" element={<DashboardLayout />} />
+        <Route path="/admin/*" element={<DashboardLayout />} />
         <Route path="/gallery" element={<Gallery />} />
       </Routes>
     </>
