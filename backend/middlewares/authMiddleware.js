@@ -1,7 +1,7 @@
-import User from "../models/User";
-const jwt = require("jsonwebtoken");
+import User from "../models/User.js";
+import jwt from "jsonwebtoken";
 
-const authenticate = async (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
   try {
 
     const token = req.cookies.token; 
@@ -9,10 +9,10 @@ const authenticate = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
-
+    console.log(token);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findByPk(decoded.userId);
+    const user = await User.findById(decoded.userId);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -28,4 +28,4 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-module.exports = authenticate;
+export default authMiddleware;

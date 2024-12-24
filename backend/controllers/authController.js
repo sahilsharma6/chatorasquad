@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../model/User'; 
+import User from '../models/User.js'; 
 
 // SignUp Controller
 export const signUp = async (req, res) => {
   try {
-    const { fullName, email, password, phoneNo } = req.body;
+    const { FirstName,LastName, email, password, phoneNo,gender,age,role } = req.body;
 
-    if (!fullName || !email || !password || !phoneNo) {
+    if (!FirstName || !email || !password || !phoneNo) {
       return res.status(400).json({ message: 'Please provide all the required fields' });
     }
 
@@ -21,8 +21,12 @@ export const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
-      fullName,
+      FirstName,
+      LastName,
       email,
+      gender,
+      role,
+      age,
       password: hashedPassword,
       phoneNo,
     });
