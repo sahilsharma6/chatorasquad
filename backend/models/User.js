@@ -3,10 +3,12 @@ import validator from 'validator';
 
 const userSchema = mongoose.Schema(
   {
-    fullName: {
+    FirstName: {
       type: String,
       required: true,
-      trim: true,
+    },
+    LastName: {
+      type: String,
     },
     email: {
       type: String,
@@ -40,18 +42,22 @@ const userSchema = mongoose.Schema(
         message: props => `${props.value} is not a valid phone number!`
       },
     },
-    address:[
-        {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:'Address',
-        },
-    ],
-    orders: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Order',
-      },
-    ],
+    gender:{
+      type:String,
+      required:true
+    },
+    // address:[
+    //     {
+    //         type:mongoose.Schema.Types.ObjectId,
+    //         ref:'Address',
+    //     },
+    // ],
+    // orders: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Order',
+    //   },
+    // ],
 
   },
   {
