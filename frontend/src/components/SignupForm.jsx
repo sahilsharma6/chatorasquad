@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { User, Mail, Lock, EyeOff, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import apiClient from "../services/apiClient";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
+    phoneNo: "",
     confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
@@ -18,8 +22,8 @@ const SignupForm = () => {
     const newErrors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      newErrors.fullName = "First name and last name is required";
     }
 
     if (!formData.email.trim()) {
@@ -38,15 +42,32 @@ const SignupForm = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
+    if (!formData.phoneNo.trim()) {
+    
+      newErrors.phoneNo = "Phone number is required";
+    } else if (!/^[0-9]{10}$/.test(formData.phoneNo)) {
+      newErrors.phoneNo = "Invalid phone number. It must be 10 digits long and contain only numbers";
+    }
+
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Signup submitted", formData);
-      navigate("/login");
+       
+       try{
+        const res = await apiClient.post("/auth/signup", formData);  
+        console.log(res.data);
+        if(res.status === 201){
+          navigate("/login");
+        }
+       }catch(err){
+          console.log(err);
+        }
+      
     }
   };
 
@@ -66,13 +87,13 @@ const SignupForm = () => {
 
   return (
     <div
-       className="w-full bg-cover bg-center flex items-center justify-center  text-center p-8"
+       className="w-full bg-cover bg-center flex items-center justify-center  text-center "
        style={{
          backgroundImage: "url('./src/assets/signup.png')",
        }}
      >
        <div className="min-h-screen flex items-center justify-center">
-         <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[40vh] md:h-[50vh]">
+         <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-fit">
          <div
           className="w-1/2 bg-cover bg-center  items-center justify-center text-white text-center p-2 hidden md:flex"
           style={{
@@ -104,9 +125,26 @@ const SignupForm = () => {
               <User className="text-orange-500 mr-3" />
               <input
                 type="text"
-                name="fullName"
-                placeholder="Full Name"
-                value={formData.fullName}
+                name="firstName"
+                placeholder="First Name"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full bg-transparent focus:outline-none text-gray-700"
+              />
+            </div>
+            {errors.fullName && (
+              <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <div className="flex items-center border-b-2 border-orange-300 py-2">
+              <User className="text-orange-500 mr-3" />
+              <input
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={formData.lastName}
                 onChange={handleChange}
                 className="w-full bg-transparent focus:outline-none text-gray-700"
               />
@@ -129,6 +167,25 @@ const SignupForm = () => {
             </div>
             {errors.email && (
               <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+            )}
+          </div> 
+            <div className="mb-4">
+            <div className="flex items-center border-b-2 border-orange-300 py-2">
+              <Mail className="text-orange-500 mr-3" />
+              <input
+
+                type="number"
+                name="phoneNo"
+                min="10"
+                
+                placeholder="Phone Number"
+                value={formData.phoneNo}
+                onChange={handleChange}
+                className="w-full bg-transparent focus:outline-none text-gray-700"
+              />
+            </div>
+            {errors.phoneNo && (
+              <p className="text-red-500 text-xs mt-1">{errors.phoneNo}</p>
             )}
           </div>
           <div className="mb-4">
