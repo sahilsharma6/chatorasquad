@@ -21,11 +21,12 @@ function Layout() {
   
   
   const isAdminRoute = location.pathname.startsWith("/admin");
+  const isAuthRoute = location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <>
 
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && !isAuthRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
