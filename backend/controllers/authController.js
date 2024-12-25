@@ -5,9 +5,11 @@ import User from '../models/User.js';
 // SignUp Controller
 export const signUp = async (req, res) => {
   try {
-    const { FirstName,LastName, email, password, phoneNo,gender,age,role } = req.body;
 
-    if (!FirstName || !email || !password || !phoneNo) {
+    console.log(req.body+ "req reached");
+    const { firstName,lastName, email, password, phoneNo,gender,age,role } = req.body;
+
+    if (!firstName || !lastName || !email || !password || !phoneNo ) {
       return res.status(400).json({ message: 'Please provide all the required fields' });
     }
 
@@ -21,8 +23,8 @@ export const signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = new User({
-      FirstName,
-      LastName,
+      firstName,
+      lastName,
       email,
       gender,
       role,
@@ -64,10 +66,13 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     res.cookie('token', token, {
-      httpOnly: true,
+      httpOnly: process.env.NODE_ENV === 'production',
       secure: process.env.NODE_ENV === 'production',
       maxAge: 36000000, 
+      sameSite: 'Lax', 
     });
+
+  
 
     return res.status(200).json({ message: 'Login successful' });
   } catch (err) {
@@ -75,3 +80,16 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
   }
 };
+
+
+
+// Logout Controller
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie('token');
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Something went wrong. Please try again later.' });
+  }
+};  

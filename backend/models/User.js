@@ -3,11 +3,11 @@ import validator from 'validator';
 
 const userSchema = mongoose.Schema(
   {
-    FirstName: {
+    firstName: {
       type: String,
       required: true,
     },
-    LastName: {
+    lastName: {
       type: String,
     },
     email: {
@@ -44,7 +44,8 @@ const userSchema = mongoose.Schema(
     },
     gender:{
       type:String,
-      required:true
+      enum:['male','female'],
+
     },
     // address:[
     //     {

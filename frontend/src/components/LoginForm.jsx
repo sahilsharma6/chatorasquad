@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, EyeOff, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../services/apiClient";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -21,10 +22,20 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Login submitted", { email: formData.email });
+      try{
+        const res = await apiClient.post("/auth/login", formData);  
+        console.log(res.data);
+        if(res.status === 200){
+          navigate("/");
+        }
+      }catch(err){
+        
+          setErrors({email:err}); 
+     
+      }
     }
   };
 
