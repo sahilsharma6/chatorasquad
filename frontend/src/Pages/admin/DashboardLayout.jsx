@@ -4,6 +4,8 @@ import Sidebar from '../../components/admin/Sidebar';
 import Header from '../../components/admin/Header';
 import Dashboard from './Dashboard';
 import Orders from './Orders';
+import ViewMenu from './ViewMenu';
+import AddMenu from './AddMenu';
 
 
 const DashboardLayout = () => {
@@ -35,6 +37,8 @@ const DashboardLayout = () => {
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} /> */}
             <Route path="orders" element={<Orders />} />
+            <Route path='menu/view' element={<ViewMenu />} />
+            <Route path='menu/add' element={<AddMenu />} />
           </Routes>
         </main>
       </div>
