@@ -1,13 +1,38 @@
-import { AnimatePresence,motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 
-export default function CellModal ({setSelectedRow,selectedRow}){
+export default function CellModal({ setSelectedRow, selectedRow ,updateOrderStatus}) {
+  const [status, setStatus] = useState(null);
 
-    const closeModal = () => {
-        setSelectedRow(null); // Close the modal
+  
+  useEffect(() => {
+    if (selectedRow) {
+      setStatus(selectedRow.status);
+    } else {
+      setStatus(null);
+    }
+  }, [selectedRow]);
+
+  const closeModal = () => {
+    setSelectedRow(null); // Close the modal
+  };
+
+  const handleSaveChanges = () => {
+    if (selectedRow) {
+      const updatedOrder = {
+        ...selectedRow, // Spread the current selectedRow properties
+        status,         // Update the status property with the new value
       };
-    return (
-      <AnimatePresence>
+      updateOrderStatus(updatedOrder); // Call the function to update the order status
+      // console.log(updateOrderStatus);
+      
+      closeModal(); // Close the modal after saving changes
+    }
+  };
+
+  return (
+    <AnimatePresence>
       {selectedRow && (
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto"
@@ -28,7 +53,7 @@ export default function CellModal ({setSelectedRow,selectedRow}){
                 onClick={closeModal}
                 className="text-gray-400 hover:text-gray-600 hover:bg-orange-100 rounded-full transition-all delay-100 p-1"
               >
-               <X size={34} />
+                <X size={34} />
               </button>
             </div>
             <div className="space-y-2">
@@ -54,10 +79,52 @@ export default function CellModal ({setSelectedRow,selectedRow}){
                 <strong>Date:</strong> {selectedRow.Date}
               </p>
             </div>
-           
+
+            <motion.div className="mx-auto flex">
+              <div className="mx-auto">
+                <label htmlFor="orderStatus" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+
+                <select
+                  id="orderStatus"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 dark:bg-orange-500 dark:border-orange-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-500 dark:focus:border-orange-500"
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  {status === "confirm" ? (
+                    <>
+                      <option value="confirm" disabled>
+                        Confirm
+                      </option>
+                      <option value="deliverd">Delivered</option>
+                      <option value="cancel">Cancel</option>
+                    </>
+                  ) : status === "deliverd" ? (
+                    <>
+                      <option value="deliverd" disabled>
+                        Delivered
+                      </option>
+                      <option value="refund">Refund</option>
+                    </>
+                  ) : status === "cancel" ? (
+                    <option value="cancel" disabled>
+ Cancel
+                    </option>
+                  ) : (
+                    <option value="refund" disabled>
+                      Refund
+                    </option>
+                  )}
+                </select>
+              </div>
+              <div className="mx-auto mt-6">
+                <motion.button className="bg-orange-500 text-white p-3 rounded-md shadow hover:scale-105 transition-all delay-100" onClick={handleSaveChanges}>
+                  Save Changes
+                </motion.button>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       )}
-      </AnimatePresence>
-    )
+    </AnimatePresence>
+  );
 }

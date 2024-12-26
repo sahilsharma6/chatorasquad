@@ -4,7 +4,7 @@ import { LuArrowDownUp } from "react-icons/lu";
 import CellModal from "./CellModal";
 
 
-export default function Data({paginatedData,handleSort}){
+export default function Data({paginatedData,handleSort,updateOrderstatus}){
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleRowClick = (row) => {
@@ -74,10 +74,10 @@ export default function Data({paginatedData,handleSort}){
                   </motion.tr>
                 ))}
               </AnimatePresence>
-            </tbody>
+            </tbody>  
           </table>
         )}
-        <CellModal selectedRow={selectedRow} setSelectedRow={setSelectedRow} />
+        <CellModal selectedRow={selectedRow} setSelectedRow={setSelectedRow} updateOrderStatus={updateOrderstatus} />
       </div>
     )
 }
