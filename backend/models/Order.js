@@ -11,8 +11,17 @@ const OrderSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    time: {
+      type: String,
+      required: true,
+    },
     items: [
       {
+        itemid: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: 'Menu',
+        },
         name: {
           type: String,
           required: true,

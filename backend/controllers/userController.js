@@ -114,10 +114,10 @@ export const UpdateEmail = async (req, res) => {
 export const UpdateAddress = async (req, res) => {
     try{
         const id = req.params.id;
-        const {Zipcode, city, state, location} = req.body;
+        const {zipcode, city, state, location} = req.body;
         const address = await Address.findById(id);
         if(address){
-            address.Zipcode = Zipcode;
+            address.zipcode = zipcode;
             address.city = city;
             address.state = state;
             address.location = location;
@@ -133,15 +133,15 @@ export const UpdateAddress = async (req, res) => {
     }
 }
 
-export const getAddress = async (req, res) => {
+export const getdefaultAddress = async (req, res) => {
     try{
         const id = req.params.id;
-        const address = await Address.findOne({userid:id});
+        const address = await Address.findOne({userid:id, type:"default"});
         if(address){
             res.status(200).json(address);
         }
         else{
-            res.status(200).json({message:"Address not found"});
+            res.status(400).json({message:"Default address not found"});
         }
     }
     catch(error){
@@ -151,15 +151,31 @@ export const getAddress = async (req, res) => {
 
 export const addAddress = async (req, res) => {
     try{
-        const {userid, Zipcode, city, state, location} = req.body;
+        const {userid, zipcode, city, state, location} = req.body;
+        const existingAddress = await Address.find({userid});
+        if(existingAddress.length === 0){
         const address = new Address({
             userid,
-            Zipcode,
+            zipcode,
             city,
             state,
-            location
+            location,
+            type:"default"
+        });
+
+        await address.save();
+    }
+    else{
+        const address = new Address({
+            userid,
+            zipcode,
+            city,
+            state,
+            location,
+            type:"other"
         });
         await address.save();
+    }
         res.status(200).json({message:"Address added successfully"});
     }
     catch(error){
@@ -167,6 +183,51 @@ export const addAddress = async (req, res) => {
     }
 }
 
+
+export const  deleteAddress = async (req, res) => {
+    try{
+        const id = req.params.id;
+        await Address.findByIdAndDelete(id);
+        res.status(200).json({message:"Address deleted successfully"});
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+;
+
+export const setDefaultAddress = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const address = await Address.findById(id);
+        const userid = address.userid;
+        const addresses = await Address.find({userid});
+        addresses.forEach(async (add) => {
+            add.type = "other";
+            await add.save();
+        });
+
+        address.type = "default";
+        await address.save();
+        res.status(200).json({message:"Default address set successfully"});
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+;
+
+export const getAddresses = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const addresses = await Address.find({userid:id});
+        res.status(200).json(addresses);
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+;
 
 
 
