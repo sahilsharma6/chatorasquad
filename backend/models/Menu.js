@@ -20,8 +20,8 @@ const MenuSchema = mongoose.Schema(
             type:String,
             required:true,
     },
-    image:{
-            type:String,
+    images:{
+            type:[String],
             required:true,
     },
     isAvailable:{
@@ -32,7 +32,14 @@ const MenuSchema = mongoose.Schema(
     Cuisine:{
             type:String,
             required:true,
-            enum:['Indian','Chinese','Italian','Mexican','Continental'],
+    },
+    rating:{
+            type:Number,
+            default:0,
+    },
+    reviews:{
+            type:[String],
+            
     },
   },
   {

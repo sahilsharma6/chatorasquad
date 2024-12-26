@@ -5,21 +5,41 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaBowlFood } from "react-icons/fa6";
 import { FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
-import { FaCalendarAlt, FaImage, FaInfoCircle, FaPhoneAlt } from "react-icons/fa";
+import {
+  FaCalendarAlt,
+  FaImage,
+  FaInfoCircle,
+  FaPhoneAlt,
+} from "react-icons/fa";
+import apiClient from "../services/apiClient";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  const isLoggedIn = true;
+  useEffect(() => {
+    const cookies = document.cookie.split(";");
+    const authCookie = cookies.find((cookie) => cookie.startsWith("token="));
+    setIsLoggedIn(authCookie ? true : false);
+  }, [isLoggedIn]);
+
+  const handleLogout = async () => {
+    if(!isLoggedIn) return;
+    const res = await apiClient.post("/auth/logout");
+
+    setIsLoggedIn(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
-        userMenuRef.current && !userMenuRef.current.contains(event.target) &&
-        mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target) &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
       ) {
         setIsUserMenuOpen(false);
         setIsUserMenuOpen(false);
@@ -30,18 +50,19 @@ const Navbar = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, [ isUserMenuOpen, isMenuOpen]);
+  }, [isUserMenuOpen, isMenuOpen]);
 
   return (
     <header className="bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-4">
-
         <Link to="/" className="flex items-center space-x-2">
           <FaBowlFood className="text-3xl text-orange-500" />
-          <span className="text-xl font-semibold text-gray-800">restaurant</span>
+          <span className="text-xl font-semibold text-gray-800">
+            restaurant
+          </span>
         </Link>
 
-        {/* Desktop and Tablet Navigation */}
+ 
         <nav className="hidden md:flex items-center space-x-8">
           <ul className="flex items-center space-x-8">
             <li>
@@ -110,12 +131,14 @@ const Navbar = () => {
         {/* Mobile Navigation Hamburger Icon */}
         <button
           className="md:hidden text-gray-700"
-          onClick={() => setIsMenuOpen(true)}   
+          onClick={() => setIsMenuOpen(true)}
         >
-          <HiOutlineMenuAlt3 onClick={() => setIsMenuOpen(true)} className="text-2xl" />
+          <HiOutlineMenuAlt3
+            onClick={() => setIsMenuOpen(true)}
+            className="text-2xl"
+          />
         </button>
 
-    
         <div className="hidden md:flex items-center space-x-4">
           <Link
             to="/viewcart"
@@ -134,7 +157,7 @@ const Navbar = () => {
           {/* User Profile Button */}
           <div className="relative" ref={userMenuRef}>
             <button
-              onClick={() => setIsUserMenuOpen((prev) => !prev)}  
+              onClick={() => setIsUserMenuOpen((prev) => !prev)}
               className="flex items-center space-x-2 bg-gray-500 text-white p-2 rounded-full"
             >
               <FaUserCircle className="text-2xl" />
@@ -152,7 +175,10 @@ const Navbar = () => {
                   Profile
                 </Link>
                 <Link
-                  onClick={() => setIsUserMenuOpen(false)}
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
+                    handleLogout();
+                  }}
                   to={isLoggedIn ? "/login" : "/login"}
                   className=" text-gray-700 hover:text-orange-500 flex items-center space-x-2 gap-2"
                 >
@@ -168,11 +194,13 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 right-0 h-full w-3/4 bg-white transition-transform duration-300 z-50 md:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-3/4 bg-white transition-transform duration-300 z-50 md:hidden ${
+          isMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <button
           className="absolute border-b-2 top-4 right-10 text-gray-700"
-          onClick={() => setIsMenuOpen(false)}  
+          onClick={() => setIsMenuOpen(false)}
         >
           <HiOutlineX className="text-2xl" />
         </button>
@@ -181,7 +209,7 @@ const Navbar = () => {
           <Link
             to="/viewcart"
             className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md mb-4"
-            onClick={() => setIsMenuOpen(false)}   
+            onClick={() => setIsMenuOpen(false)}
           >
             <BsCart4 className="text-2xl" />
             <span className="text-lg">Cart</span>
@@ -196,21 +224,21 @@ const Navbar = () => {
 
           <div className="relative">
             <button
-              onClick={() => setIsUserMenuOpen((prev) => !prev)}  
+              onClick={() => setIsUserMenuOpen((prev) => !prev)}
               className="flex items-center space-x-2 text-gray-500 hover:bg-gray-100 px-4 py-2 rounded-md w-full"
             >
               <FaUserCircle className="text-2xl" />
-              <span className="text-lg">{isLoggedIn ? "Profile" : "Login"}</span>
+              <span className="text-lg">
+                {isLoggedIn ? "Profile" : "Login"}
+              </span>
             </button>
             {isUserMenuOpen && (
               <div className="absolute top-8 left-0 bg-white shadow-md p-4 rounded-lg z-50">
                 <Link
                   onClick={() => {
-                    setIsUserMenuOpen(false)  
-                    setIsMenuOpen(false)
-                  
-                  } }
-
+                    setIsUserMenuOpen(false);
+                    setIsMenuOpen(false);
+                  }}
                   to={isLoggedIn ? "/profile" : "/login"}
                   className="block text-yellow-700 hover:text-orange-500"
                 >
@@ -218,8 +246,8 @@ const Navbar = () => {
                 </Link>
                 <Link
                   onClick={() => {
-                    setIsUserMenuOpen(false)
-                    setIsMenuOpen(false)
+                    setIsUserMenuOpen(false);
+                    setIsMenuOpen(false);
                   }}
                   to={isLoggedIn ? "/login" : "/login"}
                   className="block text-gray-700 hover:text-orange-500"
@@ -256,7 +284,7 @@ const Navbar = () => {
                   ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
                   : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
               }
-              onClick={() => setIsMenuOpen(false)} 
+              onClick={() => setIsMenuOpen(false)}
             >
               <FaCalendarAlt className="text-xl" />
               <span>Events</span>
@@ -270,7 +298,7 @@ const Navbar = () => {
                   ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
                   : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
               }
-              onClick={() => setIsMenuOpen(false)} 
+              onClick={() => setIsMenuOpen(false)}
             >
               <FaImage className="text-xl" />
               <span>Gallery</span>
@@ -284,7 +312,7 @@ const Navbar = () => {
                   ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
                   : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
               }
-              onClick={() => setIsMenuOpen(false)} 
+              onClick={() => setIsMenuOpen(false)}
             >
               <FaInfoCircle className="text-xl" />
               <span>About</span>
@@ -298,7 +326,7 @@ const Navbar = () => {
                   ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
                   : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
               }
-              onClick={() => setIsMenuOpen(false)} 
+              onClick={() => setIsMenuOpen(false)}
             >
               <FaPhoneAlt className="text-xl" />
               <span>Contact</span>
