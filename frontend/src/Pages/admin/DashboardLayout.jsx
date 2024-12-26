@@ -8,6 +8,7 @@ import ViewMenu from './ViewMenu';
 import AddMenu from './AddMenu';
 import ViewCuisine from './ViewCuisine';
 import AddCuisineForm from './AddCuisineForm';
+import AdminOfferPage from './AdminOfferPage';
 
 
 const DashboardLayout = () => {
@@ -43,6 +44,7 @@ const DashboardLayout = () => {
             <Route path='menu/add' element={<AddMenu />} />
             <Route path='cuisines/view' element={<ViewCuisine />} />
             <Route path='cuisines/add' element={<AddCuisineForm />} />
+            <Route path='offers' element={<AdminOfferPage />} />
           </Routes>
         </main>
       </div>

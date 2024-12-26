@@ -1,94 +1,14 @@
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
-import StarRating from "../../components/admin/Menu/StarRating";
-
-const MenuCard = ({ title, price, rating, inStock, images, description }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
-
-  return (
-    <motion.div 
-      className="bg-white rounded-lg shadow-lg p-4 flex-grow"
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.2 }}
-    >
-      <motion.div className="relative h-48 overflow-hidden transition-all delay-100 rounded-lg mb-4">
-        <motion.img
-          src={images[currentImageIndex]}
-          alt={title}
-          className="w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        />
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
-          <button 
-            onClick={prevImage} 
-            className="bg-gray-800 text-white p-2 rounded-l hover:bg-gray-900"
-          >
-            <ChevronLeft />
-          </button>
-        </div>
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
-          <button 
-            onClick={nextImage} 
-            className="bg-gray-800 text-white p-2 rounded-r hover:bg-gray-900"
-          >
-            <ChevronRight />    
-          </button>
-        </div>
-      </motion.div>
-
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="text-lg font-semibold">{title}</h3>
-        <span className="text-yellow-500 font-medium text-2xl">${price}</span>
-      </div>
-
-      <div className="flex justify-between items-center mb-2">
-        <StarRating rating={rating} /> {/* Add the StarRating component here */}
-        <span className={`text-sm px-2 py-1 rounded ${
-          inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-        }`}>
-          {inStock ? 'In Stock' : 'Out of Stock'}
-        </span>
-      </div>
-
-      <p className="text-sm text-gray-600 mb-4">{description}</p>
-
-      <div className="flex gap-4 mx-8">
-        <motion.button
-          className="bg-red-400 text-white px-4 py-2 rounded hover:bg-red-500 flex-1 flex gap-5 justify-center"
-          whileTap={{ scale: 0.95 }}
-        >
-          <Trash size={33} />
-          <div>Delete</div>
-        </motion.button>
-        <motion.button
-          className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex-1 flex gap-5 justify-center"
-          whileTap={{ scale: 0.95 }}
-        >
-          <Pencil size={33 } />
-          <div>Edit</div>
-        </motion.button>
-      </div>
-    </motion.div>
-  );
-};
+import MenuCard from "../../components/admin/Menu/MenuCard";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ViewMenu = () => {
-  const menuItems = [
+  const [menuItems, setMenuItems] = useState([
     {
       name: "Veggies",
       type: "Veg",
-      price: 45.50,
+      price: 45.5,
       description: "A variety of fresh, colorful market vegetables stir-fried to perfection.",
       images: [
         "https://media.istockphoto.com/id/1207271995/photo/stir-frying-and-sauteing-a-variety-of-fresh-colorful-market-vegetables-in-a-hot-steaming-wok.jpg?s=612x612&w=0&k=20&c=s9jFkKwDOhF7Mq2rG90ZeOaFHoBWhU8wv1NOaQ9FxRw=",
@@ -96,12 +16,13 @@ const ViewMenu = () => {
       ],
       isAvailable: true,
       Cuisine: "Indian",
-      rating: 2
+      dateAdded: "2024-09-11",
+      rating: 2,
     },
     {
       name: "Garlic Bread",
       type: "Veg",
-      price: 35.00,
+      price: 35.0,
       description: "Crispy garlic bread toasted to perfection with a hint of herbs.",
       images: [
         "https://media.istockphoto.com/id/1181825866/photo/garlic-bread-on-rustic-wooden-table.jpg?s=612x612&w=0&k=20&c=GOfd3Gv02NI8HKIvAfsitAVBpkxtZMhXHNIwlfogdi4=",
@@ -109,12 +30,13 @@ const ViewMenu = () => {
       ],
       isAvailable: false,
       Cuisine: "Continental",
-      rating: 4.5
+      rating: 4.5,
+      dateAdded: "2023-11-01",
     },
     {
       name: "Veg Sandwich",
       type: "Veg",
-      price: 55.00,
+      price: 55.0,
       description: "A delicious sandwich stuffed with fresh veggies and creamy sauces.",
       images: [
         "https://media.istockphoto.com/id/474920348/photo/vegetable-sandwichs-on-a-rustic-wood-background.jpg?s=612x612&w=0&k=20&c=zwgfwXAK80shMXwtCT0xPkI27-Rs2T-fBq7EypSJh4M=",
@@ -122,12 +44,13 @@ const ViewMenu = () => {
       ],
       isAvailable: true,
       Cuisine: "Mexican",
-      rating: 4.5
+      dateAdded: "2024-12-01",
+      rating: 4.5,
     },
     {
       name: "Roast Sandwich",
       type: "Non-Veg",
-      price: 65.00,
+      price: 65.0,
       description: "Juicy roast beef sandwich with fresh bread and flavorful toppings.",
       images: [
         "https://media.istockphoto.com/id/175538681/photo/roast-beef-sandwiches.jpg?s=612x612&w=0&k=20&c=NVtVhqSMDy45fLwQrU-TBlrUDxNtw8s51lvmeiDYA6I=",
@@ -135,23 +58,91 @@ const ViewMenu = () => {
       ],
       isAvailable: false,
       Cuisine: "Italian",
-      rating: 3
-    }
-  ];
+      dateAdded: "2024-10-01",
+      rating: 3,
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [stockFilter, setStockFilter] = useState("All");
+  const [dateFilter, setDateFilter] = useState(null);
+
+  const handleStockToggle = (index) => {
+    setMenuItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, isAvailable: !item.isAvailable } : item
+      )
+    );
+  };
+
+  const handleDelete = (index) => {
+    setMenuItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+
+  const filteredItems = menuItems.filter((item) => {
+    const matchesSearch =
+      searchTerm === "" ||
+      Object.values(item).some((value) =>
+        String(value).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    const matchesStock =
+      stockFilter === "All" ||
+      (stockFilter === "In Stock" && item.isAvailable) ||
+      (stockFilter === "Out of Stock" && !item.isAvailable);
+
+    const matchesDate =
+      !dateFilter ||
+      new Date(item.dateAdded).toDateString() === dateFilter.toDateString();
+
+    return matchesSearch && matchesStock && matchesDate;
+  });
 
   return (
-    <div className="flex flex-wrap gap-6 px-2 py-5 w-full">
-      {menuItems.map((item, index) => (
-        < MenuCard 
-          key={index}
-          title={item.name}
-          price={item.price}
-          rating={item.rating}
-          inStock={item.isAvailable}
-          images={item.images}
-          description={item.description}
-        />
-      ))}
+    <div className="p-5 w-full">
+      {/* Filters */}
+      <div className="flex flex-wrap gap-4 mb-6 items-center">
+  <input
+    type="text"
+    placeholder="Search..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="border border-orange-500 rounded-lg px-3 py-4 w-full md:w-1/3 shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500"
+  />
+  <select
+    value={stockFilter}
+    onChange={(e) => setStockFilter(e.target.value)}
+    className="border border-orange-500 rounded-lg px-3 py-4 w-full md:w-1/3 shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500"
+  >
+    <option value="All">All</option>
+    <option value="In Stock">In Stock</option>
+    <option value="Out of Stock">Out of Stock</option>
+  </select>
+  <DatePicker
+    selected={dateFilter}
+    onChange={(date) => setDateFilter(date)}
+    placeholderText="Filter by Date"
+    className="border border-orange-500 rounded-lg px-4 py-4  w-full shadow-lg transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500"
+  />
+</div>
+
+
+      {/* Menu Items */}
+      <div className="flex flex-wrap gap-6 overflow-auto">
+        {filteredItems.map((item, index) => (
+          <MenuCard
+            key={index}
+            title={item.name}
+            price={item.price}
+            rating={item.rating}
+            inStock={item.isAvailable}
+            images={item.images}
+            description={item.description}
+            onStockToggle={() => handleStockToggle(index)}
+            onDelete={() => handleDelete(index)}
+          />
+        ))}
+      </div>
     </div>
   );
 };
