@@ -5,7 +5,8 @@ import bcrypt from 'bcryptjs';
 
 export const getUser = async (req, res) => {
     try{
-        const id = req.params.id;
+        const id = req.user._id;
+   
         const user = await User.findById(id);
         if(user){
             res.status(200).json(user);
@@ -22,7 +23,7 @@ export const getUser = async (req, res) => {
 
 export const UpdatePassword = async (req, res) => {
     try{
-        const id = req.params.id;
+        const id = req.user._id;
         const {oldPassword, newPassword} = req.body;
         const user = await User.findById(id);
         if(user){
@@ -47,20 +48,25 @@ export const UpdatePassword = async (req, res) => {
 
 export const UpdateUser = async (req, res) => {
     try{
-        const id = req.params.id;
+        const id = req.user._id;
         const {firstName, lastName,age ,gender} = req.body;
         const user = await User.findById(id);
         if(user){
             user.firstName = firstName;
             user.lastName = lastName;
-            user.gender=gender;
+            user.gender=gender || "";
             user.age = age;
+            await user.save();
+            res.status(200).json({message:"User updated successfully"});
+
         }
+        
         else{
             res.status(400).json({message:"User not found"});
         }
     }
     catch(error){
+        console.log(error);
         res.status(500).json({message:"Internal server error"});
     }
 }
@@ -151,12 +157,14 @@ export const getdefaultAddress = async (req, res) => {
 
 export const addAddress = async (req, res) => {
     try{
-        const {userid, zipcode, city, state, location} = req.body;
+        const userid = req.user._id;    
+        let { zipcode, city, state, location} = req.body;
+        zipcode = parseInt(zipcode);
         const existingAddress = await Address.find({userid});
         if(existingAddress.length === 0){
         const address = new Address({
             userid,
-            zipcode,
+            zipCode:zipcode,
             city,
             state,
             location,
@@ -168,7 +176,7 @@ export const addAddress = async (req, res) => {
     else{
         const address = new Address({
             userid,
-            zipcode,
+            zipCode:zipcode,
             city,
             state,
             location,
@@ -179,6 +187,7 @@ export const addAddress = async (req, res) => {
         res.status(200).json({message:"Address added successfully"});
     }
     catch(error){
+        console.log(error);
         res.status(500).json({message:"Internal server error"});
     }
 }
@@ -214,12 +223,11 @@ export const setDefaultAddress = async (req, res) => {
     catch(error){
         res.status(500).json({message:"Internal server error"});
     }
-}
-;
+};
 
 export const getAddresses = async (req, res) => {
     try{
-        const id = req.params.id;
+        const id = req.user._id;
         const addresses = await Address.find({userid:id});
         res.status(200).json(addresses);
     }

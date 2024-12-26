@@ -1,12 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { FaPen } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
-function PassUpdate() {
+import apiClient from "../services/apiClient";
+function ProfileSettings() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
+
+  const [personalInfo, setPersonalInfo] = useState({
+    firstName: "",
+    lastName: "",
+    age: "",
+    gender: "",
+  });
+ 
+
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [contactInfo, setContactInfo] = useState({
+    email: "",
+    phoneNo: "",
+  });
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userRes = await apiClient.get("/user/details");
+        const { firstName, lastName, age, gender, email, phoneNo } = userRes.data;
+        setPersonalInfo({ firstName, lastName, age, gender: gender || "" });
+        setContactInfo({ email, phoneNo });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleSideBar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -21,6 +52,14 @@ function PassUpdate() {
     setIsVerificationEnabled((prevState) => !prevState);
   };
 
+  const handleEmailChange = (e) => {
+    setUserEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setUserPassword(e.target.value);
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
       <div
@@ -30,11 +69,11 @@ function PassUpdate() {
       >
         <div className="text-center mb-6">
           <img
-            src=""
+            src="https://cdn-icons-png.flaticon.com/512/64/64572.png"
             alt="Profile"
             className="w-24 h-24 mx-auto rounded-full border-4 border-orange-500 bg-slate-600"
           />
-          <h2 className="text-xl font-semibold mt-4">Jatin Mehra</h2>
+          <h2 className="text-xl font-semibold mt-4">{personalInfo.firstName}</h2>
         </div>
         <nav>
           <ul className="flex flex-col">
@@ -54,15 +93,7 @@ function PassUpdate() {
                   handleSideBar();
                 }}
               >
-                <span className="mr-3">🔒</span> Security
-              </button>
-            </li>
-            <li>
-              <button
-                className="flex items-center text-gray-700 font-medium hover:text-red-600"
-                onClick={() => navigate("/")}
-              >
-                <span className="mr-3">🚪</span> Log Out
+                <span className="mr-3">⚙️</span> Settings
               </button>
             </li>
           </ul>
@@ -90,7 +121,7 @@ function PassUpdate() {
                   Email Address
                 </h2>
                 <p className="text-sm text-gray-600 mt-2">
-                  The email address associated with your account.
+                  The new email address to be associated with your account.
                 </p>
               </div>
               <div className="flex items-center">
@@ -109,7 +140,8 @@ function PassUpdate() {
                   <h3 className="text-lg font-semibold text-orange-600">
                     Login Email
                   </h3>
-                  <AiOutlineClose className="cursor-pointer"
+                  <AiOutlineClose
+                    className="cursor-pointer"
                     size={20}
                     color="red"
                     onClick={() => toggleSection("email")}
@@ -125,7 +157,7 @@ function PassUpdate() {
                   <input
                     type="email"
                     id="email"
-                    defaultValue="default@email.com"
+                    value={contactInfo.email}
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <label
@@ -140,12 +172,12 @@ function PassUpdate() {
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="m-2 w-auto p-4 bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
-                  >
-                    Update
-                  </button>
+                    <button
+                      type="submit"
+                      className="m-2 w-auto p-4 bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition"
+                    >
+                      Update
+                    </button>
                   </div>
                 </form>
               </div>
@@ -168,7 +200,8 @@ function PassUpdate() {
             {activeSection === "password" && (
               <div className=" bg-white shadow-md rounded-lg p-6 mt-4 w-auto">
                 <div className=" flex justify-end">
-                  <AiOutlineClose className="cursor-pointer"
+                  <AiOutlineClose
+                    className="cursor-pointer"
                     size={20}
                     color="red"
                     onClick={() => toggleSection("password")}
@@ -197,14 +230,14 @@ function PassUpdate() {
                     id="new-password"
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
-                <div className="flex justify-end">
-                <button
-                    type="submit"
-                    className="m-4 w-auto bg-orange-500 text-white p-2 rounded-xl hover:bg-orange-600 transition"
-                  >
-                    Change Password
-                  </button>
-                </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      className="m-4 w-auto bg-orange-500 text-white p-2 rounded-xl hover:bg-orange-600 transition"
+                    >
+                      Change Password
+                    </button>
+                  </div>
                 </form>
               </div>
             )}
@@ -332,4 +365,4 @@ function PassUpdate() {
   );
 }
 
-export default PassUpdate;
+export default ProfileSettings;
