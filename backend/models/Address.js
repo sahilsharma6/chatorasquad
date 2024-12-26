@@ -7,7 +7,7 @@ const AddressSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
-    ZipCode: {
+    zipCode: {
       type: Number,
       required: true,
     },
@@ -23,6 +23,11 @@ const AddressSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    type:{
+      type: String,
+      enum :["default","other"],
+      default:"default"
+    }
   },
   {
     timestamps: true,
