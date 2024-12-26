@@ -5,7 +5,7 @@ import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Menu from "./Pages/Menu";
 import ViewCart from "./Pages/users/ViewCart";
-import Dashboard from "./Pages/Dashboard";
+
 import GetMenu from "./Pages/GetMenu";
 import Contact from "./Pages/Contact";
 import About from "./Pages/About";
@@ -13,7 +13,9 @@ import Orders from "./Pages/users/Orders";
 import DashboardLayout from "./Pages/admin/DashboardLayout";
 import Navbar from "./components/Navbar";
 import Gallery from "./Pages/Gallery";
-import PassUpdate from "./Pages/PassUpdate";
+
+import Profile from "./Pages/Profile";
+import ProfileSettings from "./Pages/ProfileSettings";
 
 
 function Layout() {
@@ -31,10 +33,10 @@ function Layout() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
-        <Route path="/update" element={<PassUpdate />} />
+        <Route path="/update" element={<ProfileSettings />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/viewcart" element={<ViewCart />} />
-        <Route path="/profile" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/menu/getmenu" element={<GetMenu />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
