@@ -6,17 +6,17 @@ import checkAdmin from '../middlewares/checkAdmin.js';
 
 const router = express.Router();
 
-router.get('/info/:id',authMiddleware ,getUser); // id is user id
-router.put('/update/:id',authMiddleware,UpdateUser); // id is user id
-router.put('/updatepassword/:id',authMiddleware,UpdatePassword); // id is user id
-router.put('/updatephone/:id',authMiddleware,UpdatePhone); // id is user id
-router.put('/updateemail/:id',authMiddleware,UpdateEmail); // id is user id
+router.get('/details',authMiddleware ,getUser); // id is user id
+router.put('/updatedetails',authMiddleware,UpdateUser); // id is user id
+router.put('/updatepassword',authMiddleware,UpdatePassword); // id is user id
+router.put('/updatephone',authMiddleware,UpdatePhone); // id is user id
+router.put('/updateemail',authMiddleware,UpdateEmail); // id is user id
 
 
-router.post('/addaddress/:id',authMiddleware,addAddress); // id is user id
+router.post('/addaddress',authMiddleware,addAddress); // id is user id
 router.get('/getdefaultaddress/:id',authMiddleware,getdefaultAddress); // id is user id
-router.get('/getaddresses/:id',authMiddleware,getAddresses); // id is user id
-router.put('/updateaddress/:id',authMiddleware,UpdateAddress); // id is address id
+router.get('/getaddresses',authMiddleware,getAddresses); // id is user id
+router.put('/updateaddress',authMiddleware,UpdateAddress); // id is address id
 router.put('/setdefaultaddress/:id',authMiddleware,setDefaultAddress); // id is address id
 router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is address id
 

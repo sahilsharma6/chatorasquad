@@ -24,7 +24,7 @@ const userSchema = mongoose.Schema(
     },
     age: {
       type: Number,
-      default: 18,
+
     },
     role: {
       type: String,
@@ -34,17 +34,10 @@ const userSchema = mongoose.Schema(
     phoneNo: {
       type: Number,
       required: true,
-      validate: {
-        validator: function(v) {
-        
-          return /^[0-9]{10}$/.test(v);
-        },
-        message: props => `${props.value} is not a valid phone number!`
-      },
     },
     gender:{
       type:String,
-      enum:['male','female'],
+      enum:['Male','Female','Other',''],
 
     },
     // address:[

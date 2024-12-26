@@ -32,8 +32,7 @@ const LoginForm = () => {
           navigate("/");
         }
       }catch(err){
-        
-          setErrors({email:err}); 
+        setErrors({email: "Invalid Credentials", password: "Invalid Credentials"}); 
      
       }
     }
