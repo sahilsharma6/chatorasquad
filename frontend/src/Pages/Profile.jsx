@@ -5,6 +5,10 @@ import apiClient from "../services/apiClient";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
+
+
 const Profile = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,6 +29,8 @@ const Profile = () => {
     state: "",
     location: "",
   });
+
+  const { loggedIn } = useContext(UserContext);
 
   const handleSideBar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -84,7 +90,15 @@ const Profile = () => {
       console.error("Error adding address:", error);
     }
   };
+ 
 
+
+  if (!loggedIn) {
+    navigate("/login");
+  }
+
+
+   
   return (
     <>
       <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">

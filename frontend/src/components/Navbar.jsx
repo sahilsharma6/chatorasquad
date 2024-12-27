@@ -12,26 +12,24 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 import apiClient from "../services/apiClient";
+import { UserContext } from "../context/UserContext";
+import { useContext } from "react";
+
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  useEffect(() => {
-    const cookies = document.cookie.split(";");
-    const authCookie = cookies.find((cookie) => cookie.startsWith("token="));
-    setIsLoggedIn(authCookie ? true : false);
-  }, [isLoggedIn]);
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
 
   const handleLogout = async () => {
-    if(!isLoggedIn) return;
-    const res = await apiClient.post("/auth/logout");
-
-    setIsLoggedIn(false);
+    if (!loggedIn) return; 
+    await apiClient.post("/auth/logout");
+    setLoggedIn(false); 
   };
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -57,12 +55,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-4">
         <Link to="/" className="flex items-center space-x-2">
           <FaBowlFood className="text-3xl text-orange-500" />
-          <span className="text-xl font-semibold text-gray-800">
-            restaurant
-          </span>
+          <span className="text-xl font-semibold text-gray-800">restaurant</span>
         </Link>
 
- 
         <nav className="hidden md:flex items-center space-x-8">
           <ul className="flex items-center space-x-8">
             <li>
@@ -133,10 +128,7 @@ const Navbar = () => {
           className="md:hidden text-gray-700"
           onClick={() => setIsMenuOpen(true)}
         >
-          <HiOutlineMenuAlt3
-            onClick={() => setIsMenuOpen(true)}
-            className="text-2xl"
-          />
+          <HiOutlineMenuAlt3 className="text-2xl" />
         </button>
 
         <div className="hidden md:flex items-center space-x-4">
@@ -168,7 +160,7 @@ const Navbar = () => {
               <div className="absolute text-lg top-10 right-0 bg-white shadow-md p-6 rounded-lg z-50">
                 <Link
                   onClick={() => setIsUserMenuOpen(false)}
-                  to={isLoggedIn ? "/profile" : "/login"}
+                  to={loggedIn ? "/profile" : "/login"}
                   className=" text-gray-700 hover:text-orange-500 flex items-center space-x-2 gap-2"
                 >
                   <CgProfile />
@@ -179,11 +171,11 @@ const Navbar = () => {
                     setIsUserMenuOpen(false);
                     handleLogout();
                   }}
-                  to={isLoggedIn ? "/login" : "/login"}
+                  to={loggedIn ? "/login" : "/login"}
                   className=" text-gray-700 hover:text-orange-500 flex items-center space-x-2 gap-2"
                 >
                   <FaSignInAlt />
-                  {isLoggedIn ? "Logout" : "Login"}
+                  {loggedIn ? "Logout" : "Login"}
                 </Link>
               </div>
             )}
@@ -229,7 +221,7 @@ const Navbar = () => {
             >
               <FaUserCircle className="text-2xl" />
               <span className="text-lg">
-                {isLoggedIn ? "Profile" : "Login"}
+                {loggedIn ? "Profile" : "Login"}
               </span>
             </button>
             {isUserMenuOpen && (
@@ -239,7 +231,7 @@ const Navbar = () => {
                     setIsUserMenuOpen(false);
                     setIsMenuOpen(false);
                   }}
-                  to={isLoggedIn ? "/profile" : "/login"}
+                  to={loggedIn ? "/profile" : "/login"}
                   className="block text-yellow-700 hover:text-orange-500"
                 >
                   Profile
@@ -248,11 +240,12 @@ const Navbar = () => {
                   onClick={() => {
                     setIsUserMenuOpen(false);
                     setIsMenuOpen(false);
+                    handleLogout();
                   }}
-                  to={isLoggedIn ? "/login" : "/login"}
+                  to={loggedIn ? "/login" : "/login"}
                   className="block text-gray-700 hover:text-orange-500"
                 >
-                  {isLoggedIn ? "Logout" : "Login"}
+                  {loggedIn ? "Logout" : "Login"}
                 </Link>
               </div>
             )}

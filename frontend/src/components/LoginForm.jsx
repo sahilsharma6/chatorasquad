@@ -3,12 +3,18 @@ import { motion } from "framer-motion";
 import { Mail, Lock, EyeOff, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { loggedIn, setLoggedIn } = useContext(UserContext);
 
   const validateForm = () => {
     const newErrors = {};
@@ -29,6 +35,7 @@ const LoginForm = () => {
         const res = await apiClient.post("/auth/login", formData);  
         console.log(res.data);
         if(res.status === 200){
+          setLoggedIn(true);
           navigate("/");
         }
       }catch(err){
@@ -51,6 +58,11 @@ const LoginForm = () => {
       transition: { duration: 0.5, type: "spring", stiffness: 120 },
     },
   };
+
+
+  if(loggedIn){
+    navigate("/");
+  }
 
   return (
     <div
