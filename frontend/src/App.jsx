@@ -1,11 +1,15 @@
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
 import Home from "./Pages/Home";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
 import Menu from "./Pages/Menu";
 import ViewCart from "./Pages/users/ViewCart";
-
 import GetMenu from "./Pages/GetMenu";
 import Contact from "./Pages/Contact";
 import About from "./Pages/About";
@@ -13,21 +17,19 @@ import Orders from "./Pages/users/Orders";
 import DashboardLayout from "./Pages/admin/DashboardLayout";
 import Navbar from "./components/Navbar";
 import Gallery from "./Pages/Gallery";
-
 import Profile from "./Pages/Profile";
 import ProfileSettings from "./Pages/ProfileSettings";
-
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 function Layout() {
   const location = useLocation();
-  
-  
+
   const isAdminRoute = location.pathname.startsWith("/admin");
-  const isAuthRoute = location.pathname === "/login" || location.pathname === "/signup";
+  const isAuthRoute =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <>
-
       {!isAdminRoute && !isAuthRoute && <Navbar />}
       <Routes>
         <Route path="/" element={<Home />} />
@@ -41,7 +43,17 @@ function Layout() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
-        <Route path="/admin/*" element={<DashboardLayout />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/gallery" element={<Gallery />} />
       </Routes>
     </>
@@ -50,9 +62,11 @@ function Layout() {
 
 function App() {
   return (
-    <Router>
-      <Layout />
-    </Router>
+    <UserProvider>
+      <Router>
+        <Layout />
+      </Router>
+    </UserProvider>
   );
 }
 

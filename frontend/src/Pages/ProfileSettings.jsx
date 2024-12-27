@@ -4,19 +4,17 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { FaPen } from "react-icons/fa";
 import { AiOutlineClose } from "react-icons/ai";
 import apiClient from "../services/apiClient";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+
+
+
+
+
 function ProfileSettings() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeSection, setActiveSection] = useState(null);
-
-  const [personalInfo, setPersonalInfo] = useState({
-    firstName: "",
-    lastName: "",
-    age: "",
-    gender: "",
-  });
- 
-
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [contactInfo, setContactInfo] = useState({
@@ -24,20 +22,8 @@ function ProfileSettings() {
     phoneNo: "",
   });
 
+  const { user, loggedIn } = useContext(UserContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userRes = await apiClient.get("/user/details");
-        const { firstName, lastName, age, gender, email, phoneNo } = userRes.data;
-        setPersonalInfo({ firstName, lastName, age, gender: gender || "" });
-        setContactInfo({ email, phoneNo });
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
-  }, []);
 
   const handleSideBar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -60,6 +46,10 @@ function ProfileSettings() {
     setUserPassword(e.target.value);
   };
 
+  if(!loggedIn){
+    navigate("/login");
+  }
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
       <div
@@ -71,9 +61,9 @@ function ProfileSettings() {
           <img
             src="https://cdn-icons-png.flaticon.com/512/64/64572.png"
             alt="Profile"
-            className="w-24 h-24 mx-auto rounded-full border-4 border-orange-500 bg-slate-600"
+            className="w-24 h-24 mx-auto rounded-full border-4 border-orange-500 "
           />
-          <h2 className="text-xl font-semibold mt-4">{personalInfo.firstName}</h2>
+          <h2 className="text-xl font-semibold mt-4">{user?.firstName}</h2>
         </div>
         <nav>
           <ul className="flex flex-col">
@@ -157,7 +147,7 @@ function ProfileSettings() {
                   <input
                     type="email"
                     id="email"
-                    value={contactInfo.email}
+                    value={ user?.email}
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <label
