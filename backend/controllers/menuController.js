@@ -1,5 +1,5 @@
 import Menu from "../models/Menu.js";
-
+import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
         const {name, type, price, description, image, isAvailable, Cuisine} = req.body;
@@ -12,6 +12,20 @@ export const addMenu = async (req, res) => {
             isAvailable,
             Cuisine
         });
+       const cuisine = await Cuisine.find({name:Cuisine});
+         if(cuisine.length === 0){
+            const newCuisine = new Cuisine({
+                name:Cuisine,
+                image,
+                date:Date.now(),
+                items:[menu._id]
+
+            });
+            await newCuisine.save();
+        }else{
+            cuisine[0].items.push(menu._id);
+            await cuisine[0].save();
+        }
         await menu.save();
         res.status(201).json({message:"Menu added successfully"});
     }catch(error){
