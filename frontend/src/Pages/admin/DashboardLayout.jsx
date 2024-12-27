@@ -4,6 +4,11 @@ import Sidebar from '../../components/admin/Sidebar';
 import Header from '../../components/admin/Header';
 import Dashboard from './Dashboard';
 import Orders from './Orders';
+import ViewMenu from './ViewMenu';
+import AddMenu from './AddMenu';
+import ViewCuisine from './ViewCuisine';
+import AddCuisineForm from './AddCuisineForm';
+import AdminOfferPage from './AdminOfferPage';
 
 
 const DashboardLayout = () => {
@@ -35,6 +40,11 @@ const DashboardLayout = () => {
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} /> */}
             <Route path="orders" element={<Orders />} />
+            <Route path='menu/view' element={<ViewMenu />} />
+            <Route path='menu/add' element={<AddMenu />} />
+            <Route path='cuisines/view' element={<ViewCuisine />} />
+            <Route path='cuisines/add' element={<AddCuisineForm />} />
+            <Route path='offers' element={<AdminOfferPage />} />
           </Routes>
         </main>
       </div>
