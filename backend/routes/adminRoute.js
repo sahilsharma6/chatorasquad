@@ -1,7 +1,7 @@
 import express from 'express';
-import checkAdmin from '../middlewares/checkAdmin';
-import authMiddleware from '../middlewares/authMiddleware';
-import { addCuisine, deleteCuisine, getCuisineById, getCuisines, updateCuisine } from '../controllers/orderController';
+import checkAdmin from '../middlewares/checkAdmin.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import { addCuisine, deleteCuisine, getCuisineById, getCuisines, updateCuisine } from '../controllers/orderController.js';
 
 const router = express.Router();
 
