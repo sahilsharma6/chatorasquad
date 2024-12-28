@@ -9,6 +9,8 @@ import AddMenu from './AddMenu';
 import ViewCuisine from './ViewCuisine';
 import AddCuisineForm from './AddCuisineForm';
 import AdminOfferPage from './AdminOfferPage';
+import Sales from './Sales';
+import OrderBarChart from './Invetory';
 
 
 const DashboardLayout = () => {
@@ -36,9 +38,10 @@ const DashboardLayout = () => {
         <main className="py-4 px-3 lg:px-12  ">
           <Routes>
             <Route path="/" element={<Dashboard />} /> {/* Default route */}
-            {/* <Route path="users" element={<Users />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="settings" element={<Settings />} /> */}
+            {/* <Route path="users" element={<Users />} />*/}
+            <Route path="reports/sales" element={<Sales />} />
+            <Route path='reports/inventory' element={<OrderBarChart />} />
+            {/* <Route path="settings" element={<Settings />} />  */}
             <Route path="orders" element={<Orders />} />
             <Route path='menu/view' element={<ViewMenu />} />
             <Route path='menu/add' element={<AddMenu />} />
