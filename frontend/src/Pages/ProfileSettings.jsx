@@ -7,10 +7,6 @@ import apiClient from "../services/apiClient";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
-
-
-
-
 function ProfileSettings() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,7 +19,6 @@ function ProfileSettings() {
   });
 
   const { user, loggedIn } = useContext(UserContext);
-
 
   const handleSideBar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -46,7 +41,7 @@ function ProfileSettings() {
     setUserPassword(e.target.value);
   };
 
-  if(!loggedIn){
+  if (!loggedIn) {
     navigate("/login");
   }
 
@@ -147,7 +142,7 @@ function ProfileSettings() {
                   <input
                     type="email"
                     id="email"
-                    value={ user?.email}
+                    value={user?.email}
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <label
