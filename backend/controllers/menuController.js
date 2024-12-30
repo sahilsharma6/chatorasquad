@@ -2,7 +2,7 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, Cuisine} = req.body;
+        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
         const menu = new Menu({
             name,
             type,
@@ -10,12 +10,12 @@ export const addMenu = async (req, res) => {
             description,
             image,
             isAvailable,
-            Cuisine
+            Cuisine:cuisine,
         });
-       const cuisine = await Cuisine.find({name:Cuisine});
-         if(cuisine.length === 0){
+       const cuisinefound = await Cuisine.find({name:cuisine});
+         if(cuisinefound.length === 0){
             const newCuisine = new Cuisine({
-                name:Cuisine,
+                name:cuisine,
                 image,
                 date:Date.now(),
                 items:[menu._id]
@@ -23,12 +23,13 @@ export const addMenu = async (req, res) => {
             });
             await newCuisine.save();
         }else{
-            cuisine[0].items.push(menu._id);
-            await cuisine[0].save();
+            cuisinefound[0].items.push(menu._id);
+            await cuisinefound[0].save();
         }
         await menu.save();
         res.status(201).json({message:"Menu added successfully"});
     }catch(error){
+        console.log(error);
         res.status(500).json({message:"Internal server error"});
     }
 };
@@ -65,12 +66,12 @@ export const getMenuDetails = async (req, res) => {
 export const getFilteredMenu = async (req, res) => {
     try {
       const { searchValue } = req.query; 
-      const { Cuisine, type, price, rating } = req.body; 
+      const { cuisine, type, price, rating } = req.body; 
   
       const query = {};
   
       
-      if (Cuisine) query.Cuisine = Cuisine;
+      if (cuisine) query.Cuisine = cuisine;
       if (type) query.type = type;
       if (price) query.price = { $lte: Number(price) };
       if (rating) query.rating = { $gte: Number(rating) };
@@ -109,7 +110,7 @@ export const getTrendingMenu = async (req, res) => {
 
   export const updateMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, Cuisine} = req.body;
+        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
         const menu = await Menu.findById(req.params.id);
         menu.name = name;
         menu.type = type;
@@ -117,7 +118,7 @@ export const getTrendingMenu = async (req, res) => {
         menu.description = description;
         menu.image = image;
         menu.isAvailable = isAvailable;
-        menu.Cuisine = Cuisine;
+        menu.Cuisine = cuisine;
         await menu.save();
         res.status(200).json({message:"Menu updated successfully"});
     }catch(error){
