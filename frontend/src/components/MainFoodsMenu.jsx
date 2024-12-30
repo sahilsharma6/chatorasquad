@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import MainMenuData from '../Data/FoodMainMenu.json';
 import { Utensils, Search, Filter, X } from 'lucide-react';
-
+import apiClient  from '../services/apiClient'; 
+import { Link } from 'react-router-dom';
 const categories = [
   { id: 'fast-food', name: 'Fast Food', icon: '🍔' },
   { id: 'drinks', name: 'Drink & Juice', icon: '🥤' },
@@ -22,10 +22,24 @@ const FoodMainMenu = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPriceRange, setSelectedPriceRange] = useState('all');
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([]); 
+
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await apiClient.get('/menu/all');
+        setMenuItems(response.data); 
+      } catch (error) {
+        console.error('Error fetching menu items:', error);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
 
   // Memoized filtering to improve performance
   const filteredItems = useMemo(() => {
-    return MainMenuData.filter((item) => {
+    return menuItems.filter((item) => {
       const matchesCategory =
         selectedCategory === 'all' || item.category === selectedCategory;
       const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -37,7 +51,7 @@ const FoodMainMenu = () => {
 
       return matchesCategory && matchesSearch && matchesPrice;
     });
-  }, [selectedCategory, searchQuery, selectedPriceRange]);
+  }, [menuItems, selectedCategory, searchQuery, selectedPriceRange]);
 
   // Reset filters
   const resetFilters = () => {
@@ -183,6 +197,7 @@ const FoodMainMenu = () => {
       >
         <AnimatePresence>
           {filteredItems.map((item) => (
+            <Link to={`/menu/details/${item._id}`} key={item.id} className="w-full">
             <motion.div
               key={item.id}
               layout
@@ -194,7 +209,7 @@ const FoodMainMenu = () => {
             >
               <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                 <img
-                  src={item.image}
+                  src={item.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyN7OnYRwN0dfcP3yD5fbp1sfpE5Daq-Q2xo062c-HKs4gN5KBOCZPgHVI3GrjcHFS8nE&usqp=CAU'}
                   alt={item.name}
                   className="w-full h-full object-cover"
                 />
@@ -205,10 +220,13 @@ const FoodMainMenu = () => {
               </div>
               <div className="text-base sm:text-xl font-bold text-black">${item.price}</div>
             </motion.div>
+            </Link>
           ))}
         </AnimatePresence>
+
       </motion.div>
     </div>
+          
   );
 };
 

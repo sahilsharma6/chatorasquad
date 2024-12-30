@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Eye, ShoppingBag, Utensils } from 'lucide-react';
-import DishesData from '../Data/popularFood.json'
+import apiClient from '../services/apiClient';
+import { Link } from 'react-router-dom';
+
 
 const DishCard = ({ dish }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -25,7 +27,6 @@ const DishCard = ({ dish }) => {
         <Heart className="w-6 h-6" fill={isLiked ? 'currentColor' : 'none'} />
       </motion.button>
 
-      {/* Extra Buttons (Eye and Bag) always visible on the right side */}
       <div className="absolute right-0 top-11 z-10 space-y-2 flex flex-col items-center ">
         <motion.button
           className="block p-2 rounded-full bg-white/50 text-white"
@@ -43,33 +44,51 @@ const DishCard = ({ dish }) => {
         </motion.button>
       </div>
 
-      {/* Card Image */}
-      <div className="relative w-full aspect-square rounded-full overflow-hidden mb-4 ">
-        <img
-          src={dish.image}
-          alt={dish.name}
-          className="w-full h-full object-cover"
-        />
-      </div>
 
-      {/* Card Content */}
-      <div className="text-center">
-        <h3 className="text-lg font-bold mb-2 group-hover:text-white">{dish.name}</h3>
-        <p className="text-sm mb-4 group-hover:text-white">{dish.description}</p>
-        <motion.p
-          className="text-xl font-bold"
-          initial={{ scale: 1 }}
-          whileHover={{ scale: 1.1 }}
-        >
-          ${dish.price}
-        </motion.p>
-      </div>
+      <Link to={`/menu/details/${dish._id}`} className="block">
+ 
+        <div className="relative w-full aspect-square rounded-full overflow-hidden mb-4 ">
+          <img
+            src={dish.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s'}
+            alt={dish.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Card Content */}
+        <div className="text-center">
+          <h3 className="text-lg font-bold mb-2 group-hover:text-white">{dish.name}</h3>
+          <p className="text-sm mb-4 group-hover:text-white">{dish.description}</p>
+          <motion.p
+            className="text-xl font-bold"
+            initial={{ scale: 1 }}
+            whileHover={{ scale: 1.1 }}
+          >
+            ${dish.price}
+          </motion.p>
+        </div>
+      </Link>
     </motion.div>
   );
 };
 
+
 const FoodMenu = () => {
-  const [dishes, setDishes] = useState(DishesData);
+  const [dishes, setDishes] = useState([]);
+
+
+  useEffect(() => {
+    const fetchTopRatedDishes = async () => {
+      try {
+        const response = await apiClient.get('/menu/toprated'); 
+        setDishes(response.data); 
+      } catch (error) {
+        console.error('Failed to fetch top-rated dishes:', error);
+      }
+    };
+
+    fetchTopRatedDishes();
+  }, []); 
 
   return (
     <div className="max-w-full mx-auto px-20 py-12">
@@ -79,14 +98,18 @@ const FoodMenu = () => {
             whileHover={{ scale: 2 }}
             className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
-            <span className="text-white text-sm"><Utensils /> </span>
+            <span className="text-white text-sm">
+              <Utensils />
+            </span>
           </motion.div>
           <h2 className="text-yellow-500 font-semibold">POPULAR DISHES</h2>
           <motion.div
             whileHover={{ scale: 1.1 }}
             className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center"
           >
-            <span className="text-white text-sm"><Utensils /> </span>
+            <span className="text-white text-sm">
+              <Utensils />
+            </span>
           </motion.div>
         </div>
         <h1 className="text-4xl font-bold">Top-Selling Dishes</h1>
@@ -101,14 +124,17 @@ const FoodMenu = () => {
           visible: {
             opacity: 1,
             transition: {
-              staggerChildren: 0.1
-            }
-          }
+              staggerChildren: 0.1,
+            },
+          },
         }}
       >
-        {dishes.map((dish, index) => (
-          <DishCard key={index} dish={dish} />
-        ))}
+
+        {dishes.length > 0 ? (
+          dishes.map((dish, index) => <DishCard key={index} dish={dish} />)
+        ) : (
+          <p className="text-center text-xl font-bold">Loading...</p>
+        )}
       </motion.div>
     </div>
   );

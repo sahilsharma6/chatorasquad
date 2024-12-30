@@ -1,45 +1,43 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const MenuSchema = mongoose.Schema(
   {
-   name:{
-         type:String,
-         required:true,
-   },
-   type:{
-         type:String,
-         required:true,
-         enum:['Veg','Non-Veg','Egg'],
-   },
-    price:{
-            type:Number,
-            required:true,
-            
+    name: {
+      type: String,
+      required: true,
     },
-    description:{
-            type:String,
-            required:true,
+    type: {
+      type: String,
+      required: true,
+      enum: ["Veg", "Non-Veg", "Egg"],
     },
-    images:{
-            type:[String],
-            required:true,
+    price: {
+      type: Number,
+      required: true,
     },
-    isAvailable:{
-            type:Boolean,
-            required:true,
-            default:true,
+    description: {
+      type: String,
+      required: true,
     },
-    Cuisine:{
-            type:String,
-            required:true,
+    images: {
+      type: [String],
+      required: true,
     },
-    rating:{
-            type:Number,
-            default:0,
+    isAvailable: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
-    reviews:{
-            type:[String],
-            
+    Cuisine: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
+      default: 0,
+    },
+    reviews: {
+      type: [String],
     },
   },
   {
@@ -47,6 +45,6 @@ const MenuSchema = mongoose.Schema(
   }
 );
 
-const Menu = mongoose.model('Menu', MenuSchema);
+const Menu = mongoose.model("Menu", MenuSchema);
 
 export default Menu;
