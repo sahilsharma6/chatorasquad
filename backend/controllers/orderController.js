@@ -1,5 +1,6 @@
 import Order from '../models/Order.js';
 import Cuisine from '../models/Cuisine.js';
+import Delivery from '../models/Delivery.js';
 
 export const addOrder = async (req, res) => {
     try{
@@ -171,4 +172,68 @@ export const deleteCuisine = async (req, res) => {
     catch(error){
         res.status(500).json({message:"Internal server error"});
     }
+}
+
+
+export const adddelivery = async (req, res) => {
+    try{
+        const {zipcode} = req.body;
+        const delivery = new Delivery({
+            zipcode
+        });
+        await delivery.save();
+        res.status(200).json({message:"Delivery added successfully"});
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+
+export const getDelivery = async (req, res) => {
+    try{
+        const deliveries = await Delivery.find();
+        res.status(200).json(deliveries);
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+
+export const deletedelivery = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const delivery = await Delivery.findById(id);
+        if(delivery){
+            await delivery.remove();
+            res.status(200).json({message:"Delivery deleted successfully"});
+        }
+        else{
+            res.status(400).json({message:"Delivery not found"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+export const updatedelivery = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const {zipcode} = req.body;
+        const delivery = await Delivery.findById(id);
+        if(delivery){
+            delivery.zipcode = zipcode;
+            await delivery.save();
+            res.status(200).json({message:"Delivery updated successfully"});
+        }
+        else{
+            res.status(400).json({message:"Delivery not found"});
+        }   
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+
 }
