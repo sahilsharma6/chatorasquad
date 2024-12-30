@@ -68,7 +68,7 @@ export default function GetMenuDetails() {
       </div> */}
 
       {/* Delivery Section */}
-      {/* <div className="mt-6">
+      <div className="mt-6">
         <h3 className="font-medium mb-3">Delivery</h3>
         <div className="flex items-center gap-2">
           <MapPin className="w-5 h-5" />
@@ -84,7 +84,7 @@ export default function GetMenuDetails() {
           <span className="text-green-600">| Free ₹40</span>
           <p className="text-gray-500 text-sm">if ordered before 2:59 PM</p>
         </div>
-      </div> */}
+      </div>
 
       {/* Highlights Section */}
       {/* <div className="border-t pt-4">
@@ -138,7 +138,7 @@ export default function GetMenuDetails() {
       </motion.div> */}
 
       {/* Services Section */}
-      {/* <div className="border-t pt-4">
+      <div className="border-t pt-4">
         <div className="flex justify-between items-start">
           <div className="w-1/4">
             <h3 className="text-gray-500">Services</h3>
@@ -151,7 +151,7 @@ export default function GetMenuDetails() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
