@@ -38,6 +38,7 @@ const BipolarChart = () => {
 
   return (
     <div className="p-6 bg-white mt-4 shadow-lg rounded-md">
+      <h1 className="text-xl my-6 font-bold">Sales Growth</h1>
       {/* Date Picker */}
       <div className="flex gap-4 flex-wrap  mb-6">
         <div>

@@ -7,7 +7,7 @@ import BipolarChart from './BipolarChart';
 const salesData = [
     { date: '2024-12-20', menuSold: 220, revenue: 1500, safe: 300 },
     { date: '2024-12-25', menuSold: 340, revenue: 4500, safe: 900 },
-    { date: '2024-12-27', menuSold: 180, revenue: 2300, safe: 460 },
+    { date: '2024-12-28', menuSold: 180, revenue: 2300, safe: 460 },
     { date: '2024-12-01', menuSold: 2800, revenue: 37000, safe: 7400 },
     { date: '2024-01-15', menuSold: 4500, revenue: 56000, safe: 11200 },
   ];
