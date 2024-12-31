@@ -9,7 +9,7 @@ const MenuSchema = mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: ["Veg", "Non-Veg", "Egg"],
+      // enum: ["Veg", "Non-Veg", "Egg"],
     },
     price: {
       type: Number,
@@ -21,7 +21,7 @@ const MenuSchema = mongoose.Schema(
     },
     images: {
       type: [String],
-      required: true,
+      // required: true,
     },
     isAvailable: {
       type: Boolean,
