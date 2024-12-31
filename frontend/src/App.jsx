@@ -20,6 +20,7 @@ import Gallery from "./Pages/Gallery";
 import Profile from "./Pages/Profile";
 import ProfileSettings from "./Pages/ProfileSettings";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import GetMenuDetails from "./components/GetMenu/GetMenuDetails";
 
 function Layout() {
   const location = useLocation();
@@ -43,6 +44,10 @@ function Layout() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
+        <Route
+          path="/menu/details/:id"
+          element={<GetMenuDetails />}
+        />
 
         {/* Protected Routes */}
         <Route
