@@ -14,6 +14,7 @@ import Inventory from './Invetory';
 import HelpSupport from './HelpSupport';
 import AdminSettings from './AdminSettings';
 import CustomerList from './Customers';
+import CustomerReview from './CustomerReview';
 
 
 const DashboardLayout = () => {
@@ -41,7 +42,7 @@ const DashboardLayout = () => {
         <main className="py-4 px-3 lg:px-12  ">
           <Routes>
             <Route path="/" element={<Dashboard />} /> {/* Default route */}
-            {/* <Route path="users" element={<Users />} />*/}
+            <Route path="customers/review" element={<CustomerReview />} />
             <Route path="reports/sales" element={<Sales />} />
             <Route path='reports/inventory' element={<Inventory />} />
             <Route path="settings" element={<AdminSettings />} /> 

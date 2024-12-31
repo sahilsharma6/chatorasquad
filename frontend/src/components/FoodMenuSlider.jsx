@@ -73,7 +73,7 @@ const FoodMenuSwiper = () => {
             <Link to={`/menu/details/${item._id}`}  key={index}>
             <div
               key={index}
-              className="w-72 bg-yellow-300 rounded-lg shadow-xl flex-shrink-0 p-4"
+              className="w-72 bg-yellow-300 rounded-lg shadow-xl flex-shrink-0 p-4 h-96"
             >
               <div className="relative">
                 <div className="w-full h-48 rounded-full overflow-hidden mb-4">
@@ -92,7 +92,8 @@ const FoodMenuSwiper = () => {
                 {item.name}
               </h3>
               <p className="text-gray-900 text-center text-sm">
-                {item.description}
+                { item.description.slice(0,150)}...
+                
               </p>
             </div>
           </Link>
