@@ -21,6 +21,11 @@ import Profile from "./Pages/Profile";
 import ProfileSettings from "./Pages/ProfileSettings";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import GetMenuDetails from "./components/GetMenu/GetMenuDetails";
+import RefundPolicy from "./Pages/RefundPolicy";
+import TermsConditions from "./Pages/TermsConditions";
+import Privacy from "./Pages/Privacy";
+
+
 
 function Layout() {
   const location = useLocation();
@@ -48,6 +53,10 @@ function Layout() {
           path="/menu/details/:id"
           element={<GetMenuDetails />}
         />
+
+        <Route path="/refund" element={<RefundPolicy />} />
+        <Route path="/terms" element={<TermsConditions />} />
+        <Route path="/privacy" element={<Privacy />} />
 
         {/* Protected Routes */}
         <Route
