@@ -2,11 +2,12 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, price, description, images, isAvailable, cuisine} = req.body;
+        const {name, type, sellingprice,discountedprice, description, images, isAvailable, cuisine} = req.body;
         const menu = new Menu({
             name,
             type,
-            price,
+            sellingprice,
+            discountedprice,
             description,
             images,
             isAvailable,
@@ -66,14 +67,14 @@ export const getMenuDetails = async (req, res) => {
 export const getFilteredMenu = async (req, res) => {
     try {
       const { searchValue } = req.query; 
-      const { cuisine, type, price, rating } = req.body; 
+      const { cuisine, type, sellingprice, rating } = req.body; 
   
       const query = {};
   
       
       if (cuisine) query.Cuisine = cuisine;
       if (type) query.type = type;
-      if (price) query.price = { $lte: Number(price) };
+      if (sellingprice) query.sellingprice = { $lte: Number(sellingprice) };
       if (rating) query.rating = { $gte: Number(rating) };
   
       
@@ -110,11 +111,12 @@ export const getTrendingMenu = async (req, res) => {
 
   export const updateMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
+        const {name, type, sellingprice,discountedprice, description, image, isAvailable, cuisine} = req.body;
         const menu = await Menu.findById(req.params.id);
         menu.name = name;
         menu.type = type;
-        menu.price = price;
+        menu.sellingprice = sellingprice;
+        menu.discountedprice = discountedprice;
         menu.description = description;
         menu.image = image;
         menu.isAvailable = isAvailable;
@@ -159,7 +161,7 @@ export const deleteMenu = async (req, res) => {
         cuisine[0].items = cuisine[0].items.filter(item => item.toString() !== id);
         await cuisine[0].save();
         await menu.remove();
-        
+
 
         res.status(200).json({message:"Menu deleted successfully"});
     }catch(error){
