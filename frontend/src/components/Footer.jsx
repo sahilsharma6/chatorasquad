@@ -83,10 +83,10 @@ const Footer = () => {
           <motion.div variants={itemVariants}>
             <h3 className="text-white font-semibold mb-4">Legal</h3>
             <div className="space-y-2">
-              <motion.a href="#" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Terms & Conditions</motion.a>
-              <motion.a href="#" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Refund & Cancellation</motion.a>
-              <motion.a href="#" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Privacy Policy</motion.a>
-              <motion.a href="#" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Cookie Policy</motion.a>
+              <motion.a href="/terms" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Terms & Conditions</motion.a>
+              <motion.a href="/refund" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Refund & Cancellation</motion.a>
+              <motion.a href="/privacy" className="block text-gray-400 hover:text-white" whileHover={{ x: 5 }}>Privacy Policy</motion.a>
+             
             </div>
           </motion.div>
 
