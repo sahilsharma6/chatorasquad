@@ -153,7 +153,14 @@ export const updateMenuRating = async (req, res) => {
 
 export const deleteMenu = async (req, res) => {
     try{
-        await Menu.findByIdAndDelete(req.params.id);
+        const id = req.params.id;
+        const menu = await Menu.findById(id);
+        const cuisine = await Cuisine.find({name:menu.Cuisine});
+        cuisine[0].items = cuisine[0].items.filter(item => item.toString() !== id);
+        await cuisine[0].save();
+        await menu.remove();
+        
+
         res.status(200).json({message:"Menu deleted successfully"});
     }catch(error){
         res.status(500).json({message:"Internal server error"});
