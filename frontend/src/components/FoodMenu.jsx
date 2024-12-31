@@ -58,7 +58,7 @@ const DishCard = ({ dish }) => {
         {/* Card Content */}
         <div className="text-center">
           <h3 className="text-lg font-bold mb-2 group-hover:text-white">{dish.name}</h3>
-          <p className="text-sm mb-4 group-hover:text-white">{dish.description}</p>
+          <p className="text-sm mb-4 group-hover:text-white">{dish.description.slice(0,140)}...</p>
           <motion.p
             className="text-xl font-bold"
             initial={{ scale: 1 }}
