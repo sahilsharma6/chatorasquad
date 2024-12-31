@@ -2,13 +2,13 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
+        const {name, type, price, description, images, isAvailable, cuisine} = req.body;
         const menu = new Menu({
             name,
             type,
             price,
             description,
-            image,
+            images,
             isAvailable,
             Cuisine:cuisine,
         });
@@ -16,7 +16,7 @@ export const addMenu = async (req, res) => {
          if(cuisinefound.length === 0){
             const newCuisine = new Cuisine({
                 name:cuisine,
-                image,
+                images,
                 date:Date.now(),
                 items:[menu._id]
 
