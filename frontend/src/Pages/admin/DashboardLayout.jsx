@@ -9,6 +9,12 @@ import AddMenu from './AddMenu';
 import ViewCuisine from './ViewCuisine';
 import AddCuisineForm from './AddCuisineForm';
 import AdminOfferPage from './AdminOfferPage';
+import Sales from './Sales';
+import Inventory from './Invetory';
+import HelpSupport from './HelpSupport';
+import AdminSettings from './AdminSettings';
+import CustomerList from './Customers';
+import CustomerReview from './CustomerReview';
 
 
 const DashboardLayout = () => {
@@ -36,15 +42,18 @@ const DashboardLayout = () => {
         <main className="py-4 px-3 lg:px-12  ">
           <Routes>
             <Route path="/" element={<Dashboard />} /> {/* Default route */}
-            {/* <Route path="users" element={<Users />} />
-            <Route path="reports" element={<Reports />} />
-            <Route path="settings" element={<Settings />} /> */}
+            <Route path="customers/review" element={<CustomerReview />} />
+            <Route path="reports/sales" element={<Sales />} />
+            <Route path='reports/inventory' element={<Inventory />} />
+            <Route path="settings" element={<AdminSettings />} /> 
             <Route path="orders" element={<Orders />} />
             <Route path='menu/view' element={<ViewMenu />} />
             <Route path='menu/add' element={<AddMenu />} />
             <Route path='cuisines/view' element={<ViewCuisine />} />
             <Route path='cuisines/add' element={<AddCuisineForm />} />
             <Route path='offers' element={<AdminOfferPage />} />
+            <Route path='help' element={<HelpSupport />} />
+            <Route path='customers/list' element={<CustomerList />} />
           </Routes>
         </main>
       </div>

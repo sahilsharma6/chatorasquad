@@ -7,20 +7,14 @@ import {
   ShoppingCart,
   Book,
   Users,
-  BarChart2,
-  Bell,
-  ShoppingBag,
   FileUser,
-  UserRoundPlus,
-  ChevronDown,
-  ChevronUp,
-  Rows4,
   ChefHat,
   BookmarkPlus,
   Activity,
   Settings,
   BadgeHelp
 } from "lucide-react";
+import { MdOutlinePreview } from "react-icons/md";
 import { GiOpenedFoodCan } from "react-icons/gi";
 import { PiBowlFood } from "react-icons/pi";
 import { BiSolidReport, BiSolidOffer } from "react-icons/bi";
@@ -69,7 +63,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
       hasSubmenu: true,
       submenu: [
         { label: "Customer List", path: "/admin/customers/list", icon: FileUser },
-        { label: "Add Customers", path: "/admin/customers/add", icon: IoIosPersonAdd },
+        { label: "Customers Review", path: "/admin/customers/review", icon: MdOutlinePreview  },
       ],
     },
     { label: "Offers", path: "/admin/offers", icon: BiSolidOffer },

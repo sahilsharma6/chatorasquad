@@ -3,6 +3,7 @@ import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, 
 import authMiddleware from '../middlewares/authMiddleware.js';
 import { addOrder, getOrderDetails, getOrdersByFilter, updateOrderStatus } from '../controllers/orderController.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
+import { addtoCart, getCart } from '../controllers/cartController.js';
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus)
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 router.post('/addorder/:id',authMiddleware,addOrder); // id is user id
 
-
+router.get('/getcart',authMiddleware,getCart) ; // id is user id
+router.put('/updatecart',authMiddleware,addtoCart); // id is user id
 export default router;

@@ -2,13 +2,14 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
+        const {name, type, sellingprice,discountedprice, description, images, isAvailable, cuisine} = req.body;
         const menu = new Menu({
             name,
             type,
-            price,
+            sellingprice,
+            discountedprice,
             description,
-            image,
+            images,
             isAvailable,
             Cuisine:cuisine,
         });
@@ -16,7 +17,7 @@ export const addMenu = async (req, res) => {
          if(cuisinefound.length === 0){
             const newCuisine = new Cuisine({
                 name:cuisine,
-                image,
+                images,
                 date:Date.now(),
                 items:[menu._id]
 
@@ -66,14 +67,14 @@ export const getMenuDetails = async (req, res) => {
 export const getFilteredMenu = async (req, res) => {
     try {
       const { searchValue } = req.query; 
-      const { cuisine, type, price, rating } = req.body; 
+      const { cuisine, type, sellingprice, rating } = req.body; 
   
       const query = {};
   
       
       if (cuisine) query.Cuisine = cuisine;
       if (type) query.type = type;
-      if (price) query.price = { $lte: Number(price) };
+      if (sellingprice) query.sellingprice = { $lte: Number(sellingprice) };
       if (rating) query.rating = { $gte: Number(rating) };
   
       
@@ -110,11 +111,12 @@ export const getTrendingMenu = async (req, res) => {
 
   export const updateMenu = async (req, res) => {
     try{
-        const {name, type, price, description, image, isAvailable, cuisine} = req.body;
+        const {name, type, sellingprice,discountedprice, description, image, isAvailable, cuisine} = req.body;
         const menu = await Menu.findById(req.params.id);
         menu.name = name;
         menu.type = type;
-        menu.price = price;
+        menu.sellingprice = sellingprice;
+        menu.discountedprice = discountedprice;
         menu.description = description;
         menu.image = image;
         menu.isAvailable = isAvailable;
@@ -153,7 +155,14 @@ export const updateMenuRating = async (req, res) => {
 
 export const deleteMenu = async (req, res) => {
     try{
-        await Menu.findByIdAndDelete(req.params.id);
+        const id = req.params.id;
+        const menu = await Menu.findById(id);
+        const cuisine = await Cuisine.find({name:menu.Cuisine});
+        cuisine[0].items = cuisine[0].items.filter(item => item.toString() !== id);
+        await cuisine[0].save();
+        await menu.remove();
+
+
         res.status(200).json({message:"Menu deleted successfully"});
     }catch(error){
         res.status(500).json({message:"Internal server error"});

@@ -19,9 +19,10 @@ const data = [
 ];
 
 const orderData = [
-  { name: 'Immunities', value: 25, color: '#FF6B6B', date: '2023-06-01' },
-  { name: 'Heart Beat', value: 60, color: '#4ADE80', date: '2023-03-02' },
-  { name: 'Weight', value: 7, color: '#94A3B8', date: '2023-09-03' },
+  { name: 'On Delivery', value: 25, color: '#FF6B6B', date: '2023-06-01' },
+  { name: 'Deliverd', value: 60, color: '#4ADE80', date: '2023-03-02' },
+  { name: 'Cancel', value: 7, color: '#94A3B8', date: '2023-09-03' },
+  { name: 'Cancel', value: 8, color: '#94A3B8', date: '2023-09-03' },
 ];
 
 
