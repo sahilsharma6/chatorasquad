@@ -21,7 +21,7 @@ const MenuSchema = mongoose.Schema(
     },
     images: {
       type: [String],
-      required: true,
+      // required: true,
     },
     isAvailable: {
       type: Boolean,
