@@ -42,10 +42,10 @@ export default function GetMenuDetails() {
       <div className="mt-6">
         <span className="text-green-600 text-sm font-medium">Special price</span>
         <div className="flex items-center gap-3 mt-1">
-          <span className="text-2xl font-medium">₹{price.special}</span>
-          <span className="text-gray-500 line-through">₹{price.original}</span>
+          <span className="text-2xl font-medium">₹{price?.special}</span>
+          <span className="text-gray-500 line-through">₹{price?.original}</span>
           <span className="text-green-600 font-medium">
-            {Math.round(((price.original - price.special) / price.original) * 100)}% off
+            {Math.round(((price?.original - price?.special) / price?.original) * 100)}% off
           </span>
         </div>
       </div>
