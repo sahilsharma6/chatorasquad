@@ -8,11 +8,11 @@ const AddMenu = () => {
     name: '',
     title: '',
     type: 'Category 1',
-    Cuisine: 'Indian',
+    cuisine: 'Indian',
     quantity: '',
     price: '',
     description: '',
-    image: null
+    images:[],
   });
 
   const [errors, setErrors] = useState({}); // State for error messages
@@ -20,11 +20,11 @@ const AddMenu = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = 'Dish Name is required';
-    if (!formData.title) newErrors.title = 'Dish Title is required';
-    if (!formData.quantity) newErrors.quantity = 'Quantity is required';
+    // if (!formData.title) newErrors.title = 'Dish Title is required';
+    // if (!formData.quantity) newErrors.quantity = 'Quantity is required';
     if (!formData.price) newErrors.price = 'Price is required';
     if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.image) newErrors.image = 'Dish Image is required';
+    if (!formData.images) newErrors.images = 'Dish Image is required';
     return newErrors;
   };
 
