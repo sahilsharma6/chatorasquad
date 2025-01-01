@@ -21,6 +21,7 @@ import Profile from "./Pages/Profile";
 import ProfileSettings from "./Pages/ProfileSettings";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import GetMenuDetails from "./components/GetMenu/GetMenuDetails";
+import OrderDetails from "./Pages/users/OrderDetails";
 
 function Layout() {
   const location = useLocation();
@@ -50,6 +51,11 @@ function Layout() {
         />
 
         {/* Protected Routes */}
+        <Route path="/order/details/:id" element={
+          <ProtectedRoute allowedRoles={['admin','user']} >
+          <OrderDetails />
+          </ProtectedRoute>
+          } />
         <Route
           path="/admin/*"
           element={
