@@ -26,6 +26,7 @@ import TermsConditions from "./Pages/TermsConditions";
 import Privacy from "./Pages/Privacy";
 
 
+import OrderDetails from "./Pages/users/OrderDetails";
 
 function Layout() {
   const location = useLocation();
@@ -59,6 +60,11 @@ function Layout() {
         <Route path="/privacy" element={<Privacy />} />
 
         {/* Protected Routes */}
+        <Route path="/order/details/:id" element={
+          <ProtectedRoute allowedRoles={['admin','user']} >
+          <OrderDetails />
+          </ProtectedRoute>
+          } />
         <Route
           path="/admin/*"
           element={
