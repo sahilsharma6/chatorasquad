@@ -15,7 +15,6 @@ import apiClient from "../services/apiClient";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 
-
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -25,11 +24,10 @@ const Navbar = () => {
   const { loggedIn, setLoggedIn } = useContext(UserContext);
 
   const handleLogout = async () => {
-    if (!loggedIn) return; 
+    if (!loggedIn) return;
     await apiClient.post("/auth/logout");
-    setLoggedIn(false); 
+    setLoggedIn(false);
   };
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -55,7 +53,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-4">
         <Link to="/" className="flex items-center space-x-2">
           <FaBowlFood className="text-3xl text-orange-500" />
-          <span className="text-xl font-semibold text-gray-800">restaurant</span>
+          <span className="text-xl font-semibold text-gray-800">
+            CHATORA SQUAD
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center space-x-8">
@@ -220,9 +220,7 @@ const Navbar = () => {
               className="flex items-center space-x-2 text-gray-500 hover:bg-gray-100 px-4 py-2 rounded-md w-full"
             >
               <FaUserCircle className="text-2xl" />
-              <span className="text-lg">
-                {loggedIn ? "Profile" : "Login"}
-              </span>
+              <span className="text-lg">{loggedIn ? "Profile" : "Login"}</span>
             </button>
             {isUserMenuOpen && (
               <div className="absolute top-8 left-0 bg-white shadow-md p-4 rounded-lg z-50">

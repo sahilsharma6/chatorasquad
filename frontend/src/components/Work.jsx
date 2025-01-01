@@ -1,5 +1,8 @@
-import React from 'react';
-
+import React from "react";
+import menuImg from "../assets/menu.png";
+import locationImg from "../assets/location.png";
+import paymentImg from "../assets/payment.png";
+import enjoyImg from "../assets/enjoy.png";
 function Work() {
   return (
     <div className="bg-gradient-to-b from-yellow-50 to-white  w-full h-auto p-20 md:p-10 pb-0 flex flex-col items-center">
@@ -7,9 +10,9 @@ function Work() {
         How does it work
       </h2>
       <div className="grid  md:flex items-centers justify-between  grid-cols-1   text-center w-auto h-auto  ">
-      <div className="flex flex-col items-center p-6">
+        <div className="flex flex-col items-center p-6">
           <div className=" p-4 rounded-full w-20 h-20 flex items-center justify-center">
-            <img src="./src/assets/menu.png" alt="Choose order" className="w-auto h-auto" />
+            <img src={menuImg} alt="Choose order" className="w-auto h-auto" />
           </div>
           <h3 className="text-xl font-semibold mt-4 ">Choose order</h3>
           <p className="text-lg text-gray-600 p-4">
@@ -18,17 +21,25 @@ function Work() {
         </div>
         <div className="flex flex-col items-center p-6 ">
           <div className="p-4 rounded-full w-20 h-20 flex items-center justify-center">
-            <img src="./src/assets/location.png" alt="Select location" className='w-auto h-auto' />
+            <img
+              src={locationImg}
+              alt="Select location"
+              className="w-auto h-auto"
+            />
           </div>
           <h3 className="text-lg font-semibold mt-4 ">Select location</h3>
           <p className="text-lg text-gray-600 p-4">
             Choose the location where your food will be delivered.
           </p>
         </div>
-        
+
         <div className="flex flex-col items-center p-6">
           <div className=" p-4 rounded-full w-20 h-20 flex items-center justify-center">
-            <img src="./src/assets/payment.png" alt="Pay advanced" className="w-auto h-auto" />
+            <img
+              src={paymentImg}
+              alt="Pay advanced"
+              className="w-auto h-auto"
+            />
           </div>
           <h3 className="text-lg font-semibold mt-4 ">Pay advanced</h3>
           <p className="text-sm text-gray-600 p-4">
@@ -37,7 +48,7 @@ function Work() {
         </div>
         <div className="flex flex-col items-center p-6">
           <div className="p-4 rounded-full w-20 h-20 flex items-center justify-center">
-            <img src="./src/assets/enjoy.png" alt="Enjoy meals" className="w-auto h-auto " />
+            <img src={enjoyImg} alt="Enjoy meals" className="w-auto h-auto " />
           </div>
           <h3 className="text-lg font-semibold mt-4 ">Enjoy meals</h3>
           <p className="text-sm text-gray-600 p-4">
