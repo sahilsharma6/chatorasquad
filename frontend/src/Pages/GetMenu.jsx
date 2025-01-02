@@ -44,12 +44,7 @@ const GetMenu = () => {
 
                 {/* Right Column - Product Details */}
                 <GetMenuDetails
-                    bankOffers={bankOffers}
-                    price={price}
-                    highlights={highlights}
-                    description={description}
-                    specifications={specifications}
-                    name={name}
+                  
                 />
             </div>
             {/* Ratings Reviews  */}

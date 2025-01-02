@@ -14,6 +14,7 @@ import {
 import apiClient from "../services/apiClient";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,6 +23,8 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
 
   const { loggedIn, setLoggedIn } = useContext(UserContext);
+
+  const { cartItems } = useCart();
 
   const handleLogout = async () => {
     if (!loggedIn) return;
@@ -134,11 +137,18 @@ const Navbar = () => {
         <div className="hidden md:flex items-center space-x-4">
           <Link
             to="/viewcart"
-            className="flex items-center space-x-2 bg-orange-500 text-white px-5 py-2 rounded-tl-lg rounded-br-lg shadow-md hover:bg-orange-600"
+            className="relative flex items-center space-x-2 bg-orange-500 text-white px-6 py-2 rounded-tl-lg rounded-br-lg shadow-md hover:bg-orange-600"
           >
             <BsCart4 className="text-2xl" />
             <span className="text-lg font-semibold">Cart</span>
+      
+            {cartItems.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                {cartItems.length}
+              </span>
+            )}
           </Link>
+
           <Link
             to="/orders"
             className="hidden md:inline-block bg-orange-500 text-white px-5 py-2 rounded-tl-lg rounded-br-lg shadow-md hover:bg-orange-600"

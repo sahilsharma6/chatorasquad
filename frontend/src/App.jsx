@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import { CartProvider } from "./context/CartContext";
 import Home from "./Pages/Home";
 import LoginForm from "./components/LoginForm";
 import SignupForm from "./components/SignupForm";
@@ -20,7 +21,7 @@ import Gallery from "./Pages/Gallery";
 import Profile from "./Pages/Profile";
 import ProfileSettings from "./Pages/ProfileSettings";
 import ProtectedRoute from "./components/ProtectedRoutes";
-import GetMenuDetails from "./components/GetMenu/GetMenuDetails";
+
 import RefundPolicy from "./Pages/RefundPolicy";
 import TermsConditions from "./Pages/TermsConditions";
 import Privacy from "./Pages/Privacy";
@@ -52,7 +53,7 @@ function Layout() {
         <Route path="/orders" element={<Orders />} />
         <Route
           path="/menu/details/:id"
-          element={<GetMenuDetails />}
+          element={<GetMenu />}
         />
 
         <Route path="/refund" element={<RefundPolicy />} />
@@ -83,9 +84,11 @@ function Layout() {
 function App() {
   return (
     <UserProvider>
+      <CartProvider>
       <Router>
         <Layout />
       </Router>
+      </CartProvider>
     </UserProvider>
   );
 }
