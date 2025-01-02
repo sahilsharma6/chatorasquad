@@ -95,7 +95,7 @@ export const addCuisine = async (req, res) => {
         const {name,image} = req.body;
         const existingCuisine = await Cuisine.findOne({name});
         if(existingCuisine){
-            return res.status(400).json({message:"Cuisine already exists"});
+            return res.status(200).json({message:"Cuisine already exists"});
         }
         const date = new Date();
         const cuisine = new Cuisine({
