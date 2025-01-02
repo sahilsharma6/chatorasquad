@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Heart, Eye, ShoppingBag, Utensils } from 'lucide-react';
-import apiClient from '../services/apiClient';
-import { Link } from 'react-router-dom';
-
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Heart, Eye, ShoppingBag, Utensils } from "lucide-react";
+import apiClient from "../services/apiClient";
+import { Link } from "react-router-dom";
 
 const DishCard = ({ dish }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -19,12 +18,12 @@ const DishCard = ({ dish }) => {
       {/* Like Button */}
       <motion.button
         className={`absolute top-4 right-4 ${
-          isLiked ? 'text-yellow-500' : 'text-gray-400'
+          isLiked ? "text-yellow-500" : "text-gray-400"
         } group-hover:text-white`}
         onClick={() => setIsLiked(!isLiked)}
         whileTap={{ scale: 0.9 }}
       >
-        <Heart className="w-6 h-6" fill={isLiked ? 'currentColor' : 'none'} />
+        <Heart className="w-6 h-6" fill={isLiked ? "currentColor" : "none"} />
       </motion.button>
 
       <div className="absolute right-0 top-11 z-10 space-y-2 flex flex-col items-center ">
@@ -44,12 +43,13 @@ const DishCard = ({ dish }) => {
         </motion.button>
       </div>
 
-
       <Link to={`/menu/details/${dish._id}`} className="block">
- 
         <div className="relative w-full aspect-square rounded-full overflow-hidden mb-4 ">
           <img
-            src={dish.image || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s'}
+            src={
+              dish.image ||
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s"
+            }
             alt={dish.name}
             className="w-full h-full object-cover"
           />
@@ -57,14 +57,18 @@ const DishCard = ({ dish }) => {
 
         {/* Card Content */}
         <div className="text-center">
-          <h3 className="text-lg font-bold mb-2 group-hover:text-white">{dish.name}</h3>
-          <p className="text-sm mb-4 group-hover:text-white">{dish.description.slice(0,140)}...</p>
+          <h3 className="text-lg font-bold mb-2 group-hover:text-white">
+            {dish.name}
+          </h3>
+          <p className="text-sm mb-4 group-hover:text-white">
+            {dish.description.slice(0, 140)}...
+          </p>
           <motion.p
             className="text-xl font-bold"
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.1 }}
           >
-            ${dish.price}
+            ${dish.sellingPrice}
           </motion.p>
         </div>
       </Link>
@@ -72,23 +76,21 @@ const DishCard = ({ dish }) => {
   );
 };
 
-
 const FoodMenu = () => {
   const [dishes, setDishes] = useState([]);
-
 
   useEffect(() => {
     const fetchTopRatedDishes = async () => {
       try {
-        const response = await apiClient.get('/menu/toprated'); 
-        setDishes(response.data); 
+        const response = await apiClient.get("/menu/toprated");
+        setDishes(response.data);
       } catch (error) {
-        console.error('Failed to fetch top-rated dishes:', error);
+        console.error("Failed to fetch top-rated dishes:", error);
       }
     };
 
     fetchTopRatedDishes();
-  }, []); 
+  }, []);
 
   return (
     <div className="max-w-full mx-auto px-20 py-12">
@@ -129,7 +131,6 @@ const FoodMenu = () => {
           },
         }}
       >
-
         {dishes.length > 0 ? (
           dishes.map((dish, index) => <DishCard key={index} dish={dish} />)
         ) : (

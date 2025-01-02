@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { IndianRupee, Utensils } from "lucide-react";
-import apiClient from "../services/apiClient"; 
+import apiClient from "../services/apiClient";
 import { Link } from "react-router-dom";
 
 const FoodMenuSwiper = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [foodItems, setFoodItems] = useState([]); 
+  const [foodItems, setFoodItems] = useState([]);
   useEffect(() => {
     const fetchFoodItems = async () => {
       try {
@@ -18,7 +18,7 @@ const FoodMenuSwiper = () => {
     };
 
     fetchFoodItems();
-  }, []); 
+  }, []);
 
   const containerVariants = {
     animate: {
@@ -32,6 +32,7 @@ const FoodMenuSwiper = () => {
       },
     },
   };
+  console.log(foodItems);
 
   return (
     <div className="max-w-full mx-auto px-20 py-8 overflow-hidden">
@@ -61,44 +62,48 @@ const FoodMenuSwiper = () => {
       <div
         className="relative overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)} 
+        onMouseLeave={() => setIsHovered(false)}
       >
         <motion.div
           className="flex gap-6"
           variants={containerVariants}
           animate="animate"
         >
-         
           {[...foodItems, ...foodItems].map((item, index) => (
-            <Link to={`/menu/details/${item._id}`}  key={index}>
-            <div
-              key={index}
-              className="w-72 bg-yellow-300 rounded-lg shadow-xl flex-shrink-0 p-4 h-96"
-            >
-              <div className="relative">
-                <div className="w-full h-48 rounded-full overflow-hidden mb-4">
-                  <img
-                    src={item.image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s"}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                  />
+            <Link to={`/menu/details/${item._id}`} key={index}>
+              <div
+                key={index}
+                className="w-72 bg-yellow-300 rounded-lg shadow-xl flex-shrink-0 p-4 h-96"
+              >
+                <div className="relative">
+                  <div className="w-full h-48 rounded-full overflow-hidden mb-4">
+                    <img
+                      src={
+                        item.image ||
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s"
+                      }
+                      alt={item.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-20 h-20 bg-gray-900 rounded-full gap-0 items-center justify-center text-white flex flex-wrap">
+                    <IndianRupee />
+                    <span className="text-white font-bold">
+                      {" "}
+                      {item?.sellingPrice}
+                      {/* ferf */}
+                    </span>
+                  </div>
                 </div>
-                <div className="absolute -top-2 -right-2 w-20 h-20 bg-gray-900 rounded-full gap-0 items-center justify-center text-white flex flex-wrap">
-                  <IndianRupee />
-                  <span className="text-white font-bold"> {item.price}</span>
-                </div>
+                <h3 className="text-xl font-bold text-center text-gray-900">
+                  {item.name}
+                </h3>
+                <p className="text-gray-900 text-center text-sm">
+                  {console.log(foodItems)}
+                  {item.description.slice(0, 150)}...
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-center text-gray-900">
-                {item.name}
-              </h3>
-              <p className="text-gray-900 text-center text-sm">
-                {console.log(foodItems)
-                }
-                { item.description.slice(0,150)}...
-                
-              </p>
-            </div>
-          </Link>
+            </Link>
           ))}
         </motion.div>
       </div>

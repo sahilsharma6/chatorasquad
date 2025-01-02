@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Upload } from 'lucide-react';
-import apiClient from '../../services/apiClient';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Upload } from "lucide-react";
+import apiClient from "../../services/apiClient";
 
 const AddMenu = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    title: '',
-    type: 'Category 1',
-    cuisine: 'Indian',
-    quantity: '',
-    price: '',
-    description: '',
-    images:[],
+    name: "",
+    title: "",
+    type: "Category 1",
+    cuisine: "Indian",
+    quantity: "",
+    sellingPrice: 0,
+    description: "",
+    images: [],
   });
 
   const [errors, setErrors] = useState({}); // State for error messages
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = 'Dish Name is required';
+    if (!formData.name) newErrors.name = "Dish Name is required";
     // if (!formData.title) newErrors.title = 'Dish Title is required';
     // if (!formData.quantity) newErrors.quantity = 'Quantity is required';
-    if (!formData.price) newErrors.price = 'Price is required';
-    if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.images) newErrors.images = 'Dish Image is required';
+    if (!formData.sellingPrice) newErrors.sellingPrice = "Price is required";
+    if (!formData.description)
+      newErrors.description = "Description is required";
+    if (!formData.images) newErrors.images = "Dish Image is required";
     return newErrors;
   };
 
@@ -33,24 +34,24 @@ const AddMenu = () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      return; 
+      return;
     }
-    
+
     try {
-      const data = await apiClient.post('/menu/add', formData);
+      const data = await apiClient.post("/menu/add", formData);
       console.log(data);
     } catch (error) {
-      console.error('Error adding menu:', error);
+      console.error("Error adding menu:", error);
     }
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="max-w-full mx-auto p-6 bg-white rounded-lg shadow-lg transition-all"
     >
-      <h1 className='text-4xl text-center mb-6'>Add Dish</h1>
+      <h1 className="text-4xl text-center mb-6">Add Dish</h1>
       <form className="space-y-6" onSubmit={handelAdd}>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
@@ -61,9 +62,13 @@ const AddMenu = () => {
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               placeholder="Enter Dish Name"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 mb-2">Dish Title</label>
@@ -73,9 +78,13 @@ const AddMenu = () => {
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               placeholder="Enter Dish Title"
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
-            {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
+            {errors.title && (
+              <p className="text-red-500 text-sm">{errors.title}</p>
+            )}
           </div>
         </div>
 
@@ -85,7 +94,9 @@ const AddMenu = () => {
             <select
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, type: e.target.value })
+              }
             >
               <option>Veg</option>
               <option>Non Veg</option>
@@ -97,7 +108,9 @@ const AddMenu = () => {
             <select
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               value={formData.Cuisine}
-              onChange={(e) => setFormData({ ...formData, Cuisine: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, Cuisine: e.target.value })
+              }
             >
               <option>Indian</option>
               <option>Italian</option>
@@ -115,21 +128,29 @@ const AddMenu = () => {
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               placeholder="01"
               value={formData.quantity}
-              onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, quantity: e.target.value })
+              }
             />
-            {errors.quantity && <p className="text-red-500 text-sm">{errors.quantity}</p>}
+            {errors.quantity && (
+              <p className="text-red-500 text-sm">{errors.quantity}</p>
+            )}
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Price</label>
+            <label className="block text-gray-700 mb-2">Selling Price</label>
             <motion.input
               whileFocus={{ scale: 1.01 }}
               type="number"
               className="w-full px-4 py-4 border-gray-700 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               placeholder="$10"
-              value={formData.price}
-              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              value={formData.sellingPrice}
+              onChange={(e) =>
+                setFormData({ ...formData, sellingPrice: e.target.value })
+              }
             />
-            {errors.price && <p className="text-red-500 text-sm">{errors.price}</p>}
+            {errors.sellingPrice && (
+              <p className="text-red-500 text-sm">{errors.sellingPrice}</p>
+            )}
           </div>
         </div>
 
@@ -140,9 +161,13 @@ const AddMenu = () => {
             className="w-full px-4 py-4 border-gray-700 border rounded-lg h-32 resize-none focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
             placeholder="Message"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, description: e.target.value })
+            }
           />
-          {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+          {errors.description && (
+            <p className="text-red-500 text-sm">{errors.description}</p>
+          )}
         </div>
 
         <div>
@@ -169,7 +194,9 @@ const AddMenu = () => {
               <Upload size={36} />
             </motion.button>
           </div>
-          {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+          {errors.image && (
+            <p className="text-red-500 text-sm">{errors.image}</p>
+          )}
         </div>
 
         <motion.button
