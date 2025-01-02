@@ -127,7 +127,7 @@ const ViewCart = () => {
                 ₹
                 {cartItems.reduce(
                   (sum, item) =>
-                    sum + (item.discountedPrice || item.sellingPrice) * item.quantity,
+                    sum + ( item.sellingPrice) * item.quantity,
                   0
                 ) + 3}
               </span>
