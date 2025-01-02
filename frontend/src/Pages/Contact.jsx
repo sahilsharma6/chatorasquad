@@ -126,8 +126,12 @@ const Contact = () => {
             <p className="text-gray-800 font-semibold">
               Email: howdn68@gmail.com
             </p>
-            <p className="text-gray-800 font-semibold mb-8">
+            <p className="text-gray-800 font-semibold mb-4">
               Phone: +91-9235264749
+            </p>
+
+            <p className="text-gray-800 font-semibold mb-8">
+              Company: SCSH CHATORA SQUAD (OPC) <br /> PRIVATE LIMITED{" "}
             </p>
 
             <div className="flex gap-6">
