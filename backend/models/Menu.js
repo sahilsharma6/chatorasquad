@@ -11,11 +11,11 @@ const MenuSchema = mongoose.Schema(
       required: true,
       // enum: ["Veg", "Non-Veg", "Egg"],
     },
-    sellingprice: {
+    sellingPrice: {
       type: Number,
       required: true,
     },
-    discountedprice: {
+    discountedPrice: {
       type: Number,
     },
     description: {

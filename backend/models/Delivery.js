@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const DeliverySchema = mongoose.Schema(
     {
-        zipcode: {
+        zipCode: {
             type: Number,
             required: true,
         },

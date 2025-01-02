@@ -2,12 +2,12 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, sellingprice,discountedprice, description, images, isAvailable, cuisine} = req.body;
+        const {name, type, sellingPrice,discountedPrice, description, images, isAvailable, cuisine} = req.body;
         const menu = new Menu({
             name,
             type,
-            sellingprice,
-            discountedprice,
+            sellingPrice,
+            discountedPrice,
             description,
             images,
             isAvailable,
@@ -64,39 +64,39 @@ export const getMenuDetails = async (req, res) => {
     }
 }
 
-export const getFilteredMenu = async (req, res) => {
-    try {
-      const { searchValue } = req.query; 
-      const { cuisine, type, sellingprice, rating } = req.body; 
+// export const getFilteredMenu = async (req, res) => {
+//     try {
+//       const { searchValue } = req.query; 
+//       const { cuisine, type, sellingprice, rating } = req.body; 
   
-      const query = {};
-  
-      
-      if (cuisine) query.Cuisine = cuisine;
-      if (type) query.type = type;
-      if (sellingprice) query.sellingprice = { $lte: Number(sellingprice) };
-      if (rating) query.rating = { $gte: Number(rating) };
+//       const query = {};
   
       
-      if (searchValue) {
-        query.$or = [
-          { name: { $regex: searchValue, $options: "i" } },
-          { description: { $regex: searchValue, $options: "i" } },
-          { Cuisine: { $regex: searchValue, $options: "i" } },
-        ];
-      }
-      if (!searchValue && Object.keys(query).length === 0) {
-        const menu = await Menu.find(); 
-        return res.status(200).json(menu);
-      }
+//       if (cuisine) query.Cuisine = cuisine;
+//       if (type) query.type = type;
+//       if (sellingprice) query.sellingprice = { $lte: Number(sellingprice) };
+//       if (rating) query.rating = { $gte: Number(rating) };
   
-      const menu = await Menu.find(query); 
-      res.status(200).json(menu);
-    } catch (error) {
-      console.error("Error fetching menu:", error);
-      res.status(500).json({ message: "Internal server error" });
-    }
-  };
+      
+//       if (searchValue) {
+//         query.$or = [
+//           { name: { $regex: searchValue, $options: "i" } },
+//           { description: { $regex: searchValue, $options: "i" } },
+//           { Cuisine: { $regex: searchValue, $options: "i" } },
+//         ];
+//       }
+//       if (!searchValue && Object.keys(query).length === 0) {
+//         const menu = await Menu.find(); 
+//         return res.status(200).json(menu);
+//       }
+  
+//       const menu = await Menu.find(query); 
+//       res.status(200).json(menu);
+//     } catch (error) {
+//       console.error("Error fetching menu:", error);
+//       res.status(500).json({ message: "Internal server error" });
+//     }
+//   };
 
 
 export const getTrendingMenu = async (req, res) => {
@@ -111,12 +111,12 @@ export const getTrendingMenu = async (req, res) => {
 
   export const updateMenu = async (req, res) => {
     try{
-        const {name, type, sellingprice,discountedprice, description, image, isAvailable, cuisine} = req.body;
+        const {name, type, sellingPrice,discountedPrice, description, image, isAvailable, cuisine} = req.body;
         const menu = await Menu.findById(req.params.id);
         menu.name = name;
         menu.type = type;
-        menu.sellingprice = sellingprice;
-        menu.discountedprice = discountedprice;
+        menu.sellingPrice = sellingPrice;
+        menu.discountedPrice = discountedPrice;
         menu.description = description;
         menu.image = image;
         menu.isAvailable = isAvailable;

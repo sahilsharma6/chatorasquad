@@ -8,9 +8,9 @@ export const addOrder = async (req, res) => {
 
 
         const paymentStatus = "Paid";
-        const {userid,date,time,items,total,deliveryAddress,orderStatus} = req.body;
+        const {userId,date,time,items,total,deliveryAddress,orderStatus} = req.body;
         const order = new Order({
-            userid,
+            userId,
             date,
             time,
             items,
@@ -177,9 +177,9 @@ export const deleteCuisine = async (req, res) => {
 
 export const adddeliveryaddress = async (req, res) => {
     try{
-        const {zipcode} = req.body;
+        const {zipCode} = req.body;
         const delivery = new Delivery({
-            zipcode
+            zipCode
         });
         await delivery.save();
         res.status(200).json({message:"Delivery added successfully"});
@@ -221,10 +221,10 @@ export const deletedeliveryaddress = async (req, res) => {
 export const updatedeliveryaddress = async (req, res) => {
     try{
         const id = req.params.id;
-        const {zipcode} = req.body;
+        const {zipCode} = req.body;
         const delivery = await Delivery.findById(id);
         if(delivery){
-            delivery.zipcode = zipcode;
+            delivery.zipCode = zipCode;
             await delivery.save();
             res.status(200).json({message:"Delivery updated successfully"});
         }
@@ -236,4 +236,21 @@ export const updatedeliveryaddress = async (req, res) => {
         res.status(500).json({message:"Internal server error"});
     }
 
+}
+
+
+export const checkdeliveryaddress = async (req, res) => {
+    try{
+        const {zipCode} = req.body;
+        const delivery = await Delivery.findOne({zipCode});
+        if(delivery){
+            res.status(200).json({message:"Delivery available"});
+        }
+        else{
+            res.status(400).json({message:"Delivery not available"});
+        }
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
 }
