@@ -29,4 +29,5 @@ router.post('/addorder/:id',authMiddleware,addOrder); // id is user id
 
 router.get('/getcart',authMiddleware,getCart) ; // id is user id
 router.put('/updatecart',authMiddleware,addtoCart); // id is user id
+
 export default router;
