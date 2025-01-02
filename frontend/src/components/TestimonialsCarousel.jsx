@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaStar } from "react-icons/fa";
-import testimonials from '../Data/testimonials.json';
+import testimonials from "../Data/testimonials.json";
 
 export default function TestimonialsCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,7 +47,9 @@ export default function TestimonialsCarousel() {
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold mb-4">Our Happy Customers</h2>
           <p className="text-gray-600 mb-10">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+            Join our satisfied guests who enjoy delicious meals, exceptional
+            service, <br /> and a cozy atmosphere that keeps them coming back
+            for more!
           </p>
         </div>
 
@@ -91,8 +93,12 @@ export default function TestimonialsCarousel() {
                   {testimonials[currentIndex].text}
                 </p>
                 <div className="text-center">
-                  <h4 className="font-bold text-lg">{testimonials[currentIndex].name}</h4>
-                  <p className="text-gray-500">{testimonials[currentIndex].title}</p>
+                  <h4 className="font-bold text-lg">
+                    {testimonials[currentIndex].name}
+                  </h4>
+                  <p className="text-gray-500">
+                    {testimonials[currentIndex]?.title}
+                  </p>
                 </div>
               </div>
             </motion.div>
