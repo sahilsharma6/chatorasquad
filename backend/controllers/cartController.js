@@ -2,12 +2,12 @@ import Cart from "../models/Cart.js";
 
 export const addtoCart = async (req, res) => {
     try{
-        const userid = req.user._id;
+        const userId = req.user._id;
         const {items, total} = req.body;
-        const cart = await Cart.findOne({userid});
+        const cart = await Cart.findOne({userId});
         if(!cart){
             const newCart = new Cart({
-                userid,
+                userId,
                 items,
                 total
             });
@@ -28,8 +28,8 @@ export const addtoCart = async (req, res) => {
 
 export const getCart = async (req, res) => {
     try{
-        const userid = req.user._id;
-        const cart = await Cart.findOne({userid});
+        const userId = req.user._id;
+        const cart = await Cart.findOne({userId});
         res.status(200).json(cart);
     }catch(error){
         res.status(500).json({message:"Internal server error"});

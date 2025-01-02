@@ -175,7 +175,7 @@ export const deleteCuisine = async (req, res) => {
 }
 
 
-export const adddelivery = async (req, res) => {
+export const adddeliveryaddress = async (req, res) => {
     try{
         const {zipcode} = req.body;
         const delivery = new Delivery({
@@ -190,7 +190,7 @@ export const adddelivery = async (req, res) => {
 }
 
 
-export const getDelivery = async (req, res) => {
+export const getDeliveryaddress = async (req, res) => {
     try{
         const deliveries = await Delivery.find();
         res.status(200).json(deliveries);
@@ -201,7 +201,7 @@ export const getDelivery = async (req, res) => {
 }
 
 
-export const deletedelivery = async (req, res) => {
+export const deletedeliveryaddress = async (req, res) => {
     try{
         const id = req.params.id;
         const delivery = await Delivery.findById(id);
@@ -218,7 +218,7 @@ export const deletedelivery = async (req, res) => {
     }
 }
 
-export const updatedelivery = async (req, res) => {
+export const updatedeliveryaddress = async (req, res) => {
     try{
         const id = req.params.id;
         const {zipcode} = req.body;
