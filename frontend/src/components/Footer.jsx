@@ -26,6 +26,8 @@ const Footer = () => {
     ["Ludhiana", "Agra", "Nashik", "Meerut", "Rajkot"],
   ];
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className=" bg-gray-900 text-gray-300 py-12 px-6 ">
       <motion.div
@@ -35,7 +37,7 @@ const Footer = () => {
         variants={containerVariants}
       >
         {/* Top Cities Section */}
-        <motion.div variants={itemVariants} className="mb-12">
+        {/* <motion.div variants={itemVariants} className="mb-12">
           <h2 className="text-white text-xl font-semibold mb-6">
             Our top cities
           </h2>
@@ -55,10 +57,10 @@ const Footer = () => {
               </div>
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 border-t border-gray-800">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 py-8 ">
           {/* Company Section */}
           <motion.div variants={itemVariants}>
             <h3 className="text-white font-semibold mb-4">Company</h3>
@@ -185,7 +187,8 @@ const Footer = () => {
           className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800"
         >
           <p className="text-gray-400 text-sm">
-            All rights Reserved © Chatorasquad, 2024
+            All rights Reserved © SCSH CHATORA SQUAD (OPC) PRIVATE LIMITED ({""}
+            {currentYear})
           </p>
           {/* <div className="flex items-center text-gray-400 text-sm">
             <span>Made with</span>

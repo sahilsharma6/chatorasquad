@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-import signupImage from "../assets/signup.png";
-
+import signupImg from "../assets/signup.png";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -28,19 +27,21 @@ const LoginForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      try{
-        const res = await apiClient.post("/auth/login", formData);  
+      try {
+        const res = await apiClient.post("/auth/login", formData);
         console.log(res.data);
-        if(res.status === 200){
+        if (res.status === 200) {
           setLoggedIn(true);
           navigate("/");
         }
-      }catch(err){
-        setErrors({email: "Invalid Credentials", password: "Invalid Credentials"}); 
-     
+      } catch (err) {
+        setErrors({
+          email: "Invalid Credentials",
+          password: "Invalid Credentials",
+        });
       }
     }
   };
@@ -59,27 +60,26 @@ const LoginForm = () => {
     },
   };
 
-
-  if(loggedIn){
+  if (loggedIn) {
     navigate("/");
   }
 
   return (
     <div
-    className="w-full bg-cover bg-center flex items-center justify-center  text-center p-8"
-    style={{
-      backgroundImage: `url(${signupImage})`,
-    }}
-  >
-    <div className="min-h-screen flex items-center justify-center ">
-      <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[40vh] md:h-[50vh]">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className=" w-full md:w-1/2 p-8 flex flex-col justify-center "
-        >
-          <h2 className="text-3xl font-bold mb-6 text-gray-700">
+      className="w-full bg-cover bg-center flex items-center justify-center  text-center p-8"
+      style={{
+        backgroundImage: `url(${signupImg})`,
+      }}
+    >
+      <div className="min-h-screen flex items-center justify-center ">
+        <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[40vh] md:h-[50vh]">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className=" w-full md:w-1/2 p-8 flex flex-col justify-center "
+          >
+            <h2 className="text-3xl font-bold mb-6 text-gray-700">
               Please login to your account
             </h2>
             <form onSubmit={handleSubmit}>
@@ -142,27 +142,27 @@ const LoginForm = () => {
               </span>
             </p>
           </motion.div>
-        <div
-          className="w-1/2 bg-cover bg-center  items-center justify-center text-white text-center p-2 hidden md:flex"
-          style={{
-            backgroundImage: "url('png')",
-          }}
-        >
-          <div className="w-full bg-gradient-to-r from-orange-500 to-pink-500 opacity-90 h-full flex items-center justify-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-4">
-                We are more than just a company
-              </h2>
-              <p className="text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                do eiusmod tempor incididunt.
-              </p>
+          <div
+            className="w-1/2 bg-cover bg-center  items-center justify-center text-white text-center p-2 hidden md:flex"
+            style={{
+              backgroundImage: "url('png')",
+            }}
+          >
+            <div className="w-full bg-gradient-to-r from-orange-500 to-pink-500 opacity-90 h-full flex items-center justify-center">
+              <div>
+                <h2 className="text-3xl font-bold mb-4">
+                  We are more than just a company
+                </h2>
+                <p className="text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
