@@ -2,7 +2,8 @@ import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 export const addMenu = async (req, res) => {
     try{
-        const {name, type, sellingPrice,discountedPrice, description, images, isAvailable, cuisine} = req.body;
+        const {name, type, sellingPrice,discountedPrice, description, isAvailable, cuisine} = req.body;
+        const images = req.files.map(file => file.path);
         const menu = new Menu({
             name,
             type,
