@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-
+import signupImage from "../assets/signup.png";
 
 
 const LoginForm = () => {
@@ -68,7 +68,7 @@ const LoginForm = () => {
     <div
     className="w-full bg-cover bg-center flex items-center justify-center  text-center p-8"
     style={{
-      backgroundImage: "url('./src/assets/signup.png')",
+      backgroundImage: `url(${signupImage})`,
     }}
   >
     <div className="min-h-screen flex items-center justify-center ">

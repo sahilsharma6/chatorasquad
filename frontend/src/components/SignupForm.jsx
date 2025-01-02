@@ -4,7 +4,7 @@ import { User, Mail, Lock, EyeOff, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiClient from "../services/apiClient";
-
+import signupImage from "../assets/signup.png";
 const SignupForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -89,7 +89,7 @@ const SignupForm = () => {
     <div
        className="w-full bg-cover bg-center flex items-center justify-center  text-center "
        style={{
-         backgroundImage: "url('./src/assets/signup.png')",
+          backgroundImage: `url(${signupImage})`,
        }}
      >
        <div className="min-h-screen flex items-center justify-center">
