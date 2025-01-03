@@ -109,6 +109,16 @@ export const getTrendingMenu = async (req, res) => {
     }
 }
 
+export const getDairyAndBeveragesMenu = async (req, res) => {
+    try{
+        const menu = await Menu.find({type:{
+            $in:["Dairy","Beverage"]
+        }});
+        res.status(200).json(menu);
+    }catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
 
   export const updateMenu = async (req, res) => {
     try{

@@ -110,10 +110,12 @@ function Welcome() {
           src={bowlImg}
           alt="food"
           className="w-auto h-auto md:w-96 mg:h-96 lg:h-auto lg:w-auto"
+          style={{filter: "drop-shadow(1px 3px 5px  black)"}}
         />
       </div>
     </div>
   );
+  
 }
 
 export default Welcome;
