@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Heart, Eye, ShoppingBag, Utensils } from "lucide-react";
+import { Heart, Eye, ShoppingBag, Utensils, IndianRupee } from "lucide-react";
 import apiClient from "../services/apiClient";
 import { Link } from "react-router-dom";
 
@@ -68,7 +68,7 @@ const DishCard = ({ dish }) => {
             initial={{ scale: 1 }}
             whileHover={{ scale: 1.1 }}
           >
-            ${dish.sellingPrice}
+           ₹{dish.sellingPrice}
           </motion.p>
         </div>
       </Link>
