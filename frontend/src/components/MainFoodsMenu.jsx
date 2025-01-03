@@ -12,9 +12,9 @@ const categories = [
 
 const priceRanges = [
   { id: "all", label: "All Prices" },
-  { id: "low", label: "Under $10" },
-  { id: "mid", label: "$10 - $20" },
-  { id: "high", label: "Above $20" },
+  { id: "low", label: "Under ₹10" },
+  { id: "mid", label: "₹10 - ₹20" },
+  { id: "high", label: "Above ₹20" },
 ];
 
 const FoodMainMenu = () => {
@@ -243,7 +243,7 @@ const FoodMainMenu = () => {
                   <p className="text-xs sm:text-sm">{item.description}</p>
                 </div>
                 <div className="text-base sm:text-xl font-bold text-black">
-                  ${item?.sellingPrice}
+                ₹{item?.sellingPrice}
                 </div>
               </motion.div>
             </Link>
