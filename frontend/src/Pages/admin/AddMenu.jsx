@@ -7,11 +7,12 @@ const AddMenu = () => {
   const [formData, setFormData] = useState({
     name: "",
     title: "",
-    type: "Category 1",
+    type: "",
     cuisine: "",
     quantity: "",
     sellingPrice: 0,
     description: "",
+    discountedPrice:0,
     images: [], 
   });
 
@@ -22,6 +23,8 @@ const AddMenu = () => {
     const fetchCuisines = async () => {
       try {
         const response = await apiClient.get("/admin/cuisines");
+        console.log(response.data);
+        
         setCuisines(response.data); 
       } catch (error) {
         console.error("Error fetching cuisines:", error);
@@ -55,6 +58,7 @@ const AddMenu = () => {
     formDataToSend.append("quantity", formData.quantity);
     formDataToSend.append("sellingPrice", formData.sellingPrice);
     formDataToSend.append("description", formData.description);
+    formDataToSend.append("discountedPrice", formData.discountedPrice);
 
 
     formData.images.forEach((image) => {
@@ -164,7 +168,7 @@ const AddMenu = () => {
         </div>
 
         {/* Quantity and Selling Price */}
-        <div className="grid lg:grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-3 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Quantity</label>
             <motion.input
@@ -191,6 +195,22 @@ const AddMenu = () => {
               value={formData.sellingPrice}
               onChange={(e) =>
                 setFormData({ ...formData, sellingPrice: e.target.value })
+              }
+            />
+            {errors.sellingPrice && (
+              <p className="text-red-500 text-sm">{errors.sellingPrice}</p>
+            )}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Discounted Price</label>
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
+              type="number"
+              className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
+              placeholder="$10"
+              value={formData.discountedPrice}
+              onChange={(e) =>
+                setFormData({ ...formData, discountedPrice: e.target.value })
               }
             />
             {errors.sellingPrice && (
