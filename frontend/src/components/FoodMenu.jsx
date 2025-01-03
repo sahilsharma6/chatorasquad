@@ -104,7 +104,7 @@ const FoodMenu = () => {
               <Utensils />
             </span>
           </motion.div>
-          <h2 className="text-yellow-500 font-semibold">POPULAR DISHES</h2>
+          <h2 className="text-yellow-500 font-semibold">Dairy Products</h2>
           <motion.div
             whileHover={{ scale: 1.1 }}
             className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center"
@@ -114,7 +114,7 @@ const FoodMenu = () => {
             </span>
           </motion.div>
         </div>
-        <h1 className="text-4xl font-bold">Top-Selling Dishes</h1>
+        <h1 className="text-4xl font-bold">Beverages and Dairyproduct</h1>
       </div>
 
       <motion.div

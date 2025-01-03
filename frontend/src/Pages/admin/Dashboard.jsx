@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Coffee, DollarSign, ClipboardList, Users } from 'lucide-react';
+import { Coffee, IndianRupee, ClipboardList, Users } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Piechart from '../../components/admin/Dashboard/Piechart';
@@ -78,7 +78,7 @@ const Dashboard = () => {
             className="bg-yellow-50 text-yellow-600 shadow-md"
           />
           <StatCard
-            icon={DollarSign}
+            icon={IndianRupee}
             value="12k"
             label="TOTAL REVENUE"
             className="bg-yellow-50 text-yellow-600 shadow-md"
@@ -157,11 +157,11 @@ const Dashboard = () => {
             <div className="flex justify-between mb-6">
               <div>
                 <p className="text-gray-500 text-sm">Income</p>
-                <p className="text-2xl font-bold">$41,512k</p>
+                <p className="text-2xl font-bold"> ₹41,512k</p>
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Expense</p>
-                <p className="text-2xl font-bold">$41,512k</p>
+                <p className="text-2xl font-bold"> ₹41,512k</p>
               </div>
             </div>
             {/* AreaChart  */}

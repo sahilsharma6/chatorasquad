@@ -39,13 +39,13 @@ const RatingsAndReviews = ({ product }) => {
     >
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-xl font-medium">Ratings & Reviews</h2>
-        <motion.button
+        {/* <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="px-4 py-2 border rounded-lg hover:bg-gray-50 border-orange-500"
         >
           Rate The Dish
-        </motion.button>
+        </motion.button> */}
       </div>
 
       <div className="flex items-start gap-12 flex-wrap">

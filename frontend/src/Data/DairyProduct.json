@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Mango Lassi",
+        "sellingPrice": 150.00,
+        "image": "https://img.freepik.com/free-photo/panna-cotta-with-pineapple-slices_140725-2172.jpg?t=st=1735895134~exp=1735898734~hmac=e427b8ee91e9ce0c6fbe970f712ba1aff45481ba858d29cc79d63ebdd6e181c5&w=360",
+        "description": "A refreshing yogurt-based drink blended with ripe mangoes."
+    },
+    {
+        "name": "Iced Coffee",
+        "sellingPrice": 120.00,
+        "image": "https://img.freepik.com/free-photo/front-view-coffee-latte-with-coffee-beans_141793-4603.jpg?t=st=1735895160~exp=1735898760~hmac=da318facd7d7c9948afc94bf02b9f1331309c4dd42bdf98188a805170f8ccf74&w=360",
+        "description": "Chilled coffee served with ice, perfect for hot days."
+    },
+    {
+        "name": "Lemonade",
+        "sellingPrice": 80.00,
+        "image": "https://images.pexels.com/photos/96620/pexels-photo-96620.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "description": "A classic refreshing drink made with fresh lemons and sugar."
+    },
+    {
+        "name": "Green Tea",
+        "sellingPrice": 90.00,
+        "image": "https://plus.unsplash.com/premium_photo-1694540110881-84add98c0a75?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "A soothing beverage made from green tea leaves."
+    },
+    {
+        "name": "Cheddar Cheese",
+        "sellingPrice": 300.00,
+        "image": "https://media.gettyimages.com/id/2159711478/photo/cheddar-cheese.webp?s=1024x1024&w=gi&k=20&c=2xf9P3mXxKXWkUX5FB4CEiNk8_gVyak-Zi1sK3LkV1M=",
+        "description": "A rich and creamy cheese perfect for sandwiches and cooking."
+    },
+    {
+        "name": "Greek Yogurt",
+        "sellingPrice": 200.00,
+        "image": "https://img.freepik.com/free-photo/sweet-yoghurt-with-blackberries_23-2148469910.jpg?t=st=1735895275~exp=1735898875~hmac=153374089ebd1cedf3b247b112de7b813725cb7744bdf20d09cc57a89da2ebcc&w=360",
+        "description": "Thick and creamy yogurt, great for breakfast or snacks."
+    },
+    {
+        "name": "Butter",
+        "sellingPrice": 150.00,
+        "image": "https://img.freepik.com/premium-photo/piece-butter-white-bowl_42687-72.jpg?w=740",
+        "description": "Rich and creamy butter, perfect for cooking and baking."
+    },
+    {
+        "name": "Milk",
+        "sellingPrice": 100.00,
+        "image": "https://media.istockphoto.com/id/1728306802/photo/milk-with-camomiles-on-wooden-table-and-cow-grazing-in-meadow.webp?s=1024x1024&w=is&k=20&c=V-NcE30Qse8Ym8tepsPI5rPWXCYVJnTrp5BciWymzyE=",
+        "description": "Fresh milk, a staple for any kitchen."
+    }
+]
