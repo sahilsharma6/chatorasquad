@@ -167,20 +167,28 @@ export const updateMenuRating = async (req, res) => {
 };
 
 export const deleteMenu = async (req, res) => {
-    try{
+    try {
         const id = req.params.id;
+
         const menu = await Menu.findById(id);
-        const cuisine = await Cuisine.find({name:menu.Cuisine});
-        cuisine[0].items = cuisine[0].items.filter(item => item.toString() !== id);
-        await cuisine[0].save();
-        await menu.remove();
+        if (!menu) {
+            return res.status(404).json({ message: "Menu item not found" });
+        }
+     
+        const cuisine = await Cuisine.findOne({ name: menu.Cuisine });
+        if (cuisine) {
+            cuisine.items = cuisine.items.filter(item => item.toString() !== id);
+            await cuisine.save();
+        }
 
+      
+        await menu.deleteOne();
 
-        res.status(200).json({message:"Menu deleted successfully"});
-    }catch(error){
-        res.status(500).json({message:"Internal server error"});
-
-    }   
+        res.status(200).json({ message: "Menu Item deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 };
 
 

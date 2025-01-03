@@ -70,9 +70,9 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
                   className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
                 >
                   <td className="p-4">{customer.firstName}</td>
-                  <td className="p-4">{customer.phone}</td>
+                  <td className="p-4">{customer.phoneNo}</td>
                   <td className="p-4">{customer.email}</td>
-                  <td className="p-4">{customer.created}</td>
+                  <td className="p-4">{new Date(customer.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                   <td className="p-4">
                     <div className="flex gap-3">
                       {/* <button 

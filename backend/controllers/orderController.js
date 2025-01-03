@@ -1,6 +1,7 @@
 import Order from '../models/Order.js';
 import Cuisine from '../models/Cuisine.js';
 import Delivery from '../models/Delivery.js';
+import User from '../models/User.js';
 
 export const addOrder = async (req, res) => {
     try{
@@ -162,7 +163,7 @@ export const deleteCuisine = async (req, res) => {
         const id = req.params.id;
         const cuisine = await Cuisine.findById(id);
         if(cuisine){
-            await cuisine.remove();
+            await cuisine.deleteOne();
             res.status(200).json({message:"Cuisine deleted successfully"});
         }
         else{
@@ -258,4 +259,16 @@ export const checkdeliveryaddress = async (req, res) => {
       return res.status(500).json({ message: "Internal server error" });
     }
   };
+
+
+  export const getUsers = async (req, res) => {
+    try{
+        const users = await User.find();
+        res.status(200).json(users);
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
   

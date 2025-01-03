@@ -14,6 +14,7 @@ router.put('/updatephone',authMiddleware,UpdatePhone); // id is user id
 router.put('/updateemail',authMiddleware,UpdateEmail); // id is user id
 
 
+
 router.post('/addaddress',authMiddleware,addAddress); // id is user id
 router.get('/getdefaultaddress/:id',authMiddleware,getdefaultAddress); // id is user id
 router.get('/getaddresses',authMiddleware,getAddresses); // id is user id
