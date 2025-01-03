@@ -160,7 +160,8 @@ const AddMenu = () => {
             >
               <option >Select a Value</option>
               <option>Veg</option>
-              <option>Beverages and Dairyproduct</option>
+              <option>Beverages </option>
+              <option>Dairyproduct </option>
             </select>{errors.type && (
               <p className="text-red-500 text-sm">{errors.type}</p>
             )}
