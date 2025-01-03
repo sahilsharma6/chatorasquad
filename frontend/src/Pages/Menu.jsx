@@ -6,6 +6,7 @@ import FoodMainMenu from "../components/MainFoodsMenu";
 import Navbar from "../components/Navbar";
 import SearchBar from "../components/SearchBar";
 import Loader from "../components/Loader";
+import FoodMenuSwiper from "../components/FoodMenuSlider";
 
 export default function Menu(){
     const [loading, setLoading] = useState(true);
@@ -32,7 +33,8 @@ export default function Menu(){
        <FoodMainMenu />
        </div>
        <FoodMenuSlider />
-       <FoodMenu />
+       {/* <FoodMenu /> */}
+         <FoodMenuSwiper param={'dairy'} />
        
       </div>
       <Footer />

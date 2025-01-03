@@ -32,6 +32,8 @@ const AddMenu = () => {
     };
     fetchCuisines();
   }, []);
+  // console.log(formData);
+  
 
   const validateForm = () => {
     const newErrors = {};
@@ -39,6 +41,8 @@ const AddMenu = () => {
     if (!formData.sellingPrice) newErrors.sellingPrice = "Price is required";
     if (!formData.description) newErrors.description = "Description is required";
     if (formData.images.length === 0) newErrors.images = "Dish Image is required";
+    if(!formData.cuisine) newErrors.cuisine='Cusine is Requierd'
+    if(!formData.type) newErrors.type='Type is Requierd'
     return newErrors;
   };
 
@@ -72,6 +76,17 @@ const AddMenu = () => {
         },
       });
       console.log(response.data);
+      setFormData({
+        name: "",
+        title: "",
+        type: "",
+        cuisine: "",
+        quantity: "",
+        sellingPrice: 0,
+        description: "",
+        discountedPrice:0,
+        images: [], 
+      })
    
     } catch (error) {
       console.error("Error adding menu:", error);
@@ -143,10 +158,12 @@ const AddMenu = () => {
                 setFormData({ ...formData, type: e.target.value })
               }
             >
+              <option >Select a Value</option>
               <option>Veg</option>
-              <option>Non Veg</option>
-              <option>Egg</option>
-            </select>
+              <option>Beverages and Dairyproduct</option>
+            </select>{errors.type && (
+              <p className="text-red-500 text-sm">{errors.type}</p>
+            )}
           </div>
           <div>
             <label className="block text-gray-700 mb-2">Cuisine</label>
@@ -155,15 +172,19 @@ const AddMenu = () => {
               value={formData.cuisine}
               onChange={(e) =>
                 setFormData({ ...formData, cuisine: e.target.value })
-              }
+              } required
             >
               {/* Render cuisine options dynamically */}
+              <option value="" defaultValue={'Select a Cusine'}  >Select a Cusine</option>
               {cuisines.map((cuisine) => (
-                <option key={cuisine._id} value={cuisine._id}>
+                <option key={cuisine._id} value={cuisine.name}   >
                   {cuisine.name}
                 </option>
               ))}
             </select>
+            {errors.cuisine && (
+              <p className="text-red-500 text-sm">{errors.cuisine}</p>
+            )}
           </div>
         </div>
 
@@ -191,7 +212,7 @@ const AddMenu = () => {
               whileFocus={{ scale: 1.01 }}
               type="number"
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder="$10"
+              placeholder=" ₹100"
               value={formData.sellingPrice}
               onChange={(e) =>
                 setFormData({ ...formData, sellingPrice: e.target.value })
@@ -207,7 +228,7 @@ const AddMenu = () => {
               whileFocus={{ scale: 1.01 }}
               type="number"
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder="$10"
+              placeholder=" ₹100"
               value={formData.discountedPrice}
               onChange={(e) =>
                 setFormData({ ...formData, discountedPrice: e.target.value })

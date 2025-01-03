@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { IndianRupee, Utensils } from "lucide-react";
 import apiClient from "../services/apiClient";
 import { Link } from "react-router-dom";
+import Dairy from '../Data/DairyProduct.json'
 
-const FoodMenuSwiper = () => {
+const FoodMenuSwiper = ({param}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [foodItems, setFoodItems] = useState([]);
   useEffect(() => {
@@ -16,9 +17,12 @@ const FoodMenuSwiper = () => {
         console.error("Failed to fetch food items:", error);
       }
     };
-
-    fetchFoodItems();
-  }, []);
+    if(!param)fetchFoodItems();
+    else{
+      setFoodItems(Dairy)
+    }
+    
+  }, [param]);
 
   const containerVariants = {
     animate: {
@@ -59,7 +63,7 @@ const FoodMenuSwiper = () => {
             </span>
           </motion.div>
         </div>
-        <h1 className="text-4xl font-bold">Trending Food Favorites</h1>
+        <h1 className="text-4xl font-bold">{param ?"Beverages and Dairyproduct" :'Trending Food Favorites'} </h1>
       </div>
 
       <div

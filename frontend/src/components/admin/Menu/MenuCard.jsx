@@ -75,7 +75,7 @@ const MenuCard = ({
 
       <div className="flex justify-between items-start mb-2">
         <h3 className="text-lg font-semibold">{title}</h3>
-        <span className="text-yellow-500 font-medium text-2xl">${price}</span>
+        <span className="text-yellow-500 font-medium text-2xl"> ₹{price}</span>
       </div>
 
       <div className="flex justify-between items-center mb-2">

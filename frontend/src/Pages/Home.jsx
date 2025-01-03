@@ -16,7 +16,8 @@ const Home = () => {
       <Welcome />
       <Work />
       <FoodMenuSwiper />
-      <FoodMenu />
+      {/* <FoodMenu /> */}
+      <FoodMenuSwiper param={'dairy'} />
       <Chef />
       <TestimonialsCarousel />
       <GMap />
