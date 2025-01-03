@@ -5,9 +5,7 @@ export default function GMap() {
       <div className="lg:w-[50%]  w-full">
         <iframe
           className=" w-full h-[400px] rounded-lg shadow-lg"
-          src="https://maps.google.com/maps?width=100%25&amp;height=400&amp;hl=en&amp;q=Noida+(Chatora%20Squad)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-          title="Google Map"
-          allowFullScreen
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3561.0419463599!2d82.208286074299!3d26.806792976710405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDQ4JzI0LjUiTiA4MsKwMTInMzkuMSJF!5e0!3m2!1sen!2sin!4v1735887493944!5m2!1sen!2sin" 
         ></iframe>
       </div>
 

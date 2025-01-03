@@ -48,23 +48,7 @@ export default function Thumbnails ({images,selectedImage,setIsWishlist,setIsZoo
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4 mt-6 ">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-lg font-semibold"
-            >
-             ORDER NOW
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex-1 bg-gray-900 text-white py-3 rounded-lg font-semibold"
-            >
-              ADD TO CART
-            </motion.button>
-          </div>
+      
         </div>
     )
 }

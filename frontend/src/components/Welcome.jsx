@@ -1,21 +1,43 @@
 import React, { useState } from "react";
 import bikeImg from "../assets/bike.png";
 import bowlImg from "../assets/bowl.png";
+import apiClient from "../services/apiClient";
 
 function Welcome() {
   const [pinCode, setPinCode] = useState("");
   const [deliveryAvailable, setDeliveryAvailable] = useState(null);
+  const [error, setError] = useState("");
 
   const handlePinCodeChange = (e) => {
     setPinCode(e.target.value);
   };
 
   const checkDelivery = async () => {
-    // const response = await fetch(`http://localhost:3000/check-delivery/${pinCode}`);
-    // const data = await response.json();
-
-    setDeliveryAvailable(false);
+    setError("");
+    setDeliveryAvailable(null);
+  
+    if (!pinCode.trim()) {
+      setError("Please enter a valid zip code.");
+      return;
+    }
+  
+    try {
+      const response = await apiClient.post(`/menu/checkdelivery`, { zipCode: pinCode });
+  
+      if (response.ok) { 
+        if (response.data.deliveryAvailable !== undefined) {
+          setDeliveryAvailable(response.data.deliveryAvailable); 
+        } else {
+          setError("Unexpected response from server.");
+        }
+      } else {
+        setError(response.data.message || "Unable to check delivery.");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again later.");
+    }
   };
+  
 
   return (
     <div className="bg-yellow-400 w-auto h-auto flex flex-wrap lg:flex-nowrap p-6 items-center justify-center text-white">
@@ -23,7 +45,7 @@ function Welcome() {
         <h1 className="text-5xl md:text-8xl font-bold mb-4 text-center w-auto">
           Are you starving?
         </h1>
-        <p className=" text-2xl md:text-4xl text-gray-700 text-center p-4 w-auto">
+        <p className="text-2xl md:text-4xl text-gray-700 text-center p-4 w-auto">
           Within a few clicks, find meals that are accessible near you
         </p>
         <div className="bg-white justify-center space-x-4 w-auto  p-4 rounded-md h-auto">
@@ -37,6 +59,7 @@ function Welcome() {
               className="bg-white text-gray-700 py-2 rounded-md"
               onClick={() => {
                 setDeliveryAvailable(null);
+                setPinCode("");
               }}
             >
               Delivery
@@ -61,7 +84,13 @@ function Welcome() {
             </button>
           </div>
 
-          {deliveryAvailable !== null && (
+          {error && (
+            <div className="mt-4 text-center text-red-500">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {deliveryAvailable !== null && !error && (
             <div className="mt-4 text-center text-lg">
               {deliveryAvailable ? (
                 <p className="text-green-500">

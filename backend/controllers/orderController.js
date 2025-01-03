@@ -95,7 +95,7 @@ export const addCuisine = async (req, res) => {
         const {name,image} = req.body;
         const existingCuisine = await Cuisine.findOne({name});
         if(existingCuisine){
-            return res.status(400).json({message:"Cuisine already exists"});
+            return res.status(200).json({message:"Cuisine already exists"});
         }
         const date = new Date();
         const cuisine = new Cuisine({
@@ -240,17 +240,22 @@ export const updatedeliveryaddress = async (req, res) => {
 
 
 export const checkdeliveryaddress = async (req, res) => {
-    try{
-        const {zipCode} = req.body;
-        const delivery = await Delivery.findOne({zipCode});
-        if(delivery){
-            res.status(200).json({message:"Delivery available"});
-        }
-        else{
-            res.status(400).json({message:"Delivery not available"});
-        }
+    try {
+      const { zipCode } = req.body;
+  
+      if (!zipCode) {
+        return res.status(400).json({ message: "Zip code is required." });
+      }
+  
+      const delivery = await Delivery.findOne({ zipCode });
+      if (delivery) {
+        return res.status(200).json({ deliveryAvailable: true, message: "Delivery available" });
+      } else {
+        return res.status(200).json({ deliveryAvailable: false, message: "Delivery not available" });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-    catch(error){
-        res.status(500).json({message:"Internal server error"});
-    }
-}
+  };
+  
