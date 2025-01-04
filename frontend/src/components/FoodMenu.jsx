@@ -47,8 +47,7 @@ const DishCard = ({ dish }) => {
         <div className="relative w-full aspect-square rounded-full overflow-hidden mb-4 ">
           <img
             src={
-              dish.image ||
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s"
+              import.meta.env.VITE_API_URL + "/" + item.images[0]
             }
             alt={dish.name}
             className="w-full h-full object-cover"

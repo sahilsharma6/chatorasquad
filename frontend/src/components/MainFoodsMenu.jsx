@@ -231,8 +231,8 @@ const FoodMainMenu = () => {
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                   <img
                     src={
-                      item.image ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyN7OnYRwN0dfcP3yD5fbp1sfpE5Daq-Q2xo062c-HKs4gN5KBOCZPgHVI3GrjcHFS8nE&usqp=CAU"
+                      import.meta.env.VITE_API_URL + "/" + item.images[0]
+                     
                     }
                     alt={item.name}
                     className="w-full h-full object-cover"

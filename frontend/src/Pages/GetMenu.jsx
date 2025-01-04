@@ -1,56 +1,73 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom'; 
 import Reviews from '../components/GetMenu/Reviews';
-import getMenuData from '../Data/getMenuData.json'
 import Thumbnails from '../components/GetMenu/Thumbnails';
 import GetMenuDetails from '../components/GetMenu/GetMenuDetails';
 import Loader from '../components/Loader';
+import apiClient from '../services/apiClient';
+
 
 const GetMenu = () => {
-    const [selectedImage, setSelectedImage] = useState(0);
-    const [isWishlist, setIsWishlist] = useState(false);
-    const [isZoomed, setIsZoomed] = useState(false);
-    const [product, setProduct] = useState(getMenuData.product); 
-    const [loading, setLoading] = useState(true); 
-
-    //   setProduct(getMenuData)
+  const { id } = useParams();
+  const [selectedImage, setSelectedImage] = useState();
+  const [isWishlist, setIsWishlist] = useState(false);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [product, setProduct] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1300); 
+    const fetchProduct = async () => {
+      try {
+        const response = await apiClient.get(`/menu/getdetails/${id}`);
+        setProduct(response.data);
+         setSelectedImage(response.data.images[0]);
+        setLoading(false); 
+        
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+        setLoading(false); 
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, []);
-  if(loading) {
-    return <Loader />
+    fetchProduct();
+  }, [id]); 
+
+  if (loading) {
+    return <Loader />; 
   }
 
-    const { name, images, highlights, specifications, bankOffers, description, price,reviews } = product;
-    // console.log(product);
+  if (!product) {
+    return <div>No product data available</div>;
+  }
 
 
-    return (
-        <div className="max-w-full mx-auto px-4">
-            <div className="flex flex-col md:flex-row gap-3">
-                {/* Left Column - Images */}
-                <Thumbnails images={images}
-                    selectedImage={selectedImage}
-                    setIsWishlist={setIsWishlist}
-                    setIsZoomed={setIsZoomed}
-                    isZoomed={isZoomed}
-                    isWishlist={isWishlist}
-                    setSelectedImage={setSelectedImage} />
+  const { name, images, description, price, reviews } = product;
 
-                {/* Right Column - Product Details */}
-                <GetMenuDetails
-                  
-                />
-            </div>
-            {/* Ratings Reviews  */}
-            <Reviews product={product} />
-        </div>
-    );
+  return (
+    <div className="max-w-full mx-auto px-4">
+      <div className="flex flex-col md:flex-row gap-3">
+        {/* Left Column - Images */}
+        <Thumbnails
+          images={images}
+          selectedImage={ selectedImage}
+          setIsWishlist={setIsWishlist}
+          setIsZoomed={setIsZoomed}
+          isZoomed={isZoomed}
+          isWishlist={isWishlist}
+          setSelectedImage={setSelectedImage}
+        />
+
+
+        <GetMenuDetails
+          dishDetails={product} // 
+        />
+      </div>
+
+   
+      {/* <Reviews reviews={reviews} /> */}
+    </div>
+  );
 };
 
 export default GetMenu;

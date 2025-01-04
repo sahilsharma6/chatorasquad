@@ -1,31 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; 
-import apiClient from '../../services/apiClient';
-import { Share, MapPin, Info, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import { MapPin, Share, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useCart } from '../../context/CartContext'; 
+import { useCart } from '../../context/CartContext';
+import apiClient from '../../services/apiClient';
+import { useState } from 'react';
 
-export default function GetMenuDetails() {
-  const { id } = useParams(); 
-  const [dishDetails, setDishDetails] = useState(null);
+export default function GetMenuDetails({ dishDetails }) {
+  const { addToCart } = useCart();
   const [pinCode, setPinCode] = useState('');
   const [deliveryMessage, setDeliveryMessage] = useState('');
   const [toastMessage, setToastMessage] = useState('');
 
-  const { addToCart } = useCart();
-
-  useEffect(() => {
-    const fetchDishDetails = async () => {
-      try {
-        const response = await apiClient.get(`/menu/getdetails/${id}`);
-        setDishDetails(response.data);
-      } catch (error) {
-        console.error('Failed to fetch dish details:', error);
-      }
-    };
-
-    fetchDishDetails();
-  }, [id]);
+  const { name, description, sellingPrice, images } = dishDetails; 
 
   const checkDelivery = async () => {
     if (!pinCode.trim()) {
@@ -45,16 +31,11 @@ export default function GetMenuDetails() {
     }
   };
 
-
   const handleAddToCart = (item) => {
     addToCart(item);
     setToastMessage('Item added to cart!');
     setTimeout(() => setToastMessage(''), 1000);
   };
-
-  if (!dishDetails) return <p>Loading...</p>;
-
-  const { sellingPrice, description, name } = dishDetails;
 
   return (
     <div className="md:w-1/2 shadow-lg py-6 px-6 bg-gray-100 rounded">
@@ -127,7 +108,7 @@ export default function GetMenuDetails() {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="flex-1 bg-gray-900 text-white py-3 rounded-lg font-semibold"
-          onClick={() => handleAddToCart(dishDetails)}
+          onClick={() => handleAddToCart(dishDetails)} 
         >
           ADD TO CART
         </motion.button>

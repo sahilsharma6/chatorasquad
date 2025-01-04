@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import connectDB from './db/connect.js';
 import main from './routes/main.js';
 import cors from 'cors';
-import uploadMiddleware from './middlewares/uploadMiddleware.js';
+
 import path from 'path';
 const __dirname = path.resolve();
 
@@ -25,6 +25,7 @@ app.use(cors(
 
 app.use(express.json()); 
 app.use(cookieParser()); 
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/v1', main);
 connectDB();
