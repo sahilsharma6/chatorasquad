@@ -3,7 +3,9 @@ import { ChevronLeft, ChevronRight, Pencil, Star, Trash } from "lucide-react";
 import { useState } from "react";
 import { FaStarHalfAlt } from "react-icons/fa";
 
+
 const MenuCard = ({
+  id,
   title,
   price,
   rating,

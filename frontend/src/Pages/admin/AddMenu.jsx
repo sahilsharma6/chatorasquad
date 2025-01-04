@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload } from "lucide-react";
 import apiClient from "../../services/apiClient";
+import {toast , ToastContainer} from 'react-toastify';
 
 const AddMenu = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +24,6 @@ const AddMenu = () => {
     const fetchCuisines = async () => {
       try {
         const response = await apiClient.get("/admin/cuisines");
-        console.log(response.data);
         
         setCuisines(response.data); 
       } catch (error) {
@@ -75,7 +75,7 @@ const AddMenu = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response.data);
+   
       setFormData({
         name: "",
         title: "",
@@ -87,6 +87,15 @@ const AddMenu = () => {
         discountedPrice:0,
         images: [], 
       })
+
+      toast.success('Dish added successfully',
+      {
+        position: "bottom-right",
+        autoClose: 2000,
+
+        
+      }
+    );
    
     } catch (error) {
       console.error("Error adding menu:", error);
@@ -291,6 +300,7 @@ const AddMenu = () => {
           Submit
         </motion.button>
       </form>
+      <ToastContainer />
     </motion.div>
   );
 };
