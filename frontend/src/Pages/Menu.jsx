@@ -1,4 +1,4 @@
-import { useEffect ,useState} from "react";
+import { useEffect, useState } from "react";
 import FoodMenu from "../components/FoodMenu";
 import FoodMenuSlider from "../components/FoodMenuSlider";
 import Footer from "../components/Footer";
@@ -8,8 +8,8 @@ import SearchBar from "../components/SearchBar";
 import Loader from "../components/Loader";
 import FoodMenuSwiper from "../components/FoodMenuSlider";
 
-export default function Menu(){
-    const [loading, setLoading] = useState(true);
+export default function Menu() {
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,26 +19,22 @@ export default function Menu(){
     return () => clearTimeout(timer);
   }, []);
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
-    return (
-       <> 
-    
-       <div>
-           
-       <div className="mt-6">
-      {/* <h1 className="text-4xl font-bold text-center mb-3">Search Your Dishes</h1>  */}
-       {/* <SearchBar /> */}
-       <FoodMainMenu />
-       </div>
-       <FoodMenuSlider />
-       {/* <FoodMenu /> */}
-         <FoodMenuSwiper param={'dairy'} />
-       
+  return (
+    <>
+      <div>
+        <div className="mt-6">
+          {/* <h1 className="text-4xl font-bold text-center mb-3">Search Your Dishes</h1>  */}
+          {/* <SearchBar /> */}
+          <FoodMainMenu />
+        </div>
+        <FoodMenuSlider />
+        {/* <FoodMenu /> */}
+        {/* <FoodMenuSwiper param={'dairy'} /> */}
       </div>
       <Footer />
-   </>
-        
-    )
+    </>
+  );
 }

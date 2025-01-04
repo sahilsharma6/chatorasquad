@@ -149,12 +149,12 @@ const Navbar = () => {
             )}
           </Link>
 
-          <Link
+          {/* <Link
             to="/orders"
             className="hidden md:inline-block bg-orange-500 text-white px-5 py-2 rounded-tl-lg rounded-br-lg shadow-md hover:bg-orange-600"
           >
             <span className="text-lg font-semibold">Orders</span>
-          </Link>
+          </Link> */}
 
           {/* User Profile Button */}
           <div className="relative" ref={userMenuRef}>
@@ -216,13 +216,13 @@ const Navbar = () => {
             <BsCart4 className="text-2xl" />
             <span className="text-lg">Cart</span>
           </Link>
-          <Link
+          {/* <Link
             to="/orders"
             className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md mb-4"
             onClick={() => setIsMenuOpen(false)}
           >
             <span className="text-lg">Orders</span>
-          </Link>
+          </Link> */}
 
           <div className="relative">
             <button
@@ -277,7 +277,7 @@ const Navbar = () => {
               <span>Menu</span>
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               to="/events"
               className={({ isActive }) =>
@@ -290,8 +290,8 @@ const Navbar = () => {
               <FaCalendarAlt className="text-xl" />
               <span>Events</span>
             </NavLink>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <NavLink
               to="/gallery"
               className={({ isActive }) =>
@@ -304,7 +304,7 @@ const Navbar = () => {
               <FaImage className="text-xl" />
               <span>Gallery</span>
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               to="/about"
