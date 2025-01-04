@@ -120,18 +120,35 @@ const Contact = () => {
             </p>
 
             <p className="text-gray-800 font-semibold">
-              Address: In front of Hindu dham <br /> Janki Mahal trust road
+              Address: {""}
+              <span className="text-black font-normal">
+                In front of Hindu dham <br /> Janki Mahal trust road
+              </span>
+            </p>
+            <br />
+
+            <p className="text-gray-800 font-semibold">
+              Registered Address: {""}
+              <span className="text-black font-normal">
+                C/o Rajesh Gupta, Hindu Dham janki Mahal, Ayodhya, Faizabad-
+                224123 Uttar Pradesh
+              </span>
             </p>
             <br />
             <p className="text-gray-800 font-semibold">
-              Email: howdn68@gmail.com
+              Email: {""}
+              <span className="text-black font-normal">howdn68@gmail.com</span>
             </p>
             <p className="text-gray-800 font-semibold mb-4">
-              Phone: +91-9235264749
+              Phone: {""}
+              <span className="text-black font-normal">+91-9235264749</span>
             </p>
 
             <p className="text-gray-800 font-semibold mb-8">
-              Company: SCSH CHATORA SQUAD (OPC) <br /> PRIVATE LIMITED{" "}
+              Company: {""}
+              <span className="text-black font-normal">
+                SCSH CHATORA SQUAD (OPC) <br /> PRIVATE LIMITED{" "}
+              </span>
             </p>
 
             <div className="flex gap-6">

@@ -14,17 +14,10 @@ const RefundAndReturnPolicy = () => {
               Introduction
             </h2> */}
             <p className="mt-4 text-lg">
-              Processing Time All orders are delivered within 2-3 business days.
-              Orders are not shipped or delivered on weekends or holidays. If we
-              are experiencing a high volume of orders, shipments may be delayed
-              by a few days. Please allow additional days in transit for
-              delivery. If there will be a significant delay in the shipment of
-              your order, we will contact you via email or phone. Shipping Time
-              Domestic Shipping: Orders will be delivered within 3 to 4 weeks
-              from the date of order confirmation. Please note that delivery
-              times may be affected by factors beyond our control, such as
-              weather conditions, customs delays, and other unforeseen
-              circumstances.
+              Processing Time All orders are delivered within 1-2 hours. Orders
+              are not shipped or delivered on weekends or holidays. If we are
+              experiencing a high volume of orders, shipments may be delayed by
+              a few hours.
             </p>
           </div>
 
@@ -33,10 +26,10 @@ const RefundAndReturnPolicy = () => {
               Return and Refund policy
             </h2>
             <p className="mt-4 text-lg">
-              Return We have a 5-day return policy, which means you have 5 days
-              after receiving your item to request a return. Once the return
-              product is received it will be inspected and the return will be
-              approved within 2 days
+              Return We have a 2 hours return policy, which means you have 2
+              hours after receiving your item to request a return. Once the
+              return product is received it will be inspected and the return
+              will be approved within 2-4 hours
             </p>
           </div>
 

@@ -4,10 +4,10 @@ import { Utensils, Search, Filter, X } from "lucide-react";
 import apiClient from "../services/apiClient";
 import { Link } from "react-router-dom";
 const categories = [
-  { id: "fast-food", name: "Fast Food", icon: "🍔" },
-  { id: "drinks", name: "Drink & Juice", icon: "🥤" },
-  { id: "pizza", name: "Chicken Pizza", icon: "🍕" },
-  { id: "pasta", name: "PASTA", icon: "🍝" },
+  { id: "fast-food", name: "", icon: "" },
+  { id: "drinks", name: "  ", icon: "" },
+  { id: "pizza", name: " ", icon: "" },
+  { id: "pasta", name: "", icon: "" },
 ];
 
 const priceRanges = [
@@ -128,7 +128,7 @@ const FoodMainMenu = () => {
             >
               All
             </motion.button>
-            {categories.map((category) => (
+            {categories?.map((category) => (
               <motion.button
                 key={category.id}
                 whileHover={{ scale: 1.05 }}
@@ -230,10 +230,7 @@ const FoodMainMenu = () => {
               >
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden flex-shrink-0">
                   <img
-                    src={
-                      import.meta.env.VITE_API_URL + "/" + item.images[0]
-                     
-                    }
+                    src={import.meta.env.VITE_API_URL + "/" + item.images[0]}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -243,7 +240,7 @@ const FoodMainMenu = () => {
                   <p className="text-xs sm:text-sm">{item.description}</p>
                 </div>
                 <div className="text-base sm:text-xl font-bold text-black">
-                ₹{item?.sellingPrice}
+                  ₹{item?.sellingPrice}
                 </div>
               </motion.div>
             </Link>
