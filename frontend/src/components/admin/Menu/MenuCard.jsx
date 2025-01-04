@@ -46,9 +46,7 @@ const MenuCard = ({
       <motion.div className="relative h-52 overflow-hidden transition-all delay-100 rounded-lg mb-4">
         <motion.img
           src={
-            images && images.length > 0
-              ? images[currentImageIndex]
-              : "https://via.placeholder.com/300"
+            import.meta.env.VITE_API_URL + "/" + images[0]
           }
           alt={title}
           className="w-full h-full object-cover"

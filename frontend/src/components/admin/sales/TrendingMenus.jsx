@@ -25,7 +25,7 @@ export default function TrendingMenus ({trendingItems}){
               >
                 <div className="relative">
                   <img
-                    src={item.image}
+                    src={ import.meta.env.VITE_API_URL + "/" + item.images[0]}
                     alt={item.name}
                     className="w-16 h-16 rounded-lg object-cover"
                   />

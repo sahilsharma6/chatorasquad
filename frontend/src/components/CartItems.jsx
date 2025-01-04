@@ -11,7 +11,7 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
     >
       <div className="flex gap-4">
         <img
-          src={item.image}
+          src={ import.meta.env.VITE_API_URL + "/" + item.images[0]}
           alt={item.name}
           className="w-24 h-24 rounded-lg object-cover"
         />

@@ -142,7 +142,7 @@ const FoodMenuSwiper = ({param}) => {
                   {item.name}
                 </h3>
                 <p className="text-gray-900 text-center text-sm">
-                  {console.log(foodItems)}
+                
                   {item.description.slice(0, 150)}...
                 </p>
               </div>

@@ -15,7 +15,7 @@ const OrderItem = ({ order,index }) => {
                   >
                     <div className="flex items-start space-x-4 flex-wrap">
                       <img
-                        src={order.image}
+                        src={ import.meta.env.VITE_API_URL + "/" + order.images[0]}
                         alt={order.name}
                         className="w-20 h-20 object-cover rounded"
                       />
