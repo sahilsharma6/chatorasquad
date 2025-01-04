@@ -28,6 +28,8 @@ app.use(cookieParser());
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/v1', main);
+
+
 connectDB();
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
