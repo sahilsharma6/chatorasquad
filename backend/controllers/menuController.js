@@ -181,7 +181,12 @@ export const deleteMenu = async (req, res) => {
             await cuisine.save();
         }
 
-      
+       const reviews = await Reviews.find({menuId:id});
+         reviews.forEach(async review => {
+            await review.deleteOne();
+        }
+        );
+        
         await menu.deleteOne();
 
         res.status(200).json({ message: "Menu Item deleted successfully" });
