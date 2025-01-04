@@ -1,6 +1,6 @@
 import express from 'express';
-import { commentBlog, createBlog, deleteBlog, getBlog, getBlogs, getBlogsByUserId, getUserBlogs, likeBlog, updateBlog } from '../controllers/blogController';
-import authMiddleware from '../middlewares/authMiddleware';
+import { commentBlog, createBlog, deleteBlog, getBlog, getBlogs, getBlogsByUserId, getUserBlogs, likeBlog, updateBlog } from '../controllers/blogController.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
