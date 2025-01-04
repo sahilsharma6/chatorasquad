@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import apiClient from '../../services/apiClient'; 
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const AddCuisineForm = ({ onAdd }) => {
@@ -11,7 +12,13 @@ const AddCuisineForm = ({ onAdd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim()) {
-      alert('Cuisine name is required!');
+      toast.error('Please enter a cuisine name',
+        {
+          position: "bottom-right",
+          autoClose: 2000,
+        }
+      );
+     
       return;
     }
 
@@ -20,11 +27,22 @@ const AddCuisineForm = ({ onAdd }) => {
       const response = await apiClient.post('/admin/addcuisine', { name });
       setLoading(false);
       setName('');
-      setError(response.data.message);
+      toast.success('Cuisine added successfully',
+        {
+          position: "bottom-right",
+          autoClose: 2000,
+        }
+      );
     } catch (err) {
       setLoading(false);
       setError('Failed to add cuisine. Please try again.');
-      console.error('Error adding cuisine:', err);
+      toast.error('Failed to add cuisine. Please try again.',
+        {
+          position: "bottom-right",
+          autoClose: 2000,
+        }
+      );
+     
     }
   };
 
@@ -57,6 +75,7 @@ const AddCuisineForm = ({ onAdd }) => {
           {loading ? 'Adding...' : 'Add Cuisine'}
         </button>
       </form>
+      <ToastContainer />
     </motion.div>
   );
 };

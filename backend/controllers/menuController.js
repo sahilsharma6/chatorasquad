@@ -1,5 +1,6 @@
 import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
+import Reviews from "../models/Reviews.js";
 export const addMenu = async (req, res) => {
     try{
         const {name, type, sellingPrice,discountedPrice, description, isAvailable, cuisine} = req.body;
@@ -14,20 +15,21 @@ export const addMenu = async (req, res) => {
             isAvailable,
             Cuisine:cuisine,
         });
-       const cuisinefound = await Cuisine.find({name:cuisine});
-         if(cuisinefound.length === 0){
-            const newCuisine = new Cuisine({
-                name:cuisine,
-                images,
-                date:Date.now(),
-                items:[menu._id]
+        
+    //    const cuisinefound = await Cuisine.find({name:cuisine});
+    //      if(cuisinefound.length === 0){
+    //         const newCuisine = new Cuisine({
+    //             name:cuisine,
+    //             images,
+    //             date:Date.now(),
+    //             items:[menu._id]
 
-            });
-            await newCuisine.save();
-        }else{
-            cuisinefound[0].items.push(menu._id);
-            await cuisinefound[0].save();
-        }
+    //         });
+    //         await newCuisine.save();
+    //     }else{
+    //         cuisinefound[0].items.push(menu._id);
+    //         await cuisinefound[0].save();
+    //     }
         await menu.save();
         res.status(201).json({message:"Menu added successfully"});
     }catch(error){
@@ -165,19 +167,93 @@ export const updateMenuRating = async (req, res) => {
 };
 
 export const deleteMenu = async (req, res) => {
-    try{
+    try {
         const id = req.params.id;
+
         const menu = await Menu.findById(id);
-        const cuisine = await Cuisine.find({name:menu.Cuisine});
-        cuisine[0].items = cuisine[0].items.filter(item => item.toString() !== id);
-        await cuisine[0].save();
-        await menu.remove();
+        if (!menu) {
+            return res.status(404).json({ message: "Menu item not found" });
+        }
+     
+        const cuisine = await Cuisine.findOne({ name: menu.Cuisine });
+        if (cuisine) {
+            cuisine.items = cuisine.items.filter(item => item.toString() !== id);
+            await cuisine.save();
+        }
+
+      
+        await menu.deleteOne();
+
+        res.status(200).json({ message: "Menu Item deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 
-        res.status(200).json({message:"Menu deleted successfully"});
+
+export const getReviws = async (req, res) => {
+    try{
+        const review = await Reviews.find({menuId:req.params.id});
+        res.status(200).json(review);
     }catch(error){
         res.status(500).json({message:"Internal server error"});
+    }
+}
 
-    }   
-};
+export const addReview = async (req, res) => {
+    try{
+        const {rating, review} = req.body;
+        const setreview = new Reviews({
+            menuId:req.params.id,
+            userId:req.user._id,
+            rating,
+            review
+        });
+        await setreview.save();
+        res.status(201).json({message:"Review added successfully"});
+    }catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+export const updateReview = async (req, res) => {
+    try{
+        const {rating, review} = req.body;
+        const setreview = await Reviews.findById(req.params.id);
+        setreview.rating = rating;
+        setreview.review = review;
+        await setreview.save();
+        res.status(200).json({message:"Review updated successfully"});
+    }catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+export const deleteReview = async (req, res) => {
+    try{
+        const id = req.params.id;
+        await Reviews.findByIdAndDelete(id);
+        res.status(200).json({message:"Review deleted successfully"});
+    }catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
+
+export const getRating = async (req, res) => {
+    try{
+        const reviews = await Reviews.find({menuId:req.params.id});
+        let sum = 0;
+        reviews.forEach(review => {
+            sum+=review.rating;
+        });
+        const rating = sum/reviews.length;
+        res.status(200).json({rating});
+    }
+    catch(error){
+        res.status(500).json({message:"Internal server error"});
+    }
+}
 
