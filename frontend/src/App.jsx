@@ -28,6 +28,7 @@ import Privacy from "./Pages/Privacy";
 
 
 import OrderDetails from "./Pages/users/OrderDetails";
+import PaymentUI from "./Pages/users/OrderNow";
 
 function Layout() {
   const location = useLocation();
@@ -65,6 +66,11 @@ function Layout() {
           <ProtectedRoute allowedRoles={['admin','user']} >
           <OrderDetails />
           </ProtectedRoute>
+          } />
+          <Route path="menu/order/:menuid" element={
+            <ProtectedRoute allowedRoles={['admin','user']} >
+              <PaymentUI />
+            </ProtectedRoute>
           } />
         <Route
           path="/admin/*"
