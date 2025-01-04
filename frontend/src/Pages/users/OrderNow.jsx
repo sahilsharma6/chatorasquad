@@ -2,9 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock, MapPin, ChevronRight, Minus, Plus, ShieldCheck } from 'lucide-react';
 
-const PaymentUI = () => {
-  const [selectedMethod, setSelectedMethod] = React.useState('');
-  const [timeLeft, setTimeLeft] = React.useState(8 * 60);
+const OrderNow = () => {
   const [quantity, setQuantity] = React.useState(1);
 
   // Dynamic data object
@@ -26,18 +24,7 @@ const PaymentUI = () => {
     location: " Bariebarh new primary school",
   };
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => Math.max(0, prev - 1));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
+  
 
   return (
     <div className="max-w-full mx-auto p-4">
@@ -117,48 +104,18 @@ const PaymentUI = () => {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-lg shadow-md p-4"
           >
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Payment Options</h2>
-            <div className="bg-yellow-50 p-4 rounded-md mb-4">
               <div className="flex items-center gap-2">
-                <Clock className="text-orange-500" size={20} />
-                <p className="text-sm">Complete payment in {formatTime(timeLeft)}</p>
-              </div>
+               <motion.button
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full mt-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+                        >
+                          Continue
+                        </motion.button>
+             
             </div>
 
-            {['UPI', 'Pay On Delivery', 'Credit / Debit / ATM Card', 'Net Banking'].map((method, index) => (
-              <motion.div
-                key={method}
-                className={`border rounded-lg p-4 mb-3 cursor-pointer ${
-                  selectedMethod === method ? 'border-orange-500' : 'border-gray-200'
-                }`}
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => setSelectedMethod(method)}
-              >
-                <div className="flex items-center gap-3">
-                  <motion.div
-                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      selectedMethod === method ? 'border-orange-500' : 'border-gray-300'
-                    }`}
-                  >
-                    {selectedMethod === method && (
-                      <motion.div
-                        className="w-3 h-3 bg-orange-500 rounded-full"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                      />
-                    )}
-                  </motion.div>
-                  <div className="flex-1">
-                    <p className="font-medium text-gray-800">{method}</p>
-                    <p className="text-sm text-gray-500">
-                      {index === 3 ? 'This instrument has low success, use UPI or cards for better experience' : 'Pay securely using this method'}
-                    </p>
-                  </div>
-                  <ChevronRight className="text-gray-400" size={20} />
-                </div>
-              </motion.div>
-            ))}
+           
           </motion.div>
         </div>
 
@@ -199,4 +156,4 @@ const PaymentUI = () => {
   );
 };
 
-export default PaymentUI;
+export default OrderNow;

@@ -75,18 +75,18 @@ const Navbar = () => {
                 Menu
               </NavLink>
             </li>
-            {/* <li>
+            <li>
               <NavLink
-                to="/events"
+                to="/blogs"
                 className={({ isActive }) =>
                   isActive
                     ? "text-orange-500 font-semibold text-lg"
                     : "text-gray-700 hover:text-orange-500 text-lg"
                 }
               >
-                Events
+                Blogs
               </NavLink>
-            </li> */}
+            </li>
             {/* <li>
               <NavLink
                 to="/gallery"

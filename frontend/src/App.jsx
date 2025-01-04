@@ -27,7 +27,8 @@ import TermsConditions from "./Pages/TermsConditions";
 import Privacy from "./Pages/Privacy";
 
 import OrderDetails from "./Pages/users/OrderDetails";
-import PaymentUI from "./Pages/users/OrderNow";
+import Blogs from "./Pages/Blogs";
+import OrderNow from "./Pages/users/OrderNow";
 
 function Layout() {
   const location = useLocation();
@@ -56,6 +57,7 @@ function Layout() {
         <Route path="/refund-shiping-return" element={<RefundPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/blogs" element={<Blogs />} />
 
         {/* Protected Routes */}
         <Route
@@ -70,7 +72,7 @@ function Layout() {
           path="menu/order/:menuid"
           element={
             <ProtectedRoute allowedRoles={["admin", "user"]}>
-              <PaymentUI />
+              <OrderNow />
             </ProtectedRoute>
           }
         />
