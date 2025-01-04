@@ -15,6 +15,7 @@ import HelpSupport from './HelpSupport';
 import AdminSettings from './AdminSettings';
 import CustomerList from './Customers';
 import CustomerReview from './CustomerReview';
+import EditMenu from './EditMenu';
 
 
 const DashboardLayout = () => {
@@ -49,6 +50,7 @@ const DashboardLayout = () => {
             <Route path="orders" element={<Orders />} />
             <Route path='menu/view' element={<ViewMenu />} />
             <Route path='menu/add' element={<AddMenu />} />
+            <Route path='menu/edit/:menuId' element={<EditMenu />} />
             <Route path='cuisines/view' element={<ViewCuisine />} />
             <Route path='cuisines/add' element={<AddCuisineForm />} />
             <Route path='offers' element={<AdminOfferPage />} />
