@@ -72,7 +72,7 @@ const Footer = () => {
               >
                 <Link to={"/about"}>About us</Link>{" "}
               </motion.div>
-              <motion.a
+              {/* <motion.a
                 href="#"
                 className="block text-gray-400 hover:text-white"
                 whileHover={{ x: 5 }}
@@ -92,12 +92,12 @@ const Footer = () => {
                 whileHover={{ x: 5 }}
               >
                 Blog
-              </motion.a>
+              </motion.a> */}
             </div>
           </motion.div>
 
           {/* Contact Section */}
-          <motion.div variants={itemVariants}>
+          {/* <motion.div variants={itemVariants}>
             <h3 className="text-white font-semibold mb-4">Contact</h3>
             <div className="space-y-2">
               <motion.a
@@ -122,7 +122,7 @@ const Footer = () => {
                 Ride with us
               </motion.a>
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Legal Section */}
           <motion.div variants={itemVariants}>
@@ -136,11 +136,11 @@ const Footer = () => {
                 Terms & Conditions
               </motion.a>
               <motion.a
-                href="/refund"
+                href="/refund-shiping-return"
                 className="block text-gray-400 hover:text-white"
                 whileHover={{ x: 5 }}
               >
-                Refund & Cancellation
+                Refund, Shipping & Return
               </motion.a>
               <motion.a
                 href="/privacy"

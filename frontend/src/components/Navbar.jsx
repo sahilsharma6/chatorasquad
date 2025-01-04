@@ -75,7 +75,7 @@ const Navbar = () => {
                 Menu
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink
                 to="/events"
                 className={({ isActive }) =>
@@ -86,8 +86,8 @@ const Navbar = () => {
               >
                 Events
               </NavLink>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <NavLink
                 to="/gallery"
                 className={({ isActive }) =>
@@ -98,7 +98,7 @@ const Navbar = () => {
               >
                 Gallery
               </NavLink>
-            </li>
+            </li> */}
             <li>
               <NavLink
                 to="/about"
@@ -141,7 +141,7 @@ const Navbar = () => {
           >
             <BsCart4 className="text-2xl" />
             <span className="text-lg font-semibold">Cart</span>
-      
+
             {cartItems.length > 0 && (
               <span className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">
                 {cartItems.length}

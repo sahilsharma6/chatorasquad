@@ -26,7 +26,6 @@ import RefundPolicy from "./Pages/RefundPolicy";
 import TermsConditions from "./Pages/TermsConditions";
 import Privacy from "./Pages/Privacy";
 
-
 import OrderDetails from "./Pages/users/OrderDetails";
 import PaymentUI from "./Pages/users/OrderNow";
 
@@ -52,26 +51,29 @@ function Layout() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders" element={<Orders />} />
-        <Route
-          path="/menu/details/:id"
-          element={<GetMenu />}
-        />
+        <Route path="/menu/details/:id" element={<GetMenu />} />
 
-        <Route path="/refund" element={<RefundPolicy />} />
+        <Route path="/refund-shiping-return" element={<RefundPolicy />} />
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/privacy" element={<Privacy />} />
 
         {/* Protected Routes */}
-        <Route path="/order/details/:id" element={
-          <ProtectedRoute allowedRoles={['admin','user']} >
-          <OrderDetails />
-          </ProtectedRoute>
-          } />
-          <Route path="menu/order/:menuid" element={
-            <ProtectedRoute allowedRoles={['admin','user']} >
+        <Route
+          path="/order/details/:id"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "user"]}>
+              <OrderDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="menu/order/:menuid"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "user"]}>
               <PaymentUI />
             </ProtectedRoute>
-          } />
+          }
+        />
         <Route
           path="/admin/*"
           element={
@@ -91,9 +93,9 @@ function App() {
   return (
     <UserProvider>
       <CartProvider>
-      <Router>
-        <Layout />
-      </Router>
+        <Router>
+          <Layout />
+        </Router>
       </CartProvider>
     </UserProvider>
   );
