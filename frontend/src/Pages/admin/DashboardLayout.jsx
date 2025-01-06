@@ -16,6 +16,7 @@ import AdminSettings from './AdminSettings';
 import CustomerList from './Customers';
 import CustomerReview from './CustomerReview';
 import EditMenu from './EditMenu';
+import Blogs from '../Blogs';
 
 
 const DashboardLayout = () => {
@@ -56,6 +57,7 @@ const DashboardLayout = () => {
             <Route path='offers' element={<AdminOfferPage />} />
             <Route path='help' element={<HelpSupport />} />
             <Route path='customers/list' element={<CustomerList />} />
+            <Route path='blogs/view' element={<Blogs role={'admin'} />} />
           </Routes>
         </main>
       </div>

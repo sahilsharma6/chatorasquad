@@ -21,6 +21,9 @@ import { BiSolidReport, BiSolidOffer } from "react-icons/bi";
 import { FcSalesPerformance } from "react-icons/fc";
 import { IoIosPersonAdd } from "react-icons/io";
 import SideBarItems from "./SideBarItems";
+import { FaBlog } from "react-icons/fa";
+import { RiBloggerFill } from "react-icons/ri";
+import { IoMdAdd } from "react-icons/io";
 
 const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null);
@@ -76,6 +79,17 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
         { label: "Sales Reports", path: "/admin/reports/sales", icon: FileUser },
         { label: "Inventory Reports", path: "/admin/reports/inventory", icon: FcSalesPerformance },
         { label: "Activity", path: "/admin/reports/activity", icon: Activity },
+      ],
+    },
+    {
+      icon: FaBlog,
+      label: "Blogs",
+      path: "/admin/blogs",
+      hasSubmenu: true,
+      submenu: [
+        { label: "View Blogs", path: "/admin/blogs/view", icon: RiBloggerFill  },
+        { label: "Add Blogs", path: "/admin/blogs/add", icon: IoMdAdd  },
+     
       ],
     },
     { icon: BadgeHelp, label: "Help & Supports", path: "/admin/help" },
