@@ -1,7 +1,7 @@
 import express from 'express';
 import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, deleteAddress, getAddresses, addAddress, UpdatePhone, UpdateEmail, setDefaultAddress} from '../controllers/userController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
-import { addOrder, getOrderDetails, getOrdersByFilter, updateOrderStatus } from '../controllers/orderController.js';
+import {  getOrderDetails, getOrdersByFilter, payment, updateOrderStatus, checkPaymentStatus} from '../controllers/orderController.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import { addtoCart, getCart } from '../controllers/cartController.js';
 
@@ -26,10 +26,11 @@ router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is addre
 router.get('/getfilteredorders/:id',authMiddleware,getOrdersByFilter); // id is user id
 router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus); // id is order id
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
-router.post('/addorder/:id',authMiddleware,addOrder); // id is user id
+router.post('/pay',authMiddleware,payment); 
 
 router.get('/getcart',authMiddleware,getCart) ; // id is user id
 router.put('/updatecart',authMiddleware,addtoCart); // id is user id
 
+router.post("/checkpaymentstatus/:id",checkPaymentStatus);
 
 export default router;
