@@ -54,7 +54,7 @@ export const payment = async (req, res) => {
         }
         axios.request(options).then((response)=>{
 
-            res.status(200).json({url:response.data.data.instrumentResponse.redirectInfo.url});  
+            res.status(200).redirect(response.data.data.instrumentResponse.redirectInfo.url);  
             
         }).catch((error)=>{
             console.error(error);
@@ -125,7 +125,7 @@ export const checkPaymentStatus = async (req, res) => {
         axios.request(options).then((response)=>{
              const paymentStatus= response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
             Order.findOneAndUpdate({merchantTransactionId},{paymentStatus}).then(()=>{
-                res.status(200).json({message:"Payment status updated successfully",paymentStatus});
+                res.status(200).redirect(process.env.ORDER_URL);
             }).catch((error)=>{
                 console.error(error);
                 res.status(500).json({message:error});
