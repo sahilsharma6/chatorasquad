@@ -24,6 +24,7 @@ import SideBarItems from "./SideBarItems";
 import { FaBlog } from "react-icons/fa";
 import { RiBloggerFill } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
+import { BiCategory } from "react-icons/bi";
 
 const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null);
@@ -89,7 +90,8 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
       submenu: [
         { label: "View Blogs", path: "/admin/blogs/view", icon: RiBloggerFill  },
         { label: "Add Blogs", path: "/admin/blogs/add", icon: IoMdAdd  },
-     
+        { label: "Categories", path: "/admin/blogs/categories", icon: BiCategory   },
+        
       ],
     },
     { icon: BadgeHelp, label: "Help & Supports", path: "/admin/help" },

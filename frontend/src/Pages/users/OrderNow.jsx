@@ -19,9 +19,9 @@ const OrderNow = () => {
   const deliveryAddress = {
     name:"Rudra Maity",
     zipCode: 721626,
-    city: "Bariebarh",
+    city: "abch",
     state: "West Bengal",
-    location: " Bariebarh new primary school",
+    location: " abc  school",
   };
 
   

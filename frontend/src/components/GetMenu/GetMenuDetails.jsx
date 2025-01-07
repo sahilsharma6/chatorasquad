@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import apiClient from '../../services/apiClient';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function GetMenuDetails({ dishDetails }) {
   const { addToCart } = useCart();
@@ -97,13 +98,16 @@ export default function GetMenuDetails({ dishDetails }) {
 
       {/* Action Buttons */}
       <div className="flex gap-4 mt-6">
+       
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="flex-1 bg-orange-500 text-white py-3 rounded-lg font-semibold"
         >
-          ORDER NOW
+          <Link to={'/menu/order/'+dishDetails._id} >
+          ORDER NOW</Link>
         </motion.button>
+        
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}

@@ -29,13 +29,14 @@ import Privacy from "./Pages/Privacy";
 import OrderDetails from "./Pages/users/OrderDetails";
 import Blogs from "./Pages/Blogs";
 import OrderNow from "./Pages/users/OrderNow";
+import ForgetPassword from "./components/ForgetPassword";
 
 function Layout() {
   const location = useLocation();
 
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isAuthRoute =
-    location.pathname === "/login" || location.pathname === "/signup";
+    location.pathname === "/login" || location.pathname === "/signup" || location.pathname==='/forget-password';
 
   return (
     <>
@@ -44,6 +45,7 @@ function Layout() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/update" element={<ProfileSettings />} />
         <Route path="/menu" element={<Menu />} />
         <Route path="/viewcart" element={<ViewCart />} />
