@@ -7,8 +7,8 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import signupImg from "../assets/signup.png";
 
-const LoginForm = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+const ForgetPassword = () => {
+  const [formData, setFormData] = useState({ email: "", password: "",confirmPassword: "", });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -21,21 +21,28 @@ const LoginForm = () => {
       newErrors.email = "Email is required";
     }
     if (!formData.password) {
-      newErrors.password = "Password is required";
-    }
+        newErrors.password = "Password is required";
+      } else if (formData.password.length < 8) {
+        newErrors.password = "Password must be at least 8 characters";
+      }
+  
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match";
+      }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       try {
-        const res = await apiClient.post("/auth/login", formData);
+        const res = await apiClient.post("/auth/forget-password", formData);
         console.log(res.data);
         if (res.status === 200) {
-          setLoggedIn(true);
-          navigate("/");
+        //   setLoggedIn(true);
+          navigate("/login");
         }
       } catch (err) {
         setErrors({
@@ -80,7 +87,7 @@ const LoginForm = () => {
             className=" w-full md:w-1/2 p-8 flex flex-col justify-center "
           >
             <h2 className="text-3xl font-bold mb-6 text-gray-700">
-              Please login to your account
+              Please Set Your Password
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -100,36 +107,54 @@ const LoginForm = () => {
                 )}
               </div>
               <div className="mb-4">
-                <div className="flex items-center border-b-2 border-orange-300 py-2">
-                  <Lock className="text-orange-500 mr-3" />
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="w-full bg-transparent focus:outline-none text-gray-700"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="text-orange-500" />
-                    ) : (
-                      <Eye className="text-orange-500" />
-                    )}
-                  </button>
-                </div>
-                {errors.password && (
-                  <p className="text-red-500 text-xs mt-1">{errors.password}</p>
-                )}
-              </div>
+                          <div className="flex items-center border-b-2 border-orange-300 py-2">
+                            <Lock className="text-orange-500 mr-3" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              name="password"
+                              placeholder="Password"
+                              value={formData.password}
+                              onChange={handleChange}
+                              className="w-full bg-transparent focus:outline-none text-gray-700"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? (
+                                <EyeOff className="text-orange-500" />
+                              ) : (
+                                <Eye className="text-orange-500" />
+                              )}
+                            </button>
+                          </div>
+                          {errors.password && (
+                            <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          <div className="flex items-center border-b-2 border-orange-300 py-2">
+                            <Lock className="text-orange-500 mr-3" />
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              name="confirmPassword"
+                              placeholder="Confirm Password"
+                              value={formData.confirmPassword}
+                              onChange={handleChange}
+                              className="w-full bg-transparent focus:outline-none text-gray-700"
+                            />
+                          </div>
+                          {errors.confirmPassword && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.confirmPassword}
+                            </p>
+                          )}
+                        </div>
               <button
                 type="submit"
                 className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition duration-300"
               >
-                Login
+                Change Password
               </button>
             </form>
             <p className="text-center text-sm mt-4">
@@ -140,9 +165,9 @@ const LoginForm = () => {
               >
                 Create New
               </span> Or {" "}
-              <span onClick={() => navigate("/forget-password")}
+              <span onClick={() => navigate("/login")}
                 className="text-orange-500 cursor-pointer hover:underline">
-                  Forget Password
+                  Login
                 </span>
             </p>
           </motion.div>
@@ -170,4 +195,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ForgetPassword;
