@@ -2,31 +2,147 @@ import Order from '../models/Order.js';
 import Cuisine from '../models/Cuisine.js';
 import Delivery from '../models/Delivery.js';
 import User from '../models/User.js';
+import uniquid from 'uniqid';  // npm install uniqid
+import axios from 'axios';
+import crypto from 'crypto';
 
-export const addOrder = async (req, res) => {
+
+export const payment = async (req, res) => {
     try{
-        // payment gateway
+        const merchantTransactionId = uniquid();
+        const {userId,date,time,items,total,deliveryAddress} = req.body;
+        const payload ={
+            merchantId :process.env.MERCHANT_ID,
+            amount:total*100,
+            merchantTransactionId: merchantTransactionId,
+            merchantUserId:userId,
+            redirectUrl:`${process.env.REDIRECT_URL}/${merchantTransactionId}`,
+            redirectMode:"POST",
+            callbackUrl:process.env.CALLBACK_URL,
+            paymentInstrument:{
+                type:"PAY_PAGE",
+            },
+        }
 
-
-        const paymentStatus = "Paid";
-        const {userId,date,time,items,total,deliveryAddress,orderStatus} = req.body;
         const order = new Order({
             userId,
             date,
             time,
             items,
-            paymentStatus,
             total,
             deliveryAddress,
-            orderStatus
+            orderStatus:"pending",
+            paymentStatus:"pending",
+            merchantTransactionId,
         });
         await order.save();
-        res.status(200).json({message:"Order added successfully"});
-    }
-    catch(error){
+        const payEndPoint = "/pg/v1/pay";
+     const base64EncodedPayload = Buffer.from(JSON.stringify(payload)).toString("base64");
+        // const base64EncodedPayload = bufferobj.toString("base64");
+      const xVerify = crypto.createHash("sha256").update(base64EncodedPayload+payEndPoint+process.env.SALT_KEY).digest("hex")+"###"+process.env.SALT_INDEX;
+         const options = { 
+            method: 'POST',
+            url:`${process.env.PHONE_PAY_HOST_URL}${payEndPoint}`,
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-VERIFY': xVerify,
+            },
+            data:{
+                request:base64EncodedPayload
+            },
+        }
+        axios.request(options).then((response)=>{
+
+            res.status(200).redirect(response.data.data.instrumentResponse.redirectInfo.url);  
+            
+        }).catch((error)=>{
+            console.error(error);
+            res.status(500).json({message:error});
+        });
+
+
+
+    } catch(error){
+        console.error(error);
         res.status(500).json({message:"Internal server error"});
     }
 }
+
+
+// export const addOrder = async (req, res) => {
+//     try{
+
+//         const options = { 
+//             method: 'GET',
+//             url:`${process.env.PHONE_PAY_HOST_URL}/pg/v1/status/${process.env.MERCHANT_ID}/${merchantTransactionId}`,
+//             headers: {
+//                 accept: 'application/json',
+//                 'Content-Type': 'application/json',
+//                 'X-VERIFY': xVerify,
+//                 'X-MERCHANT-ID':merchantTransactionId,
+//             },
+//         }
+
+//      const response = await axios.request(options);
+//     //  const paymentStatus = response.data.data.status;
+             
+
+//         // const {userId,date,time,items,total,deliveryAddress,orderStatus} = req.body;
+//         // const order = new Order({
+//         //     userId,
+//         //     date,
+//         //     time,
+//         //     items,
+//         //     paymentStatus,
+//         //     total,
+//         //     deliveryAddress,
+//         //     orderStatus
+//         // });
+//         // await order.save();
+//         console.log(response.data);
+//     }
+//     catch(error){
+//         res.status(500).json({message:"Internal server error"});
+//     }
+// }
+
+export const checkPaymentStatus = async (req, res) => {
+    try{
+        const merchantTransactionId = req.params.id;
+        const payEndPoint = `/pg/v1/status/${process.env.MERCHANT_ID}/${merchantTransactionId}`;
+         const xVerify = crypto.createHash("sha256").update(payEndPoint+process.env.SALT_KEY).digest("hex")+"###"+process.env.SALT_INDEX;
+        const options = {
+            method: 'GET',
+            url:`${process.env.PHONE_PAY_HOST_URL}/pg/v1/status/${process.env.MERCHANT_ID}/${merchantTransactionId}`,
+            headers: {
+                accept: 'application/json',
+                'Content-Type': 'application/json',
+                'X-VERIFY': xVerify,
+                'X-MERCHANT-ID':merchantTransactionId,
+            },
+        };
+        axios.request(options).then((response)=>{
+             const paymentStatus= response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
+            Order.findOneAndUpdate({merchantTransactionId},{paymentStatus}).then(()=>{
+                res.status(200).redirect(process.env.ORDER_URL);
+            }).catch((error)=>{
+                console.error(error);
+                res.status(500).json({message:error});
+            });
+        }
+        ).catch((error)=>{
+            console.error(error);
+            res.status(500).json({message:error});
+        });
+        
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message:"Internal server error"});
+    }
+}
+
 
 
 

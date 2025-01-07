@@ -39,7 +39,7 @@ const OrderSchema = mongoose.Schema(
     paymentStatus: {
         type: String,
         required: true,
-        enum: ['Pending', 'Paid', 'Failed'],
+        // enum: ['Pending', 'Paid', 'Failed'],
         },
     total: {
       type: Number,
@@ -47,12 +47,16 @@ const OrderSchema = mongoose.Schema(
     },
     deliveryAddress:{
         type:String,
-        required:true,
+        // required:true,
     },
     orderStatus:{
         type:String,
         required:true,
-        enum:['Order returned','Order Confirmed','Order Dispatched','Order Delivered','Order Cancelled'],
+        // enum:['Order returned','Order Confirmed','Order Dispatched','Order Delivered','Order Cancelled'],
+    },
+    merchantTransactionId:{
+        type:String,
+        required:true,
     },
   },
   {
