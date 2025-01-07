@@ -54,7 +54,7 @@ export const payment = async (req, res) => {
         }
         axios.request(options).then((response)=>{
 
-            res.status(200).redirect(response.data.data.instrumentResponse.redirectInfo.url);  
+            res.status(200).json({url:response.data.data.instrumentResponse.redirectInfo.url});  
             
         }).catch((error)=>{
             console.error(error);

@@ -71,7 +71,7 @@ function Layout() {
           }
         />
         <Route
-          path="menu/order/:menuid"
+          path="menu/order/:id"
           element={
             <ProtectedRoute allowedRoles={["admin", "user"]}>
               <OrderNow />
