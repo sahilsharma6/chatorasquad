@@ -19,6 +19,7 @@ import EditMenu from './EditMenu';
 import Blogs from '../Blogs';
 import AddBlogPage from './AddBlogPage';
 import Category from './Category';
+import EditBlog from './EditBlog';
 
 
 const DashboardLayout = () => {
@@ -62,6 +63,7 @@ const DashboardLayout = () => {
             <Route path='blogs/view' element={<Blogs role={'admin'} />} />
             <Route path='blogs/add' element={<AddBlogPage />} />
             <Route path='blogs/categories' element={<Category />} />
+            <Route path='blogs/edit/:blogid' element={<EditBlog />} />
           </Routes>
         </main>
       </div>

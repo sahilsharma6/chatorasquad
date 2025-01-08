@@ -25,6 +25,7 @@ import { FaBlog } from "react-icons/fa";
 import { RiBloggerFill } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
 import { BiCategory } from "react-icons/bi";
+import { FaBowlFood } from "react-icons/fa6";
 
 const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null);
@@ -119,7 +120,12 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
       >
         <div className="flex items-start p-4 border-b justify-center">
           <div className="flex flex-col">
-            <div className="text-2xl font-bold text-yellow-500">ChatoraSquad</div>
+            <div className="text-2xl font-bold text-yellow-500"> <Link to="/" className="flex items-center space-x-2">
+                      <FaBowlFood className="text-3xl text-orange-500" />
+                      <span className="text-xl font-semibold text-gray-800">
+                        CHATORA SQUAD
+                      </span>
+                    </Link></div>
             {!isDesktop && (
               <img
                 src="https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

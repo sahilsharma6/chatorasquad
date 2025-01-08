@@ -2,13 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, TrendingUp, Clock, Flame } from 'lucide-react';
 import BlogCard from '../components/BlogCard';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const Blogs = ({ role }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('all');
+  const [isDeleteModal,setIsDeleteModal]=useState(false)
+  const [blogToDelete, setBlogToDelete] = useState(null); 
 
-  const blogs = [
+ 
+  const [blogs, setBlogs] = useState([
     {
+      id: 1,
       title: "With ChatroaSquad you can order food for the whole day",
       description: "Scelerisque purus semper eget duis at. Tincidunt ornare massa eget egestas purus viverra. Morbi enim nunc faucibus a pellentesque...",
       date: "2024-01-23",
@@ -19,6 +24,7 @@ const Blogs = ({ role }) => {
       image: "https://quickeat-react.vercel.app/assets/img/news-2.jpg"
     },
     {
+      id: 2,
       title: "127+ Couriers On Our Team Big Food Trends",
       description: "Scelerisque purus semper eget duis at. Tincidunt ornare massa eget egestas purus viverra. Morbi enim nunc faucibus a pellentesque...",
       date: "2025-01-04",
@@ -29,6 +35,7 @@ const Blogs = ({ role }) => {
       image: "https://quickeat-react.vercel.app/assets/img/news-3.jpg"
     },
     {
+      id: 3,
       title: "Why You Should Optimize Your Menu for Delivery",
       description: "Scelerisque purus semper eget duis at. Tincidunt ornare massa eget egestas purus viverra. Morbi enim nunc faucibus a pellentesque...",
       date: "2024-12-09",
@@ -38,7 +45,8 @@ const Blogs = ({ role }) => {
       category: "news",
       image: "https://quickeat-react.vercel.app/assets/img/news-7.jpg"
     }
-  ];
+  ]);
+
 
   const tabs = [
     { id: 'all', label: 'All Blogs', icon: Flame },
@@ -47,6 +55,17 @@ const Blogs = ({ role }) => {
     { id: 'latest', label: 'Latest', icon: Clock },
     { id: 'oldest', label: 'Oldest', icon: Clock },
   ];
+
+  const handleDelete = (id) => {
+    setBlogToDelete(id); 
+    setIsDeleteModal(true); 
+  };
+
+  const confirmDelete = () => {
+    setBlogs((prevBlogs) => prevBlogs.filter(blog => blog.id !== blogToDelete));
+    console.log(`Blog with ID ${blogToDelete} deleted.`);
+    setIsDeleteModal(false)
+  };
 
   const filteredAndSortedBlogs = useMemo(() => {
     let filtered = blogs.filter(blog => {
@@ -58,6 +77,8 @@ const Blogs = ({ role }) => {
         blog.date.includes(searchString)
       );
     });
+
+  
 
     switch (activeTab) {
       case 'most-liked':
@@ -143,6 +164,8 @@ const Blogs = ({ role }) => {
           transition={{ duration: 0.5 }}
           className={`grid grid-cols-1 md:grid-cols-2 ${role !== 'admin' && 'lg:grid-cols-3'} gap-8`}
         >
+          {console.log(filteredAndSortedBlogs)
+          }
           {filteredAndSortedBlogs.map((blog, index) => (
             <motion.div
               key={index}
@@ -150,7 +173,7 @@ const Blogs = ({ role }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <BlogCard {...blog} role={role} />
+               <BlogCard {...blog} role={role} onDelete={handleDelete} />
             </motion.div>
           ))}
         </motion.div>
@@ -165,6 +188,11 @@ const Blogs = ({ role }) => {
           No blogs found matching your criteria.
         </motion.p>
       )}
+      {role==='admin' && <ConfirmationModal
+        isOpen={isDeleteModal}
+        onClose={() => setIsDeleteModal(false)}
+        onConfirm={confirmDelete}
+      /> }
     </div>
   );
 };
