@@ -79,9 +79,9 @@ const Profile = () => {
 
   const saveAddress = async () => {
     try {
-      await apiClient.post("/user/addaddress", newAddress);
-      setAddresses([...addresses, newAddress]);
-      setNewAddress({ zipcode: "", city: "", state: "", location: "" });
+       const response = await apiClient.post("/user/addaddress", newAddress);
+      setAddresses([...addresses, response.data.address]);
+      setNewAddress({  _id: "", zipcode: "", city: "", state: "", location: ""  });
       toast.success("Address added successfully!", {
         position: "bottom-right",
         autoClose: 2000,

@@ -1,24 +1,92 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import CartItems from "../../components/CartItems";
 import { ShieldCheck } from "lucide-react";
 import Loader from "../../components/Loader";
 import NoResults from "../../components/NoResults";
 import Footer from "../../components/Footer";
-import { useCart } from "../../context/CartContext"; 
+import { useCart } from "../../context/CartContext";
+import apiClient from "../../services/apiClient";
+import { UserContext } from "../../context/UserContext";
+import { useContext } from "react";
 
 const ViewCart = () => {
   const { cartItems, updateQuantity, removeItem } = useCart();
   const [loading, setLoading] = useState(true);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false); 
+      setLoading(false);
     }, 1300);
+
+    const fetchAddresses = async () => {
+      try {
+        const response = await apiClient.get("/user/getaddresses");
+        const fetchedAddresses = response.data;
+        setAddresses(fetchedAddresses);
+        const defaultAddress = fetchedAddresses.find((addr) => addr.type === "default");
+        setSelectedAddress(defaultAddress || fetchedAddresses[0]);
+      } catch (error) {
+        console.error("Error fetching addresses:", error);
+      }
+    };
+
+    fetchAddresses();
 
     return () => clearTimeout(timer);
   }, []);
 
+  const handleAddressChange = (address) => {
+    setSelectedAddress(address);
+  };
+
+  const handlePayment = async () => {
+
+    const itemsFromContext = cartItems; 
+    const itemsFromStorage = JSON.parse(localStorage.getItem("cartItems")) || []; 
+    const items = itemsFromContext.length > 0 ? itemsFromContext : itemsFromStorage;
+  
+    if (items.length === 0) {
+      alert("Your cart is empty. Please add items to proceed.");
+      return;
+    }
+  
+
+    const userId = user?._id;   
+  
+
+    const payload = {
+      userId,
+      date: new Date().toISOString(),
+      time: new Date().toLocaleTimeString(),
+      items: items.map((item) => ({
+        itemid: item._id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.sellingPrice,
+      })),
+      total: items.reduce((sum, item) => sum + item.sellingPrice * item.quantity, 0),
+      deliveryAddress: selectedAddress,
+    };
+  
+    try {
+      const response = await apiClient.post("/user/pay", payload);
+  
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      } else {
+        alert("Payment initiation failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Payment initiation failed", error);
+      alert("Something went wrong. Please try again later.");
+    }
+  };
+  
   if (loading) {
     return <Loader />;
   }
@@ -40,74 +108,41 @@ const ViewCart = () => {
       <div className="max-w-full mx-auto p-4 bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
         {/* Left Box (65% Width) */}
         <div className="flex-1 min-h-screen overflow-y-auto shadow px-4 py-4">
-          {/* Shipping and delivery options */}
-          <div className="mb-4 p-4 bg-gray-50 rounded-lg flex justify-between">
-            <div>
-              <p className="text-yellow-500 text-sm">From Saved Addresses</p>
-            </div>
-            <div className="">
-              <button className="text-orange-500 text-sm bg-transparent font-semibold hover:text-white py-2 px-4 border border-orange-500 hover:border-transparent rounded hover:bg-orange-500 transition ease-in-out delay-150 hover:-translate-y-1">
-                Enter Delivery Location
-              </button>
-            </div>
-          </div>
-
           {/* Food Items */}
           {cartItems.map((item) => (
             <CartItems
-              key={item._id}  
+              key={item._id}
               item={item}
               updateQuantity={updateQuantity}
               removeItem={removeItem}
             />
           ))}
 
-          {/* Add-on Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="p-4 border rounded-lg mb-4"
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <h4 className="font-semibold">Add Extra Cheese</h4>
-                <p className="text-sm text-gray-600">Make your pizza more cheesy</p>
-                <p className="mt-1">
-                  <span className="font-semibold">₹40</span>
-                  <span className="text-sm text-gray-500 ml-2">Optional</span>
-                </p>
-              </div>
-              <button className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-                Add
-              </button>
-            </div>
-          </motion.div>
-
           {/* Place Order Button */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full mt-4 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold"
+          <button
+            onClick={handlePayment}
+            className={`w-full text-center flex items-center justify-center mt-4 px-3 py-3 ${
+              paymentProcessing ? "bg-gray-400" : "bg-orange-500"
+            } text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold`}
+            disabled={paymentProcessing}
           >
-            Place Order
-          </motion.button>
+            {paymentProcessing ? "Processing..." : "Place Order"}
+          </button>
         </div>
 
         {/* Right Box */}
         <div className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg sticky shadow top-4">
+          {/* Price Details */}
           <h3 className="font-semibold mb-4">Price Details</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>
-                Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
-                items)
+                Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)
               </span>
               <span>
                 ₹
                 {cartItems.reduce(
-                  (sum, item) =>
-                    sum + (item.sellingPrice) * item.quantity,
+                  (sum, item) => sum + item.sellingPrice * item.quantity,
                   0
                 )}
               </span>
@@ -126,13 +161,46 @@ const ViewCart = () => {
               <span>
                 ₹
                 {cartItems.reduce(
-                  (sum, item) =>
-                    sum + ( item.sellingPrice) * item.quantity,
+                  (sum, item) => sum + item.sellingPrice * item.quantity,
                   0
                 ) + 3}
               </span>
             </div>
           </div>
+
+          {/* Addresses Section */}
+          <h3 className="font-semibold mt-6 mb-4">Select Delivery Address</h3>
+          <div className="space-y-2">
+            {addresses.map((address) => (
+              <div
+                key={address._id}
+                className={`p-4 border rounded-lg cursor-pointer ${
+                  selectedAddress?._id === address._id
+                    ? "border-orange-500 bg-orange-100"
+                    : "border-gray-300"
+                }`}
+                onClick={() => handleAddressChange(address)}
+              >
+                <div className="flex justify-between items-center">
+                  <span>
+                    {address.location}, {address.city}, {address.state} -{" "}
+                    {address.zipCode}
+                  </span>
+                  {selectedAddress?._id === address._id && (
+                    <span className="text-sm text-orange-600 font-semibold">
+                      Selected Address
+                    </span>
+                  )}
+                  {address.type === "default" && (
+                    <span className="text-sm text-green-600 font-semibold">
+                      Default Address
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
           <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
             <ShieldCheck size={58} className="fill-slate-700 text-white sha" />
             <span>
