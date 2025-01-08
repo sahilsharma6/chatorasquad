@@ -12,7 +12,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cartItems"));
 
-    if (savedCart && savedCart.length > 0) {
+    if (savedCart && savedCart.length >= 0) {
       setCartItems(savedCart);
     } else {
       fetchCartFromBackend();
@@ -20,7 +20,7 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (cartItems.length > 0) {
+    if (cartItems.length >= 0) {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
     }
   }, [cartItems]);

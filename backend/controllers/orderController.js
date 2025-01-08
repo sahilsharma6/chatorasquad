@@ -11,6 +11,10 @@ export const payment = async (req, res) => {
     try{
         const merchantTransactionId = uniquid();
         const {userId,date,time,items,total,deliveryAddress} = req.body;
+        if(!userId || !date || !time || !items || !total || !deliveryAddress){
+            return res.status(400).json({message:"All fields are required"});
+        }
+        
         const payload ={
             merchantId :process.env.MERCHANT_ID,
             amount:total*100,
