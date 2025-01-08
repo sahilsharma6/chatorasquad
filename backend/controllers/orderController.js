@@ -131,7 +131,7 @@ export const checkPaymentStatus = async (req, res) => {
         process.env.SALT_INDEX;
       const options = {
         method: "GET",
-        url: `${process.env.PHONE_PAY_HOST_URL}/pg/v1/status/${process.env.MERCHANT_ID}/${merchantTransactionId}`,
+        url: `${process.env.PHONE_PAY_HOST_URL}${payEndPoint}`,
         headers: {
           accept: "application/json",
           "Content-Type": "application/json",
@@ -180,7 +180,7 @@ export const checkPaymentStatus = async (req, res) => {
         process.env.SALT_INDEX;
       const options = {
         method: "GET",
-        url: `https://mercury-uat.phonepe.com/v3/transaction/${process.env.MERCHANT_ID}/${merchantTransactionId}/status`,
+        url: `https://mercury-t2.phonepe.com${payEndPoint}`,
         headers: {
           accept: "application/json",
           "Content-Type": "application/json",
