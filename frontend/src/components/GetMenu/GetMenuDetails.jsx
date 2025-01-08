@@ -1,41 +1,48 @@
-import React from 'react';
-import { MapPin, Share, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { useCart } from '../../context/CartContext';
-import apiClient from '../../services/apiClient';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { MapPin, Share, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
+import { useCart } from "../../context/CartContext";
+import apiClient from "../../services/apiClient";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function GetMenuDetails({ dishDetails }) {
   const { addToCart } = useCart();
-  const [pinCode, setPinCode] = useState('');
-  const [deliveryMessage, setDeliveryMessage] = useState('');
-  const [toastMessage, setToastMessage] = useState('');
+  const [pinCode, setPinCode] = useState("");
+  const [deliveryMessage, setDeliveryMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState("");
 
-  const { name, description, sellingPrice, images } = dishDetails; 
+  const { name, description, sellingPrice, images } = dishDetails;
+
+  const { id } = useParams();
 
   const checkDelivery = async () => {
     if (!pinCode.trim()) {
-      setDeliveryMessage('Please enter a valid pincode.');
+      setDeliveryMessage("Please enter a valid pincode.");
       return;
     }
 
     try {
-      const response = await apiClient.post(`/menu/checkdelivery`, { zipCode: pinCode });
+      const response = await apiClient.post(`/menu/checkdelivery`, {
+        zipCode: pinCode,
+      });
       if (response.data.deliveryAvailable) {
-        setDeliveryMessage('Delivery is available in your area!');
+        setDeliveryMessage("Delivery is available in your area!");
       } else {
-        setDeliveryMessage('Sorry, delivery is not available in your area.');
+        setDeliveryMessage("Sorry, delivery is not available in your area.");
       }
     } catch (error) {
-      setDeliveryMessage('Unable to check delivery at the moment. Please try again later.');
+      setDeliveryMessage(
+        "Unable to check delivery at the moment. Please try again later."
+      );
     }
   };
 
   const handleAddToCart = (item) => {
     addToCart(item);
-    setToastMessage('Item added to cart!');
-    setTimeout(() => setToastMessage(''), 1000);
+    setToastMessage("Item added to cart!");
+    setTimeout(() => setToastMessage(""), 1000);
   };
 
   return (
@@ -54,7 +61,9 @@ export default function GetMenuDetails({ dishDetails }) {
       </div>
 
       <div className="mt-6">
-        <span className="text-green-600 text-sm font-medium">Special price</span>
+        <span className="text-green-600 text-sm font-medium">
+          Special price
+        </span>
         <div className="flex items-center gap-3 mt-1">
           <span className="text-2xl font-medium">₹</span>
           <span className="text-green-600 font-medium">
@@ -75,12 +84,12 @@ export default function GetMenuDetails({ dishDetails }) {
             value={pinCode}
             onChange={(e) => setPinCode(e.target.value)}
           />
-          <button onClick={checkDelivery} className="text-blue-600 font-medium">Check</button>
+          <button onClick={checkDelivery} className="text-blue-600 font-medium">
+            Check
+          </button>
         </div>
         {deliveryMessage && (
-          <div className="mt-2 text-sm text-gray-600">
-            {deliveryMessage}
-          </div>
+          <div className="mt-2 text-sm text-gray-600">{deliveryMessage}</div>
         )}
       </div>
 
@@ -98,21 +107,18 @@ export default function GetMenuDetails({ dishDetails }) {
 
       {/* Action Buttons */}
       <div className="flex gap-4 mt-6">
-       
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="flex-1 bg-orange-500 text-white py-3 rounded-lg font-semibold"
+        <Link
+          className="flex-1 text-center bg-orange-500 text-white py-3 rounded-lg font-semibold"
+          to={"/menu/order/" + id}
         >
-          <Link to={'/menu/order/'+dishDetails._id} >
-          ORDER NOW</Link>
-        </motion.button>
-        
+          ORDER NOW
+        </Link>
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="flex-1 bg-gray-900 text-white py-3 rounded-lg font-semibold"
-          onClick={() => handleAddToCart(dishDetails)} 
+          onClick={() => handleAddToCart(dishDetails)}
         >
           ADD TO CART
         </motion.button>
