@@ -15,6 +15,7 @@ import apiClient from "../services/apiClient";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 import { useCart } from "../context/CartContext";
+// import {CartContext} from "../context/CartContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +29,8 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     if (!loggedIn) return;
+
+
     await apiClient.post("/auth/logout");
     setLoggedIn(false);
   };
