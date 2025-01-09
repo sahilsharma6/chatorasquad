@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from '../../components/admin/Sidebar';
 import Header from '../../components/admin/Header';
@@ -20,12 +20,12 @@ import Blogs from '../Blogs';
 import AddBlogPage from './AddBlogPage';
 import Category from './Category';
 import EditBlog from './EditBlog';
-
+import { UserContext } from "../../context/UserContext";
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
-
+ const { user, loggedIn } = useContext(UserContext);
   useEffect(() => {
     const updateScreenSize = () => {
       setIsDesktop(window.innerWidth >= 1024);
@@ -41,9 +41,9 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex ">
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} isDesktop={isDesktop} />
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} isDesktop={isDesktop} user={user} />
       <div className="flex-1 flex flex-col lg:ml-64 overflow-hidden">
-        <Header toggleSidebar={toggleSidebar} isDesktop={isDesktop} />
+        <Header toggleSidebar={toggleSidebar} isDesktop={isDesktop} user={user} />
         <main className="py-4 px-3 lg:px-12  ">
           <Routes>
             <Route path="/" element={<Dashboard />} /> {/* Default route */}
