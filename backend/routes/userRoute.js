@@ -3,7 +3,7 @@ import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, 
 import authMiddleware from '../middlewares/authMiddleware.js';
 import {  getOrderDetails, getOrdersByFilter, payment, updateOrderStatus, checkPaymentStatus} from '../controllers/orderController.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
-import { addtoCart, getCart } from '../controllers/cartController.js';
+import { addToCart, DeleteFromCart, getCart, updateQuantity } from '../controllers/cartController.js';
 
 const router = express.Router();
 
@@ -28,8 +28,10 @@ router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus)
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 router.post('/pay',authMiddleware,payment); 
 
-router.get('/getcart',authMiddleware,getCart) ; // id is user id
-router.put('/updatecart',authMiddleware,addtoCart); // id is user id
+router.get('/getcart',authMiddleware,getCart) ; 
+router.put('/addtocart/:id',authMiddleware,addToCart); // id is itemId id
+router.delete('/deletefromcart/:id',authMiddleware,DeleteFromCart); // id is itemId id
+router.put('/updatecart/:id',authMiddleware,updateQuantity); // id is itemId id
 
 router.post("/checkpaymentstatus/:id",checkPaymentStatus);
 
