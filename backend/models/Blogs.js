@@ -12,18 +12,33 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    category: {
+        type: String,
+    },
     content: {
         type: String,
         required: true,
+    },
+    image: {
+        type: String,
     },
     date: {
         type: Date,
         default: Date.now,
     },
-    likes: {
+    views: {
         type: Number,
         default: 0,
     },
+   likes: [
+        {
+            userId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        },
+    ],
+
     comments: [
         {
             userId: {
