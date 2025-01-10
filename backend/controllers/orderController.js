@@ -225,6 +225,17 @@ export const checkPaymentStatus = async (req, res) => {
   }
 };
 
+export const getOrders = async (req, res) => {
+  try { 
+    const userId = req.params.id;
+    const orders = await Order.find({ userId });
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 export const updateOrderStatus = async (req, res) => {
   try {
     const status = req.body.orderStatus;
@@ -432,11 +443,3 @@ export const checkdeliveryaddress = async (req, res) => {
   }
 };
 
-export const getUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
