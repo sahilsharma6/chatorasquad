@@ -2,7 +2,8 @@ import express from 'express';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import menuRoute from './menuRoute.js';
-import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress ,getUsers } from '../controllers/orderController.js';
+import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails } from '../controllers/orderController.js';
+import { getUsers } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -21,5 +22,9 @@ router.use('/menu', menuRoute); // menu routes for admin
 
 router.use("/allusers",authMiddleware,checkAdmin,getUsers); // get all users
 
+
+router.get('/getallorders/:id',authMiddleware,getOrders); // id is user id
+router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus); // id is order id
+router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 
 export default router;

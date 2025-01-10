@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom"; // Import useLocation
+import { Link, useLocation } from "react-router-dom";
 import {
   X,
   Home,
@@ -12,7 +12,8 @@ import {
   BookmarkPlus,
   Activity,
   Settings,
-  BadgeHelp
+  BadgeHelp,
+  LogOut
 } from "lucide-react";
 import { MdOutlinePreview } from "react-icons/md";
 import { GiOpenedFoodCan } from "react-icons/gi";
@@ -26,10 +27,13 @@ import { RiBloggerFill } from "react-icons/ri";
 import { IoMdAdd } from "react-icons/io";
 import { BiCategory } from "react-icons/bi";
 import { FaBowlFood } from "react-icons/fa6";
+import {UserContext} from '../../context/UserContext'
+import apiClient from "../../services/apiClient";
 
-const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
+const Sidebar = ({ isOpen, toggleSidebar, isDesktop, user }) => {
   const [activeSubmenu, setActiveSubmenu] = useState(null);
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
+  const {loggedIn,setLoggedIn}=useContext(UserContext)
 
   const toggleSubmenu = (label) => {
     setActiveSubmenu((prev) => (prev === label ? null : label));
@@ -45,7 +49,6 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
     closed: { height: 0, opacity: 0 },
   };
 
-  // Define sidebar items with paths
   const sidebarItems = [
     { icon: Home, label: "Dashboard", path: "/admin" },
     { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
@@ -68,7 +71,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
       hasSubmenu: true,
       submenu: [
         { label: "Customer List", path: "/admin/customers/list", icon: FileUser },
-        { label: "Customers Review", path: "/admin/customers/review", icon: MdOutlinePreview  },
+        { label: "Customers Review", path: "/admin/customers/review", icon: MdOutlinePreview },
       ],
     },
     { label: "Offers", path: "/admin/offers", icon: BiSolidOffer },
@@ -89,15 +92,23 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
       path: "/admin/blogs",
       hasSubmenu: true,
       submenu: [
-        { label: "View Blogs", path: "/admin/blogs/view", icon: RiBloggerFill  },
-        { label: "Add Blogs", path: "/admin/blogs/add", icon: IoMdAdd  },
-        { label: "Categories", path: "/admin/blogs/categories", icon: BiCategory   },
-        
+        { label: "View Blogs", path: "/admin/blogs/view", icon: RiBloggerFill },
+        { label: "Add Blogs", path: "/admin/blogs/add", icon: IoMdAdd },
+        { label: "Categories", path: "/admin/blogs/categories", icon: BiCategory },
       ],
     },
     { icon: BadgeHelp, label: "Help & Supports", path: "/admin/help" },
     { icon: Settings, label: "Settings", path: "/admin/settings" },
   ];
+
+  const handleLogout = async () => {
+    if (!loggedIn) return;
+
+
+    await apiClient.post("/auth/logout");
+    setLoggedIn(false);
+    console.log("Logging out...");
+  };
 
   return (
     <>
@@ -115,30 +126,55 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop }) => {
         initial="closed"
         animate={isOpen || isDesktop ? "open" : "closed"}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`fixed left-0 top-0 overflow-auto bottom-0 md:w-72 bg-white shadow-lg z-20 ${isDesktop ? "static translate-x-0" : ""
-          }`}
+        className={`fixed left-0 top-0 overflow-auto bottom-0 md:w-72 bg-white shadow-lg z-20 ${
+          isDesktop ? "static translate-x-0" : ""
+        }`}
       >
-        <div className="flex items-start p-4 border-b justify-center">
-          <div className="flex flex-col">
-            <div className="text-2xl font-bold text-yellow-500"> <Link to="/" className="flex items-center space-x-2">
-                      <FaBowlFood className="text-3xl text-orange-500" />
-                      <span className="text-xl font-semibold text-gray-800">
-                        CHATORA SQUAD
-                      </span>
-                    </Link></div>
-            {!isDesktop && (
-              <img
-                src="https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt="User  avatar"
-                className="w-16 h-16 rounded-full border-4 border-yellow-500 mt-4"
-              />
-            )}
+        <div className="flex flex-col h-full">
+          <div className="flex items-start p-4 border-b justify-center shadow py-6">
+            <div className="flex flex-col">
+              <div className="text-2xl font-bold text-yellow-500 ">
+                <Link to="/" className="flex items-center space-x-2">
+                  <FaBowlFood className="text-3xl text-orange-500" />
+                  <span className="text-xl font-semibold text-gray-800">
+                    CHATORA SQUAD
+                  </span>
+                </Link>
+              </div>
+              {!isDesktop && (
+                <img
+                  src={user?.img || "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
+                  alt="User avatar"
+                  className="w-16 h-16 rounded-full border-4 border-yellow-500 mt-4"
+                />
+              )}
+            </div>
+            <button onClick={toggleSidebar} className="ml-auto lg:hidden p-2">
+              <X size={33} />
+            </button>
           </div>
-          <button onClick={toggleSidebar} className="ml-auto lg:hidden p-2">
-            <X size={33} />
-          </button>
+
+          <div className="flex-grow overflow-y-auto">
+            <SideBarItems
+              sidebarItems={sidebarItems}
+              activeSubmenu={activeSubmenu}
+              submenuVariants={submenuVariants}
+              isDesktop={isDesktop}
+              toggleSubmenu={toggleSubmenu}
+            />
+          </div>
+
+          {/* Logout Button */}
+          <div className="border-t p-4 mt-auto shadow">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-200 rounded-md transition-colors duration-200 text-2xl delay-75"
+            >
+              <LogOut size={33} />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
-        <SideBarItems sidebarItems={sidebarItems} activeSubmenu={activeSubmenu} submenuVariants={submenuVariants} isDesktop={isDesktop} toggleSubmenu={toggleSubmenu} />
       </motion.div>
     </>
   );

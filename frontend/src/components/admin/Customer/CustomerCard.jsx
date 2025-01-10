@@ -26,14 +26,17 @@ export default function CustomerCard({ currentData, setSelectedCustomer, setShow
                 
                 <p className="text-xs text-gray-400">Created on: {new Date(customer.createdAt).toLocaleDateString()}</p>
               </div>
-              <div className="flex gap-2">
-                <button className="text-blue-500 hover:text-blue-700" aria-label="Edit">
+              {/* <div className="flex gap-2"> */}
+                {/* <button className="text-blue-500 hover:text-blue-700" aria-label="Edit">
                   <Edit size={30} />
-                </button>
-                <button className="text-red-500 hover:text-red-700" aria-label="Delete">
+                </button> */}
+                <button className="text-red-500 hover:text-red-700 mt-5 " aria-label="Delete" onClick={(event) => {
+                    event.stopPropagation(); 
+                    console.log('Delete action for customer:', customer);
+                  }}>
                   <Trash2 size={30} />
                 </button>
-              </div>
+              {/* </div> */}
             </div>
           </motion.div>
         ))}

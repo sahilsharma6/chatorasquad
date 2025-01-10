@@ -1,7 +1,7 @@
 import express from 'express';
 import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, deleteAddress, getAddresses, addAddress, UpdatePhone, UpdateEmail, setDefaultAddress} from '../controllers/userController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
-import {  getOrderDetails, getOrdersByFilter, payment, updateOrderStatus, checkPaymentStatus} from '../controllers/orderController.js';
+import {  getOrderDetails, getOrdersByFilter, payment, updateOrderStatus, checkPaymentStatus, getOrders} from '../controllers/orderController.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import { addToCart, DeleteFromCart, getCart, updateQuantity } from '../controllers/cartController.js';
 
@@ -25,7 +25,7 @@ router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is addre
 
 
 router.get('/getfilteredorders/:id',authMiddleware,getOrdersByFilter); // id is user id
-router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus); // id is order id
+router.get('/getallorders/:id',authMiddleware,getOrders); // id is user id
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 router.post('/pay',authMiddleware,payment); 
 

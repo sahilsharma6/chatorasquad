@@ -30,6 +30,7 @@ import OrderDetails from "./Pages/users/OrderDetails";
 import Blogs from "./Pages/Blogs";
 import OrderNow from "./Pages/users/OrderNow";
 import ForgetPassword from "./components/ForgetPassword";
+import BlogPostDetail from "./Pages/BlogPostDetail";
 
 function Layout() {
   const location = useLocation();
@@ -60,6 +61,7 @@ function Layout() {
         <Route path="/terms" element={<TermsConditions />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blog/details/:blogid" element={<BlogPostDetail />} />
 
         {/* Protected Routes */}
         <Route
