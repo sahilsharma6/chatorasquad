@@ -31,8 +31,14 @@ const Navbar = () => {
     if (!loggedIn) return;
 
 
-    await apiClient.post("/auth/logout");
-    setLoggedIn(false);
+    const res = await apiClient.post("/auth/logout");
+    if (res.status === 200) {
+      localStorage.clear();
+        setLoggedIn(false);
+    }
+     
+    
+  
   };
 
   useEffect(() => {

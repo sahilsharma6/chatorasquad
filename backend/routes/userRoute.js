@@ -30,7 +30,7 @@ router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order i
 router.post('/pay',authMiddleware,payment); 
 
 router.get('/getcart',authMiddleware,getCart) ; 
-router.put('/addtocart/:id',authMiddleware,addToCart); // id is itemId id
+router.post('/addtocart/:id',authMiddleware,addToCart); // id is itemId id
 router.delete('/deletefromcart/:id',authMiddleware,DeleteFromCart); // id is itemId id
 router.put('/updatecart/:id',authMiddleware,updateQuantity); // id is itemId id
 

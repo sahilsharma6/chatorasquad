@@ -39,7 +39,7 @@ const Dashboard = () => {
     const orderDate = new Date(order.date);
     return orderDate >= startDate && orderDate <= endDate;
   });
-  console.log(filteredData);
+
 
 
   return (

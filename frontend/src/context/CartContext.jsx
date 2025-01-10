@@ -1,9 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import apiClient from "../services/apiClient"; 
-
+import apiClient from "../services/apiClient";
 
 const CartContext = createContext();
-
 
 export const useCart = () => {
   return useContext(CartContext);
@@ -12,59 +10,62 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-
   useEffect(() => {
     const initializeCart = async () => {
-      try {
-        const savedCart = JSON.parse(localStorage.getItem("cartItems"));
-        if (savedCart && savedCart.length > 0) {
-          setCartItems(savedCart);
+      const storedCart = localStorage.getItem("cartItems");
+
+      if (storedCart) {
+        const parsedCart = JSON.parse(storedCart);
+
+        if (Array.isArray(parsedCart)) {
+          setCartItems(parsedCart);
         } else {
-          await fetchCartFromBackend();
+          setCartItems([]);
         }
-      } catch (error) {
-        console.error("Error initializing cart:", error);
+      } else {
+        try {
+          const { data } = await apiClient.get("/user/getcart");
+
+          if (data.items && Array.isArray(data.items)) {
+            setCartItems(data.items);
+            localStorage.setItem("cartItems", JSON.stringify(data.items));
+          } else {
+            setCartItems([]); 
+            localStorage.setItem("cartItems", JSON.stringify([]));
+          }
+        } catch (error) {
+          console.error("Error fetching cart from backend:", error);
+          setCartItems([]); 
+          localStorage.setItem("cartItems", JSON.stringify([]));
+        }
       }
     };
+
     initializeCart();
-  }, []);
-
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("cartItems", JSON.stringify(cartItems));
-    } catch (error) {
-      console.error("Failed to update cart in localStorage:", error);
-    }
-  }, [cartItems]);
-
-  // Fetch cart from backend
-  const fetchCartFromBackend = async () => {
-    try {
-      const { data } = await apiClient.get("/user/getcart");
-      if (Array.isArray(data.cartItems)) {
-        setCartItems(data.cartItems);
-      }
-    } catch (error) {
-      console.error("Error fetching cart from backend:", error);
-    }
-  };
+  }, []); 
 
   // Add item to cart
   const addToCart = async (item) => {
-    const updatedCart = [...cartItems];
-    const existingItem = updatedCart.find((cartItem) => cartItem._id === item._id);
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      updatedCart.push({ ...item, quantity: 1 });
-    }
-
-    setCartItems(updatedCart);
-
     try {
-      await apiClient.post("/user/addtocart", { item });
+      const response = await apiClient.post(`/user/addtocart/${item._id}`, {
+        item,
+      });
+
+      if (response.status === 200) {
+        const updatedCart = [...cartItems];
+        const existingItem = updatedCart.find(
+          (cartItem) => cartItem._id === item._id
+        );
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          updatedCart.push({ ...item, quantity: 1 });
+        }
+
+        setCartItems(updatedCart);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      }
     } catch (error) {
       console.error("Error adding item to backend cart:", error);
     }
@@ -72,14 +73,20 @@ export const CartProvider = ({ children }) => {
 
   // Update item quantity
   const updateQuantity = async (id, newQuantity) => {
-    const updatedCart = cartItems.map((item) =>
-      item._id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
-    );
-
-    setCartItems(updatedCart);
-
     try {
-      await apiClient.put(`/user/updatecart/${id}`, { quantity: newQuantity });
+      const response = await apiClient.put(`/user/updatecart/${id}`, {
+        quantity: newQuantity,
+      });
+
+      if (response.status === 200) {
+        const updatedCart = cartItems.map((item) =>
+          item._id === id
+            ? { ...item, quantity: Math.max(1, newQuantity) }
+            : item
+        );
+        setCartItems(updatedCart);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      }
     } catch (error) {
       console.error("Error updating item quantity on the backend:", error);
     }
@@ -87,18 +94,23 @@ export const CartProvider = ({ children }) => {
 
   // Remove item from cart
   const removeItem = async (id) => {
-    const updatedCart = cartItems.filter((item) => item._id !== id);
-    setCartItems(updatedCart);
-
     try {
-      await apiClient.delete(`/user/deletefromcart/${id}`);
+      const response = await apiClient.delete(`/user/deletefromcart/${id}`);
+
+      if (response.status === 200) {
+        const updatedCart = cartItems.filter((item) => item._id !== id);
+        setCartItems(updatedCart);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      }
     } catch (error) {
       console.error("Error removing item from backend cart:", error);
     }
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, updateQuantity, removeItem }}
+    >
       {children}
     </CartContext.Provider>
   );
