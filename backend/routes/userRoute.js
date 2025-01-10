@@ -23,13 +23,14 @@ router.put('/setdefaultaddress/:id',authMiddleware,setDefaultAddress); // id is 
 router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is address id
 
 
+
 router.get('/getfilteredorders/:id',authMiddleware,getOrdersByFilter); // id is user id
 router.get('/getallorders/:id',authMiddleware,getOrders); // id is user id
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 router.post('/pay',authMiddleware,payment); 
 
 router.get('/getcart',authMiddleware,getCart) ; 
-router.put('/addtocart/:id',authMiddleware,addToCart); // id is itemId id
+router.post('/addtocart/:id',authMiddleware,addToCart); // id is itemId id
 router.delete('/deletefromcart/:id',authMiddleware,DeleteFromCart); // id is itemId id
 router.put('/updatecart/:id',authMiddleware,updateQuantity); // id is itemId id
 

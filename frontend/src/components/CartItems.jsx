@@ -10,11 +10,12 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
       className="p-4 border rounded-lg mb-4"
     >
       <div className="flex gap-4">
-        <img
-          src={ import.meta.env.VITE_API_URL + "/" + item.images[0]}
-          alt={item.name}
-          className="w-24 h-24 rounded-lg object-cover"
-        />
+      <img
+  src={item.images && item.images[0] ? import.meta.env.VITE_API_URL + "/" + item.images[0] : "/default-image.jpg"}
+  alt={item.name}
+  className="w-24 h-24 rounded-lg object-cover"
+/>
+
         <div className="flex-1">
           <h3 className="font-semibold text-lg">{item.name}</h3>
           <p className="text-gray-600 text-sm">{item.restaurant}</p>
