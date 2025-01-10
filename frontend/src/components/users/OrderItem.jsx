@@ -19,6 +19,7 @@ const OrderItem = ({ order,index }) => {
                         alt={order.name}
                         className="w-20 h-20 object-cover rounded"
                       />
+                      
                       <div className="flex-1">
                         <div className="flex justify-between items-start flex-wrap">
                           <div>

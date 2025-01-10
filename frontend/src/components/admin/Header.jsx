@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Search, Bell, ShoppingBag } from 'lucide-react';
 
-const Header = ({ toggleSidebar, isDesktop }) => (
+const Header = ({ toggleSidebar, isDesktop ,user}) => (
   <header className="bg-white border-b p-4 shadow ">
     <div className="flex items-center justify-around">
       <div className="flex items-center gap-4">
@@ -12,7 +12,7 @@ const Header = ({ toggleSidebar, isDesktop }) => (
           <input
             type="text"
             placeholder="Search here"
-            className="pl-10 pr-4 py-4 border rounded w-72 focus:ring-2 focus:ring-yellow-500 focus:outline-none shadow"
+            className="pl-9 pr-4 py-4 border rounded w-auto focus:ring-2 focus:ring-yellow-500 focus:outline-none shadow"
           />
           <Search className="absolute left-3 top-4 text-gray-400" size={30} />
         </div>
@@ -34,8 +34,9 @@ const Header = ({ toggleSidebar, isDesktop }) => (
               3
             </span>
           </div>
+          
           <img
-            src="https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src={`${user.img || " https://images.unsplash.com/photo-1474176857210-7287d38d27c6?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} ` }
             alt="User avatar"
             className="w-14 h-14 rounded-full border-4 border-yellow-500"
           />
