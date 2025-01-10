@@ -157,7 +157,7 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus = "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
               .then((order) => {
-                res.status(400).json({ message: "Payment failed" });
+                res.status(400).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
                 console.error(error);
