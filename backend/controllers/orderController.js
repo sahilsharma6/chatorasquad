@@ -2,7 +2,7 @@ import Order from '../models/Order.js';
 import Cuisine from '../models/Cuisine.js';
 import Delivery from '../models/Delivery.js';
 import User from '../models/User.js';
-import uniquid from 'uniqid';  // npm install uniqid
+import uniquid from 'uniqid'; 
 import axios from 'axios';
 import crypto from 'crypto';
 
