@@ -74,7 +74,7 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
                   <td className="p-4">{customer.email}</td>
                   <td className="p-4">{new Date(customer.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
                   <td className="p-4">
-                    <div className="flex gap-3">
+                    {/* <div className="flex gap-3"> */}
                       {/* <button 
                         className="text-blue-500 hover:text-blue-700" 
                         onClick={() => {
@@ -84,13 +84,16 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
                       >
                         View Details
                       </button> */}
-                      <button className="text-orange-500 hover:text-orange-700">
+                      {/* <button className="text-orange-500 hover:text-orange-700">
                         <Edit size={18} />
+                      </button> */}
+                      <button className="text-red-500  hover:text-red-700 hover:bg-red-200 transition-all delay-100"  onClick={(event) => {
+                    event.stopPropagation(); 
+                    console.log('Delete action for customer:', customer);
+                  }} >
+                        <Trash2 size={26} />
                       </button>
-                      <button className="text-red-500 hover:text-red-700">
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
+                    {/* </div> */}
                   </td>
                 </motion.tr>
               ))}

@@ -44,13 +44,14 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">{description}</p>
                 <div className="flex justify-between">
-                    <motion.div
+                    <MotionLink
                         whileHover={{ x: 5 }}
                         className="flex items-center text-orange-500 font-semibold mb-4 cursor-pointer"
+                        to={'/blog/details/'+id}
                     >
                         Read More
                         <ChevronRight className="ml-1 w-4 h-4" />
-                    </motion.div>
+                    </MotionLink>
                     <motion.div
                         className="flex items-center mb-3 cursor-pointer"
                         onClick={onLike}
