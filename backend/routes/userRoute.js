@@ -23,6 +23,7 @@ router.put('/setdefaultaddress/:id',authMiddleware,setDefaultAddress); // id is 
 router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is address id
 
 
+
 router.get('/getfilteredorders/:id',authMiddleware,getOrdersByFilter); // id is user id
 router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus); // id is order id
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id

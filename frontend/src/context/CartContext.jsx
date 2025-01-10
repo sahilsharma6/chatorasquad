@@ -1,6 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import apiClient from "../services/apiClient"; 
+
 
 const CartContext = createContext();
+
 
 export const useCart = () => {
   return useContext(CartContext);
@@ -9,100 +12,86 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cartItems"));
 
-    if (savedCart && savedCart.length >= 0) {
-      setCartItems(savedCart);
-    } else {
-      fetchCartFromBackend();
-    }
+  useEffect(() => {
+    const initializeCart = async () => {
+      try {
+        const savedCart = JSON.parse(localStorage.getItem("cartItems"));
+        if (savedCart && savedCart.length > 0) {
+          setCartItems(savedCart);
+        } else {
+          await fetchCartFromBackend();
+        }
+      } catch (error) {
+        console.error("Error initializing cart:", error);
+      }
+    };
+    initializeCart();
   }, []);
 
+
   useEffect(() => {
-    if (cartItems.length >= 0) {
+    try {
       localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    } catch (error) {
+      console.error("Failed to update cart in localStorage:", error);
     }
   }, [cartItems]);
 
+  // Fetch cart from backend
   const fetchCartFromBackend = async () => {
     try {
-      const response = await fetch("/menu/getCart");
-      const data = await response.json();
-
-      if (response.ok && data.cartItems) {
+      const { data } = await apiClient.get("/user/getcart");
+      if (Array.isArray(data.cartItems)) {
         setCartItems(data.cartItems);
-      } else {
-        console.error("Error fetching cart from backend");
       }
     } catch (error) {
       console.error("Error fetching cart from backend:", error);
     }
   };
 
+  // Add item to cart
   const addToCart = async (item) => {
-    setCartItems((prevItems) => {
-      const itemExists = prevItems.find((cartItem) => cartItem._id === item._id);
-      if (itemExists) {
-        return prevItems.map((cartItem) =>
-          cartItem._id === item._id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
-        );
-      } else {
-        return [...prevItems, { ...item, quantity: 1 }];
-      }
-    });
+    const updatedCart = [...cartItems];
+    const existingItem = updatedCart.find((cartItem) => cartItem._id === item._id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      updatedCart.push({ ...item, quantity: 1 });
+    }
+
+    setCartItems(updatedCart);
 
     try {
-      const response = await fetch("/menu/addtocart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ item }),
-      });
-      if (!response.ok) {
-        console.error("Failed to add item to cart on the backend");
-      }
+      await apiClient.post("/user/addtocart", { item });
     } catch (error) {
       console.error("Error adding item to backend cart:", error);
     }
   };
 
+  // Update item quantity
   const updateQuantity = async (id, newQuantity) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item._id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
-      )
+    const updatedCart = cartItems.map((item) =>
+      item._id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
     );
 
+    setCartItems(updatedCart);
+
     try {
-      const response = await fetch(`/menu/updateCartItem/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
-      });
-      if (!response.ok) {
-        console.error("Failed to update item quantity on the backend");
-      }
+      await apiClient.put(`/user/updatecart/${id}`, { quantity: newQuantity });
     } catch (error) {
       console.error("Error updating item quantity on the backend:", error);
     }
   };
 
+  // Remove item from cart
   const removeItem = async (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item._id !== id));
+    const updatedCart = cartItems.filter((item) => item._id !== id);
+    setCartItems(updatedCart);
 
     try {
-      const response = await fetch(`/menu/removeFromCart/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        console.error("Failed to remove item from the backend cart");
-      }
+      await apiClient.delete(`/user/deletefromcart/${id}`);
     } catch (error) {
       console.error("Error removing item from backend cart:", error);
     }
@@ -114,4 +103,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-  
