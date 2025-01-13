@@ -243,7 +243,7 @@ export const getBlogsCategory = async (req, res) => {
 export const createBlogCategory = async (req, res) => {
     try {
         const { name } = req.body;
-        const images = req.files.map(file => file.path);
+
 
         if (!name) {
             return res.status(400).json({ message: 'Category name is required' });
@@ -251,7 +251,6 @@ export const createBlogCategory = async (req, res) => {
 
         const category = new BlogCategory({ 
             name,
-            image: images,
          });
         await category.save();
         res.status(201).json(category);
@@ -265,7 +264,6 @@ export const editCategory = async (req, res) => {
     try {
         const { id } = req.params;
         const { name } = req.body;
-        const images = req.files.map(file => file.path);
 
         if (!name) {
             return res.status(400).json({ message: 'Category name is required' });
@@ -281,7 +279,6 @@ export const editCategory = async (req, res) => {
         }
 
         category.name = name;
-        category.image = images;
 
         await category.save();
         res.status(200).json(category);
