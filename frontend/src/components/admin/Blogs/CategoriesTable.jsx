@@ -31,7 +31,7 @@ export default function CategoriesTable({filteredCategories,handleEdit,openDelet
                     className="hover:bg-gray-50 transition-colors duration-150"
                   >
                     <td className="px-6 py-4 text-gray-800">{category.name}</td>
-                    <td className="px-6 py-4 text-gray-600">{category.date}</td>
+                    <td className="px-6 py-4 text-gray-600">{category.date.split("T")[0]}</td>
                     <td className="px-6 py-4">
                       <div className="flex space-x-3">
                         <motion.button

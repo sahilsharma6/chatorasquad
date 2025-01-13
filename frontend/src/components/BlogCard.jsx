@@ -3,22 +3,23 @@ import { ChevronRight, Pencil, ThumbsUp, Trash } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate, } from "react-router-dom";
 
-const BlogCard = ({ id, title, description, date, author, views, category, image, role, initialLikes,onDelete  }) => {
+const BlogCard = ({  _id, title, description, date, author, views, category, image, role, initialLikes,onDelete  }) => {
     const [likeCount, setLikeCount] = useState(initialLikes);
     const [isLiked, setIsLiked] = useState(false);
     const navigate = useNavigate();
     const MotionLink = motion(Link);
 
     function handleDelete() {
-        onDelete(id); // Call the delete function passed as a prop
+        onDelete(_id); 
     }
 
     function onLike() {
-        setIsLiked(!isLiked); // Toggle like status
+        setIsLiked(!isLiked); 
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     }
 
     return (
+        <Link to={`/blog/details/${_id}`}>
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -28,7 +29,7 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
         >
             <div className="relative">
                 <img
-                    src={image}
+                    src= {import.meta.env.VITE_API_URL + "/" + image}
                     alt={title}
                     className="w-full h-48 object-cover"
                 />
@@ -47,7 +48,7 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
                     <MotionLink
                         whileHover={{ x: 5 }}
                         className="flex items-center text-orange-500 font-semibold mb-4 cursor-pointer"
-                        to={'/blog/details/'+id}
+                        to={'/blog/details/'+_id}
                     >
                         Read More
                         <ChevronRight className="ml-1 w-4 h-4" />
@@ -65,9 +66,9 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
                 </div>
 
                 <div className="flex items-center text-sm text-gray-500 border-t pt-4">
-                    <span>by {author}</span>
+                    <span>By Admin</span>
                     <span className="mx-4">•</span>
-                    <span>{date}</span>
+                    <span>{new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                     <span className="mx-4">•</span>
                     <span>{views} views</span>
                 </div>
@@ -85,7 +86,7 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
                     <MotionLink
                         className="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 flex-1 flex gap-5 justify-center"
                         whileTap={{ scale: 0.95 }}
-                        to={`/admin/blogs/edit/${id}`}
+                        to={`/admin/blogs/edit/${_id}`}
                     >
                         <Pencil size={33} />
                         <div>Edit</div>
@@ -93,6 +94,7 @@ const BlogCard = ({ id, title, description, date, author, views, category, image
                 </div>
             )}
         </motion.div>
+        </Link>
     );
 };
 

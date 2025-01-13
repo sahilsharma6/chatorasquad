@@ -1,30 +1,71 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ChevronLeft, Clock, User, Eye, Share2, Bookmark, Heart, ThumbsUp } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ChevronLeft, Clock, User, Eye, ThumbsUp, Share2 } from "lucide-react";
+import apiClient from "../services/apiClient";
 
 const BlogPostDetail = () => {
+  const { blogid } = useParams();
+  const [blogDetails, setBlogDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      try {
+        const response = await apiClient.get(`/blog/getdetails/${blogid}`);
+        setBlogDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching blog post details:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogDetails();
+  }, [blogid]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!blogDetails) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Blog post not found.
+      </div>
+    );
+  }
+
+  const { title, category, content, image, date, views, likes, userId } =
+    blogDetails;
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <motion.div 
+      <motion.div
         className="relative h-[60vh] bg-gray-900"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <img 
-          src="https://quickeat-react.vercel.app/assets/img/news-2.jpg" 
-          alt="Blog Cover" 
+        <img
+          src={`${import.meta.env.VITE_API_URL}/${image}`}
+          alt={title}
           className="w-full h-full object-cover opacity-60"
         />
-        <motion.div 
+        <motion.div
           className="absolute top-6 left-6"
           initial={{ x: -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <button 
-            onClick={() => window.history.back()} 
+          <button
+            onClick={() => window.history.back()}
             className="flex items-center text-white gap-2 hover:text-orange-500 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -35,8 +76,7 @@ const BlogPostDetail = () => {
 
       {/* Content Container */}
       <div className="max-w-full mx-auto px-6 -mt-20 relative z-10">
-        {/* Article Card */}
-        <motion.article 
+        <motion.article
           className="bg-white rounded-xl shadow-xl p-6 md:p-10"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -44,22 +84,23 @@ const BlogPostDetail = () => {
         >
           {/* Tags */}
           <div className="flex gap-3 mb-6">
-            <span className="px-4 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">news</span>
-            <span className="px-4 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">ChatroaSquad</span>
+            <span className="px-4 py-1 bg-orange-100 text-orange-600 rounded-full text-sm">
+              {category}
+            </span>
           </div>
 
           {/* Title */}
-          <motion.h1 
+          <motion.h1
             className="text-3xl md:text-4xl font-bold mb-6"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            With Quickeat you can order food for the whole day
+            {title}
           </motion.h1>
 
           {/* Meta Info */}
-          <motion.div 
+          <motion.div
             className="flex flex-wrap gap-6 text-gray-600 mb-8 pb-8 border-b"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -71,48 +112,51 @@ const BlogPostDetail = () => {
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-5 h-5" />
-              <span>01.Jan. 2022</span>
+              <span>
+                {new Date(date).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Eye className="w-5 h-5" />
-              <span>132 views</span>
+              <span>{views} views</span>
             </div>
             <div className="flex items-center gap-2">
               <ThumbsUp className="w-5 h-5" />
-              <span>245 Likes</span>
+              <span>{likes.length} Likes</span>
             </div>
           </motion.div>
 
           {/* Content */}
-          <motion.div 
+          <motion.div
             className="prose max-w-none"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
           >
-            <p className="mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
-            
+            <p>{content}</p>
           </motion.div>
 
           {/* Engagement Actions */}
-          <motion.div 
+          <motion.div
             className="flex justify-between items-center mt-8 pt-8 border-t"
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7 }}
           >
             <div className="flex gap-4">
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 text-gray-600  transition-colors"
+                className="flex items-center gap-2 text-gray-600 transition-colors"
               >
                 <ThumbsUp className="w-5 h-5 hover:text-yellow-500" />
-                <span>245</span>
+                <span>{likes.length}</span>
               </motion.button>
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-2 text-gray-600 hover:text-blue-500 transition-colors"
@@ -121,40 +165,8 @@ const BlogPostDetail = () => {
                 <span>Share</span>
               </motion.button>
             </div>
-            
           </motion.div>
         </motion.article>
-
-        {/* Related Posts */}
-        {/* <motion.section 
-          className="mt-12 mb-20"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8 }}
-        >
-          <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[1, 2].map((item) => (
-              <motion.div 
-                key={item}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                whileHover={{ y: -5 }}
-              >
-                <img 
-                  src="/api/placeholder/400/200" 
-                  alt="Related post" 
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="font-bold mb-2">127+ Couriers On Our Team Big Food Trends</h3>
-                  <p className="text-gray-600 text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section> */}
       </div>
     </div>
   );

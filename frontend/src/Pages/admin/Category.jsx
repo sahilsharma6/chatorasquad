@@ -1,104 +1,119 @@
-import React, { useState } from 'react';
-import {  Plus, Search, } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import ConfirmationModal from '../../components/ConfirmationModal';
-import CategoryModal from '../../components/admin/Blogs/CategoryModal';
-import CategoriesTable from '../../components/admin/Blogs/CategoriesTable';
-import apiClient from '../../services/apiClient';
+import React, { useEffect, useState } from "react";
+import { Plus, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import ConfirmationModal from "../../components/ConfirmationModal";
+import CategoryModal from "../../components/admin/Blogs/CategoryModal";
+import CategoriesTable from "../../components/admin/Blogs/CategoriesTable";
+import apiClient from "../../services/apiClient";
+import { toast, ToastContainer } from "react-toastify";
 
 const Category = () => {
-  const [categories, setCategories] = useState([
-    { id: 1, name: 'Food', date: '2024-01-01' },
-    { id: 2, name: 'Technology', date: '2024-01-02' },
-  ]);
-  const [isModalOpen, setIsModalOpen] = useState({ type: null, category: null });
+  const [categories, setCategories] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState({
+    type: null,
+    category: null,
+  });
   const [editingCategory, setEditingCategory] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleEdit = (category) => {
     setEditingCategory(category);
-    setIsModalOpen({ type: 'edit', category });
+    setIsModalOpen({ type: "edit", category });
   };
 
   const handleDelete = (id) => {
-    setCategories(categories.filter(cat => cat._id !== id));
+    try {
+      const response = apiClient.delete(`/blog/deletecategory/${id}`);
+      toast.success("Category deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting category:", error);
+      toast.error("Failed to delete category");
+    }
+
+    setCategories(categories.filter((cat) => cat._id !== id));
+
     setIsModalOpen({ type: null, category: null });
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await apiClient.get("/blog/category");
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-  
-    if (isModalOpen.type === 'edit') {
-   
-      const updatedCategories = categories.map(cat =>
+
+    if (isModalOpen.type === "edit") {
+      const updatedCategories = categories.map((cat) =>
         cat._id === editingCategory._id ? editingCategory : cat
       );
       setCategories(updatedCategories);
-  
-     
+
       try {
         const updatedCategory = await updateCategoryAPI(editingCategory);
-        
       } catch (error) {
-        console.error('Error updating category:', error);
-        alert('Failed to update category');
+        console.error("Error updating category:", error);
+        toast.error("Failed to update category");
       }
-  
-    } else if (isModalOpen.type === 'add') {
-  
+    } else if (isModalOpen.type === "add") {
       const newCategory = {
-      
         name: editingCategory.name,
       };
       setCategories([...categories, newCategory]);
-  
-     
+
       try {
         const addedCategory = await addCategoryAPI(newCategory);
-        alert('Category added successfully!');
+        toast.success("Category added successfully!");
       } catch (error) {
-        console.error('Error adding category:', error);
-        alert('Failed to add category');
+        console.error("Error adding category:", error);
+        alert("Failed to add category");
       }
     }
 
     setIsModalOpen({ type: null, category: null });
   };
-  
-
 
   // API Call for Updating Category
   const updateCategoryAPI = async (category) => {
     try {
-      const response = await apiClient.put(`/blog/updatecategory/${category._id}`, category);
-      return response.data;  
+      const response = await apiClient.put(
+        `/blog/updatecategory/${category._id}`,
+        category
+      );
+      return response.data;
     } catch (error) {
-      throw new Error('Failed to update category: ' + error.message);
+      throw new Error("Failed to update category: " + error.message);
     }
   };
-  
+
   // API Call for Adding Category
   const addCategoryAPI = async (category) => {
     try {
-      const response = await apiClient.post('/blog/addcategory', category);
-      return response.data; 
+      const response = await apiClient.post("/blog/addcategory", category);
+      return response.data;
     } catch (error) {
-      throw new Error('Failed to add category: ' + error.message);
+      throw new Error("Failed to add category: " + error.message);
     }
   };
-  
 
   const openDeleteModal = (category) => {
-    setIsModalOpen({ type: 'confirm', category });
+    setIsModalOpen({ type: "confirm", category });
   };
 
   const openAddModal = () => {
-    setEditingCategory({ name: '' });
-    setIsModalOpen({ type: 'add', category: null });
+    setEditingCategory({ name: "" });
+    setIsModalOpen({ type: "add", category: null });
   };
 
-  const filteredCategories = categories.filter(category => {
+  const filteredCategories = categories.filter((category) => {
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
     return (
       category.name.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -107,12 +122,13 @@ const Category = () => {
   });
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="p-6 max-w-6xl mx-auto"
     >
-      <motion.h1 
+      <ToastContainer />
+      <motion.h1
         className="text-3xl font-bold mb-8 text-center text-gray-800"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -131,7 +147,7 @@ const Category = () => {
           <Plus className="w-5 h-5" /> Add Category
         </motion.button>
 
-        <motion.div 
+        <motion.div
           className="relative flex-1 max-w-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -148,9 +164,13 @@ const Category = () => {
         </motion.div>
       </div>
 
-    <CategoriesTable handleEdit={handleEdit} openDeleteModal={openDeleteModal} filteredCategories={filteredCategories} />
+      <CategoriesTable
+        handleEdit={handleEdit}
+        openDeleteModal={openDeleteModal}
+        filteredCategories={filteredCategories}
+      />
 
-      {(isModalOpen.type === 'edit' || isModalOpen.type === 'add') && (
+      {(isModalOpen.type === "edit" || isModalOpen.type === "add") && (
         <CategoryModal
           setEditingCategory={setEditingCategory}
           setIsModalOpen={setIsModalOpen}
@@ -161,11 +181,11 @@ const Category = () => {
         />
       )}
 
-      {isModalOpen.type === 'confirm' && (
+      {isModalOpen.type === "confirm" && (
         <ConfirmationModal
-          isOpen={isModalOpen.type === 'confirm'}
+          isOpen={isModalOpen.type === "confirm"}
           onClose={() => setIsModalOpen({ type: null, category: null })}
-          onConfirm={() => handleDelete(isModalOpen.category.id)}
+          onConfirm={() => handleDelete(isModalOpen.category._id)}
         />
       )}
     </motion.div>

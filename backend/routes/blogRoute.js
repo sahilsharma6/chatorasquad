@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/add',authMiddleware,checkAdmin,uploadMiddleware,createBlog);
 router.get('/all',getBlogs );
-router.get('/getdetails/:id',getBlog); // id is the blogid
+router.get('/getdetails/:id',authMiddleware,getBlog); // id is the blogid
 
 router.get('/myblogs',authMiddleware,checkAdmin,getUserBlogs);
 router.put('/update/:id',authMiddleware,checkAdmin,uploadMiddleware,updateBlog); // id is the blogid
