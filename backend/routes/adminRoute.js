@@ -4,14 +4,15 @@ import authMiddleware from '../middlewares/authMiddleware.js';
 import menuRoute from './menuRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails } from '../controllers/orderController.js';
 import { getUsers } from '../controllers/userController.js';
+import uploadMiddleware from '../middlewares/uploadMiddleware.js';
 
 const router = express.Router();
 
 router.get('/cuisines',authMiddleware, checkAdmin,getCuisines);     
 router.get('/cuisines/:id',authMiddleware, checkAdmin,getCuisineById); 
-router.post('/addcuisine',authMiddleware,checkAdmin,addCuisine);
+router.post('/addcuisine',authMiddleware,checkAdmin,uploadMiddleware,addCuisine);
 router.delete('/deletecuisine/:id',authMiddleware,checkAdmin,deleteCuisine); 
-router.put('/updatecuisine/:id',authMiddleware,checkAdmin,updateCuisine);
+router.put('/updatecuisine/:id',authMiddleware,checkAdmin,uploadMiddleware,updateCuisine);
 
 router.get('/deliveryLocations',authMiddleware,checkAdmin,getDeliveryaddress);
 router.post('/adddeliveryLocation',authMiddleware,checkAdmin,adddeliveryaddress);

@@ -24,7 +24,7 @@ export const createBlog = async (req, res) => {
     title,
     content,
     category,
-    image: images,
+    image: images[0],
     });
      
     const blogCategory= await BlogCategory.findOne({ name: category });
@@ -121,11 +121,20 @@ export const updateBlog = async (req, res) => {
     if (!blog) {
       return res.status(404).json({ message: 'Blog not found' });
     }
+    
+    if(blog.image){
+       const oldImagePath = path.resolve(blog.image);
+          fs.unlink(oldImagePath, (err) => {
+            if (err) {
+              console.error(`Error deleting file: ${oldImagePath}`, err);
+            }
+          });
+    } 
 
     blog.title = title;
     blog.content = content;
     blog.category = category;
-    blog.image = images;
+    blog.image = images[0];
 
     res.status(200).json(blog);
   } catch (error) {
@@ -279,30 +288,32 @@ export const editCategory = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
-
 export const deleteCategory = async (req, res) => {
-    const { id } = req.params;
- try{
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: `Invalid category ID: ${id}` });
-    }
-    
-    const category = await BlogCategory.find({ _id: id });
-    if (!category) {
-        return res.status(404).json({ message: 'Category not found' });
-    }
+  const { id } = req.params;
 
-    category.blogs.forEach(async (blog) => {
-        const response= await Blogs.findByIdAndRemove(blog);
-        await response.save();
-    });
+  try {
 
-    const deletecategory= await BlogCategory.findByIdAndRemove(id);
-    await deletecategory.save();
-    
-    res.json({ message: 'Category deleted successfully.' });
- }
-    catch (error) {
-        res.status(404).json({ message: error.message });
-    }
+      if (!mongoose.Types.ObjectId.isValid(id)) {
+          return res.status(400).json({ message: `Invalid category ID: ${id}` });
+      }
+
+
+      const category = await BlogCategory.findById(id).populate('blogs');
+      if (!category) {
+          return res.status(404).json({ message: 'Category not found' });
+      }
+
+      if (category.blogs && category.blogs.length > 0) {
+          for (const blog of category.blogs) {
+              await Blogs.findByIdAndRemove(blog._id);
+          }
+      }
+
+      await BlogCategory.findByIdAndRemove(id);
+
+      res.status(200).json({ message: 'Category deleted successfully.' });
+  } catch (error) {
+      console.error("Error deleting category:", error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
 };

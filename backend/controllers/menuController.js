@@ -1,6 +1,8 @@
 import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 import Reviews from "../models/Reviews.js";
+import fs from "fs";
+import path from "path";
 
 // Add Menu
 export const addMenu = async (req, res) => {
@@ -92,7 +94,8 @@ export const getDairyAndBeveragesMenu = async (req, res) => {
 // Update Menu
 export const updateMenu = async (req, res) => {
     try {
-        const { name, type, sellingPrice, discountedPrice, description, image, isAvailable, cuisine } = req.body;
+        const { name, type, sellingPrice, discountedPrice, description, isAvailable, cuisine } = req.body;
+        const images = req.files.map(file => file.path);
 
         // Basic validation
         if (!name || !type || !sellingPrice || !description || !cuisine) {
@@ -103,13 +106,22 @@ export const updateMenu = async (req, res) => {
         if (!menu) {
             return res.status(404).json({ message: "Menu not found" });
         }
-
+        if (menu.images && menu.images.length > 0) {
+            menu.images.forEach(imagePath => {
+                const filePath = path.resolve(imagePath);
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error(`Error deleting file: ${filePath}`, err);
+                    }
+                });
+            });
+        }
         menu.name = name;
         menu.type = type;
         menu.sellingPrice = sellingPrice;
         menu.discountedPrice = discountedPrice;
         menu.description = description;
-        menu.image = image;
+        menu.images = images;
         menu.isAvailable = isAvailable;
         menu.Cuisine = cuisine;
 

@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/add',authMiddleware,checkAdmin,uploadMiddleware,addMenu);
 router.get('/all',getAllMenu);
 router.get('/getdetails/:id',getMenuDetails);
-router.put('/update/:id',authMiddleware,checkAdmin,updateMenu);
+router.put('/update/:id',authMiddleware,checkAdmin,uploadMiddleware,updateMenu);
 router.put('/updateAvailability/:id',authMiddleware,checkAdmin,updateMenuAvailability);
 router.delete('/delete/:id',authMiddleware,checkAdmin,deleteMenu);
 // router.get('/filter',getFilteredMenu);
