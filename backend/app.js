@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import connectDB from './db/connect.js';
 import main from './routes/main.js';
 import cors from 'cors';
-
 import path from 'path';
 const __dirname = path.resolve();
 

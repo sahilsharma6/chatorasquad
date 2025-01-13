@@ -35,7 +35,9 @@ const OrdersPage = () => {
     try {
       const response = await apiClient.get(`/user/getallorders/${user?._id}`); 
       if (response.status === 200) {
-        let data = response.data;
+        let data = response.data.orders;
+        console.log(data);
+        
         if (data) {
           const getOrderDetail = await Promise.all(data.map(async (order) => {
             const itemsWithDetails = await Promise.all(order.items.map(async (item) => {

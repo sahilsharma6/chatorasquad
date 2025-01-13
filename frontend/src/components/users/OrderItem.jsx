@@ -41,7 +41,7 @@ const OrderItem = ({ order, index }) => {
                          custom={itemIndex }
                          className="bg-white rounded-xl shadow-lg mb-4 overflow-hidden transition-all duration-300"
                        >
-                         <div className="p-6">
+                         <div className="p-4">
                            <div className="flex items-start space-x-4 flex-wrap">
                              <div className="relative w-32 h-32 rounded-lg overflow-hidden bg-gray-100">
                                <img
@@ -77,7 +77,7 @@ const OrderItem = ({ order, index }) => {
                                  </span>
                                </div>
    
-                               <div className="flex items-center space-x-4 pt-2 flex-wrap">
+                               <div className="flex items-center space-x-4 pt-2 sm:flex-row">
                                  <div className="flex items-center space-x-1">
                                    <Package className="w-4 h-4 text-gray-400" />
                                    <span className="text-sm text-gray-500">Order #{order._id.slice(-6)}</span>

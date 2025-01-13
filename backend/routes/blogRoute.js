@@ -19,7 +19,7 @@ router.post('/like/:id',authMiddleware,likeBlog); // id is the blogid
 router.post('/comment/:id',authMiddleware,commentBlog); // id is the blogid
 
 router.get('/category',authMiddleware,checkAdmin,getBlogsCategory);
-router.post('/addcategory',authMiddleware,checkAdmin,uploadMiddleware,createBlogCategory);
-router.put('/updatecategory/:id',authMiddleware,checkAdmin,uploadMiddleware,editCategory); // id is the category id
+router.post('/addcategory',authMiddleware,checkAdmin,createBlogCategory);
+router.put('/updatecategory/:id',authMiddleware,checkAdmin,editCategory); // id is the category id
 router.delete('/deletecategory/:id',authMiddleware,checkAdmin,deleteCategory); // id is the category id
 export default router;
