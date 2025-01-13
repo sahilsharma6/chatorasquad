@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, [loggedIn]);
 
   const isAdmin = () => {
     return user && user.role === "admin";

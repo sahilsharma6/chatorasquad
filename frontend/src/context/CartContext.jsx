@@ -16,11 +16,10 @@ export const CartProvider = ({ children }) => {
 
       if (storedCart) {
         const parsedCart = JSON.parse(storedCart);
-
-        if (Array.isArray(parsedCart)) {
+        if (Array.isArray(parsedCart) && parsedCart.length > 0) {
           setCartItems(parsedCart);
         } else {
-          setCartItems([]);
+          setCartItems([]); 
         }
       } else {
         try {
@@ -28,21 +27,21 @@ export const CartProvider = ({ children }) => {
 
           if (data.items && Array.isArray(data.items)) {
             setCartItems(data.items);
-            localStorage.setItem("cartItems", JSON.stringify(data.items));
+            localStorage.setItem("cartItems", JSON.stringify(data.items)); 
           } else {
-            setCartItems([]); 
+            setCartItems([]);
             localStorage.setItem("cartItems", JSON.stringify([]));
           }
         } catch (error) {
           console.error("Error fetching cart from backend:", error);
-          setCartItems([]); 
+          setCartItems([]);
           localStorage.setItem("cartItems", JSON.stringify([]));
         }
       }
     };
 
     initializeCart();
-  }, []); 
+  }, []);
 
   // Add item to cart
   const addToCart = async (item) => {
@@ -54,13 +53,18 @@ export const CartProvider = ({ children }) => {
       if (response.status === 200) {
         const updatedCart = [...cartItems];
         const existingItem = updatedCart.find(
-          (cartItem) => cartItem._id === item._id
+          (cartItem) => cartItem.itemId.$oid === item._id
         );
 
         if (existingItem) {
           existingItem.quantity += 1;
         } else {
-          updatedCart.push({ ...item, quantity: 1 });
+          updatedCart.push({
+            itemId: { $oid: item._id },
+            name: item.name,
+            quantity: 1,
+            sellingPrice: item.sellingPrice,
+          });
         }
 
         setCartItems(updatedCart);
