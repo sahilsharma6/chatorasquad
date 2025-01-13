@@ -34,6 +34,7 @@ export const createBlog = async (req, res) => {
     await blog.save();
     res.status(201).json(blog);
   } catch (error) {
+    console.error(error);
     res.status(409).json({ message: error.message });
   }
 };

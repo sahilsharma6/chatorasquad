@@ -53,14 +53,14 @@ export const CartProvider = ({ children }) => {
       if (response.status === 200) {
         const updatedCart = [...cartItems];
         const existingItem = updatedCart.find(
-          (cartItem) => cartItem.itemId.$oid === item._id
+          (cartItem) => cartItem.itemId === item._id
         );
 
         if (existingItem) {
           existingItem.quantity += 1;
         } else {
           updatedCart.push({
-            itemId: { $oid: item._id },
+            itemId: item._id,
             name: item.name,
             quantity: 1,
             sellingPrice: item.sellingPrice,
@@ -84,7 +84,7 @@ export const CartProvider = ({ children }) => {
 
       if (response.status === 200) {
         const updatedCart = cartItems.map((item) =>
-          item._id === id
+          item.itemId === id
             ? { ...item, quantity: Math.max(1, newQuantity) }
             : item
         );
@@ -102,7 +102,7 @@ export const CartProvider = ({ children }) => {
       const response = await apiClient.delete(`/user/deletefromcart/${id}`);
 
       if (response.status === 200) {
-        const updatedCart = cartItems.filter((item) => item._id !== id);
+        const updatedCart = cartItems.filter((item) => item.itemId !== id);
         setCartItems(updatedCart);
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       }
@@ -113,7 +113,7 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, updateQuantity, removeItem }}
+      value={{ cartItems, setCartItems, addToCart, updateQuantity, removeItem }}
     >
       {children}
     </CartContext.Provider>
