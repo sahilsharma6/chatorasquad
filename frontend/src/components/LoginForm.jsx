@@ -35,7 +35,7 @@ const LoginForm = () => {
         console.log(res.data);
         if (res.status === 200) {
           setLoggedIn(true);
-          navigate("/");
+          window.location.href = "/";
         }
       } catch (err) {
         setErrors({

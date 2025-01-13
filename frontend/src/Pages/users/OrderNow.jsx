@@ -51,6 +51,7 @@ const OrderNow = () => {
   const handlePayment = async () => {
     try {
       const response = await apiClient.post("/user/pay", {
+        itemid: productData._id,
         userId: user?._id,
         date: new Date().toISOString(),
         time: new Date().toLocaleTimeString(),

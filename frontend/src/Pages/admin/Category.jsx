@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import CategoryModal from '../../components/admin/Blogs/CategoryModal';
 import CategoriesTable from '../../components/admin/Blogs/CategoriesTable';
+import apiClient from '../../services/apiClient';
 
 const Category = () => {
   const [categories, setCategories] = useState([
@@ -20,26 +21,73 @@ const Category = () => {
   };
 
   const handleDelete = (id) => {
-    setCategories(categories.filter(cat => cat.id !== id));
+    setCategories(categories.filter(cat => cat._id !== id));
     setIsModalOpen({ type: null, category: null });
   };
 
-  const handleUpdate = (e) => {
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
+  
     if (isModalOpen.type === 'edit') {
-      setCategories(categories.map(cat =>
-        cat.id === editingCategory.id ? editingCategory : cat
-      ));
+   
+      const updatedCategories = categories.map(cat =>
+        cat._id === editingCategory._id ? editingCategory : cat
+      );
+      setCategories(updatedCategories);
+  
+     
+      try {
+        const updatedCategory = await updateCategoryAPI(editingCategory);
+        
+      } catch (error) {
+        console.error('Error updating category:', error);
+        alert('Failed to update category');
+      }
+  
     } else if (isModalOpen.type === 'add') {
+  
       const newCategory = {
-        id: categories.length + 1,
+      
         name: editingCategory.name,
-        date: new Date().toISOString().split('T')[0]
       };
       setCategories([...categories, newCategory]);
+  
+     
+      try {
+        const addedCategory = await addCategoryAPI(newCategory);
+        alert('Category added successfully!');
+      } catch (error) {
+        console.error('Error adding category:', error);
+        alert('Failed to add category');
+      }
     }
+
     setIsModalOpen({ type: null, category: null });
   };
+  
+
+
+  // API Call for Updating Category
+  const updateCategoryAPI = async (category) => {
+    try {
+      const response = await apiClient.put(`/blog/updatecategory/${category._id}`, category);
+      return response.data;  
+    } catch (error) {
+      throw new Error('Failed to update category: ' + error.message);
+    }
+  };
+  
+  // API Call for Adding Category
+  const addCategoryAPI = async (category) => {
+    try {
+      const response = await apiClient.post('/blog/addcategory', category);
+      return response.data; 
+    } catch (error) {
+      throw new Error('Failed to add category: ' + error.message);
+    }
+  };
+  
 
   const openDeleteModal = (category) => {
     setIsModalOpen({ type: 'confirm', category });

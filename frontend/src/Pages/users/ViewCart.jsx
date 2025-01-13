@@ -27,7 +27,9 @@ const ViewCart = () => {
         const response = await apiClient.get("/user/getaddresses");
         const fetchedAddresses = response.data;
         setAddresses(fetchedAddresses);
-        const defaultAddress = fetchedAddresses.find((addr) => addr.type === "default");
+        const defaultAddress = fetchedAddresses.find(
+          (addr) => addr.type === "default"
+        );
         setSelectedAddress(defaultAddress || fetchedAddresses[0]);
       } catch (error) {
         console.error("Error fetching addresses:", error);
@@ -58,17 +60,23 @@ const ViewCart = () => {
 
     const userId = user?._id;
 
+    console.log("item", items);
+    console.log("item", items.map((item) => item._id));
+
     const payload = {
       userId,
       date: new Date().toISOString(),
       time: new Date().toLocaleTimeString(),
       items: items.map((item) => ({
-        itemid: item._id,
+        itemid: item.itemId,
         name: item.name,
         quantity: item.quantity,
         price: item.sellingPrice,
       })),
-      total: items.reduce((sum, item) => sum + item.sellingPrice * item.quantity, 0),
+      total: items.reduce(
+        (sum, item) => sum + item.sellingPrice * item.quantity,
+        0
+      ),
       deliveryAddress: selectedAddress,
     };
 
@@ -93,7 +101,9 @@ const ViewCart = () => {
   if (cartItems.length < 1) {
     return (
       <NoResults
-        img={"https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"}
+        img={
+          "https://rukminim2.flixcart.com/www/800/800/promos/16/05/2019/d438a32e-765a-4d8b-b4a6-520b560971e8.png?q=90"
+        }
         title={"Your Cart is Empty"}
         des={"Cart is Empty. Please go to menu and add some dishes to cart."}
       />
@@ -132,7 +142,8 @@ const ViewCart = () => {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span>
-                Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)
+                Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
+                items)
               </span>
               <span>₹{totalAmount}</span>
             </div>
@@ -167,13 +178,18 @@ const ViewCart = () => {
                 >
                   <div className="flex justify-between items-center">
                     <span>
-                      {address.location}, {address.city}, {address.state} - {address.zipCode}
+                      {address.location}, {address.city}, {address.state} -{" "}
+                      {address.zipCode}
                     </span>
                     {selectedAddress?._id === address._id && (
-                      <span className="text-sm text-orange-600 font-semibold">Selected Address</span>
+                      <span className="text-sm text-orange-600 font-semibold">
+                        Selected Address
+                      </span>
                     )}
                     {address.type === "default" && (
-                      <span className="text-sm text-green-600 font-semibold">Default Address</span>
+                      <span className="text-sm text-green-600 font-semibold">
+                        Default Address
+                      </span>
                     )}
                   </div>
                 </div>
@@ -183,7 +199,9 @@ const ViewCart = () => {
 
           <div className="mt-4 flex items-center gap-2 text-sm text-gray-600">
             <ShieldCheck size={58} className="fill-slate-700 text-white sha" />
-            <span>Safe and Secure Payments. Easy returns. 100% Authentic products.</span>
+            <span>
+              Safe and Secure Payments. Easy returns. 100% Authentic products.
+            </span>
           </div>
         </div>
       </div>

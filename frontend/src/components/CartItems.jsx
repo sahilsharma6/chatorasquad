@@ -33,25 +33,25 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
       <div className="flex flex-wrap items-center gap-4 mb-4 mt-6">
         <div className="flex items-center border rounded-lg">
           <button
-            onClick={() => updateQuantity(item._id, item.quantity - 1)}
+            onClick={() => updateQuantity(item.itemId, item.quantity - 1)}
             className="p-2 hover:bg-gray-100"
           >
             <Minus size={20} />
           </button>
           <span className="px-4 py-2 border-x">{item.quantity}</span>
           <button
-            onClick={() => updateQuantity(item._id, item.quantity + 1)}
+            onClick={() => updateQuantity(item.itemId, item.quantity + 1)}
             className="p-2 hover:bg-gray-100"
           >
             <Plus size={20} />
           </button>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
+        {/* <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50">
           <Heart size={20} />
           <span>Save for Later</span>
-        </button>
+        </button> */}
         <button
-          onClick={() => removeItem(item._id)}
+          onClick={() => removeItem(item.itemId)}
           className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50"
         >
           <Trash2 size={20} />

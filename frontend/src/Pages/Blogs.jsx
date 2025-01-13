@@ -131,29 +131,7 @@ const Blogs = ({ role }) => {
                 )}
               </motion.button>
             ))}
-            {tabs.map((tab) => (
-              <motion.button
-                key={tab.value}
-                onClick={() => setActiveTab(tab.value)}
-                className={`relative px-4 py-2 rounded-lg text-sm sm:text-base flex items-center gap-2 transition-colors duration-200
-      ${
-        activeTab === tab.value
-          ? "text-white bg-orange-500"
-          : "text-gray-600 hover:text-orange-500"
-      }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                {tab.label}
-                {activeTab === tab.value && (
-                  <motion.div
-                    className="absolute inset-0 bg-orange-500 rounded-lg -z-10"
-                    layoutId="activeTab"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </motion.button>
-            ))}
+         
           </div>
         </div>
       </motion.div>
