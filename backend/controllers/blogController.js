@@ -29,7 +29,7 @@ export const createBlog = async (req, res) => {
      
     const blogCategory= await BlogCategory.findOne({ name: category });
    
-    blogCategory.blogs.push(blog._id);
+    blogCategory.blogs.push({ blogId: blog._id });
     await blogCategory.save();
     await blog.save();
     res.status(201).json(blog);
@@ -286,32 +286,37 @@ export const editCategory = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+
 export const deleteCategory = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Check if the category ID is valid
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `Invalid category ID: ${id}` });
+    }
 
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-          return res.status(400).json({ message: `Invalid category ID: ${id}` });
-      }
+    // Find the category by ID
+    const category = await BlogCategory.findById(id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
 
+    // Remove all blogs associated with this category
+    if (category.blogs && category.blogs.length > 0) {
+      const blogIds = category.blogs.map(blog => blog.blogId);
+      
+      // Remove all blogs in one query
+      await Blogs.deleteMany({ _id: { $in: blogIds } });
+    }
 
-      const category = await BlogCategory.findById(id).populate('blogs');
-      if (!category) {
-          return res.status(404).json({ message: 'Category not found' });
-      }
+    // Remove the category itself
+    const response=   await BlogCategory.findByIdAndDelete(id);
 
-      if (category.blogs && category.blogs.length > 0) {
-          for (const blog of category.blogs) {
-              await Blogs.findByIdAndRemove(blog._id);
-          }
-      }
-
-      await BlogCategory.findByIdAndRemove(id);
-
-      res.status(200).json({ message: 'Category deleted successfully.' });
+    res.status(200).json({ message: 'Category deleted successfully.' });
   } catch (error) {
-      console.error("Error deleting category:", error);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error("Error deleting category:", error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

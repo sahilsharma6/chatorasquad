@@ -11,8 +11,9 @@ const CategorySchema = new mongoose.Schema({
     },
     blogs: [
         {
+           blogId:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Blogs',
+            ref: 'Blogs'},
         },
     ],
 },
