@@ -5,6 +5,9 @@ import User from "../models/User.js";
 import uniquid from "uniqid"; // npm install uniqid
 import axios from "axios";
 import crypto from "crypto";
+import fs from "fs";
+import path from "path";
+import Address from "../models/Address.js";
 
 export const payment = async (req, res) => {
   try {
@@ -157,7 +160,7 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus = "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
               .then((order) => {
-                res.status(400).json({ message: "Payment failed" });
+                res.status(400).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
                 console.error(error);
@@ -225,12 +228,28 @@ export const checkPaymentStatus = async (req, res) => {
   }
 };
 
+
 export const getOrders = async (req, res) => {
-  try { 
+  try {
     const userId = req.params.id;
+
+   
     const orders = await Order.find({ userId });
-    res.status(200).json(orders);
+
+  
+    const updatedOrders = await Promise.all(
+      orders.map(async (order) => {
+        const address = await Address.findById(order.deliveryAddress);
+        return {
+          ...order.toObject(),
+          deliveryAddress: address, 
+        };
+      })
+    );
+
+    res.status(200).json({ orders: updatedOrders });
   } catch (error) {
+    console.error("Error fetching orders:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -291,7 +310,8 @@ export const getOrdersByFilter = async (req, res) => {
 
 export const addCuisine = async (req, res) => {
   try {
-    const { name, image } = req.body;
+    const { name} = req.body;
+    const images = req.files.map(file => file.path);
     const existingCuisine = await Cuisine.findOne({ name });
     if (existingCuisine) {
       return res.status(200).json({ message: "Cuisine already exists" });
@@ -299,7 +319,7 @@ export const addCuisine = async (req, res) => {
     const date = new Date();
     const cuisine = new Cuisine({
       name,
-      image,
+      image: images[0],
       date,
     });
     await cuisine.save();
@@ -335,17 +355,30 @@ export const getCuisineById = async (req, res) => {
 export const updateCuisine = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, image } = req.body;
+    // const { name} = req.body;
+    const images = req.files.map(file => file.path);
     const cuisine = await Cuisine.findById(id);
-    if (cuisine) {
-      cuisine.name = name;
-      cuisine.image = image;
-      await cuisine.save();
-      res.status(200).json({ message: "Cuisine updated successfully" });
-    } else {
-      res.status(400).json({ message: "Cuisine not found" });
-    }
+
+   if(!cuisine){
+       return res.status(400).json({message:"Cuisine not found"});
+   }
+
+   if (cuisine.image) {
+    const oldImagePath = path.resolve(cuisine.image);
+    fs.unlink(oldImagePath, (err) => {
+      if (err) {
+        console.error(`Error deleting file: ${oldImagePath}`, err);
+      }
+    });
+  }
+   
+
+    // cuisine.name = name;
+    cuisine.image = images[0];       
+    await cuisine.save();
+    res.status(200).json({ message: "Cuisine updated successfully" });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
