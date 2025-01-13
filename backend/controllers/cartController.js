@@ -125,11 +125,11 @@ export const DeleteFromCart = async (req, res) => {
       return res.status(404).json({ message: "Cart not found" });
     }
 
-    // Instantiate ObjectId correctly with 'new'
+
     const itemObjectId = new mongoose.Types.ObjectId(itemId);
 
     const itemIndex = cart.items.findIndex(
-      (item) => item.itemId.equals(itemObjectId) // Use .equals to compare ObjectId
+      (item) => item.itemId.equals(itemObjectId) 
     );
 
     if (itemIndex === -1) {

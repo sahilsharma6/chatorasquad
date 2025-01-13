@@ -9,8 +9,8 @@ const AddBlogPage = () => {
   const [formData, setFormData] = useState({
     title: "",
     category: "news",
-    description: "",
-    image: null,
+    content: "",
+    images: null,
   });
 
   const handleChange = (e) => {
@@ -26,7 +26,7 @@ const AddBlogPage = () => {
     if (file) {
       setFormData((prevData) => ({
         ...prevData,
-        image: file,
+        images: file,
       }));
     }
   };
@@ -34,13 +34,13 @@ const AddBlogPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, category, description, image } = formData;
+    const { title, category, content, images } = formData;
 
     const form = new FormData();
     form.append("title", title);
     form.append("category", category);
-    form.append("description", description);
-    if (image) form.append("image", image);
+    form.append("content", content);
+    if (images) form.append("images", images);
 
     try {
  
@@ -112,14 +112,14 @@ const AddBlogPage = () => {
             className="space-y-2"
           >
             <label className="block text-gray-700 font-medium mb-2">
-              Description
+              Content
             </label>
             <textarea
-              name="description"
-              value={formData.description}
+              name="content"
+              value={formData.content}
               onChange={handleChange}
               className="w-full px-4 py-4 border border-gray-300 rounded-lg h-32 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              placeholder="Enter blog description"
+              placeholder="Enter blog content"
             />
           </motion.div>
 
@@ -144,9 +144,9 @@ const AddBlogPage = () => {
               <p className="text-gray-600">
                 Drag and drop your image here, or click to select
               </p>
-              {formData.image && (
+              {formData.images && (
                 <img
-                  src={URL.createObjectURL(formData.image)}
+                  src={URL.createObjectURL(formData.images)}
                   alt="Preview"
                   className="mt-4 w-32 h-32 object-cover rounded-lg"
                 />

@@ -9,6 +9,7 @@ import fs from "fs";
 import path from "path";
 import Address from "../models/Address.js";
 
+
 export const payment = async (req, res) => {
   try {
     const merchantTransactionId = uniquid();
@@ -228,21 +229,18 @@ export const checkPaymentStatus = async (req, res) => {
   }
 };
 
-
 export const getOrders = async (req, res) => {
   try {
     const userId = req.params.id;
 
-   
     const orders = await Order.find({ userId });
 
-  
     const updatedOrders = await Promise.all(
       orders.map(async (order) => {
         const address = await Address.findById(order.deliveryAddress);
         return {
           ...order.toObject(),
-          deliveryAddress: address, 
+          deliveryAddress: address,
         };
       })
     );
@@ -253,7 +251,6 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const updateOrderStatus = async (req, res) => {
   try {
@@ -310,8 +307,8 @@ export const getOrdersByFilter = async (req, res) => {
 
 export const addCuisine = async (req, res) => {
   try {
-    const { name} = req.body;
-    const images = req.files.map(file => file.path);
+    const { name } = req.body;
+    const images = req.files.map((file) => file.path);
     const existingCuisine = await Cuisine.findOne({ name });
     if (existingCuisine) {
       return res.status(200).json({ message: "Cuisine already exists" });
@@ -356,25 +353,24 @@ export const updateCuisine = async (req, res) => {
   try {
     const id = req.params.id;
     // const { name} = req.body;
-    const images = req.files.map(file => file.path);
+    const images = req.files.map((file) => file.path);
     const cuisine = await Cuisine.findById(id);
 
-   if(!cuisine){
-       return res.status(400).json({message:"Cuisine not found"});
-   }
+    if (!cuisine) {
+      return res.status(400).json({ message: "Cuisine not found" });
+    }
 
-   if (cuisine.image) {
-    const oldImagePath = path.resolve(cuisine.image);
-    fs.unlink(oldImagePath, (err) => {
-      if (err) {
-        console.error(`Error deleting file: ${oldImagePath}`, err);
-      }
-    });
-  }
-   
+    if (cuisine.image) {
+      const oldImagePath = path.resolve(cuisine.image);
+      fs.unlink(oldImagePath, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${oldImagePath}`, err);
+        }
+      });
+    }
 
     // cuisine.name = name;
-    cuisine.image = images[0];       
+    cuisine.image = images[0];
     await cuisine.save();
     res.status(200).json({ message: "Cuisine updated successfully" });
   } catch (error) {
@@ -475,4 +471,3 @@ export const checkdeliveryaddress = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-

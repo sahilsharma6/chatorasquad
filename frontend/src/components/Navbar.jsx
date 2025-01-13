@@ -23,9 +23,9 @@ const Navbar = () => {
   const userMenuRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
-  const { loggedIn, setLoggedIn } = useContext(UserContext);
+  const { loggedIn, setLoggedIn  } = useContext(UserContext);
 
-  const { cartItems } = useCart();
+  const { cartItems , setCartItems } = useCart();
 
   const handleLogout = async () => {
     if (!loggedIn) return;
@@ -35,6 +35,7 @@ const Navbar = () => {
     if (res.status === 200) {
       localStorage.clear();
         setLoggedIn(false);
+        setCartItems([]);
     }
      
     
