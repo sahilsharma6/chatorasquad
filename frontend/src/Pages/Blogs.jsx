@@ -52,7 +52,7 @@ const Blogs = ({ role }) => {
       const searchString = searchTerm.toLowerCase();
       return (
         blog.title.toLowerCase().includes(searchString) ||
-        blog.description.toLowerCase().includes(searchString) ||
+        blog.content.toLowerCase().includes(searchString) ||
         blog.category.toLowerCase().includes(searchString) ||
         blog.date.includes(searchString)
       );

@@ -1,17 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Upload } from "lucide-react";
-import apiClient from "../../services/apiClient"; 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import apiClient from "../../services/apiClient";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddBlogPage = () => {
   const [formData, setFormData] = useState({
     title: "",
-    category: "news",
+    category: "",
     content: "",
     images: null,
   });
+
+  const [categories, setCategories] = useState([]);
+
+
+  const fetchCategories = async () => {
+    try {
+      const response = await apiClient.get("/blog/category");
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      toast.error("Failed to load categories.");
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,13 +60,12 @@ const AddBlogPage = () => {
     if (images) form.append("images", images);
 
     try {
- 
       const response = await apiClient.post("/blog/add", form);
 
-      if (response.status === 200) {
-        toast.success("Blog post added successfully!"); 
+      if (response.status === 201) {
+        toast.success("Blog post added successfully!");
       } else {
-        toast.error("Failed to add blog post."); 
+        toast.error("Failed to add blog post.");
       }
     } catch (error) {
       console.error("Error in submitting the form:", error);
@@ -98,9 +114,14 @@ const AddBlogPage = () => {
                 onChange={handleChange}
                 className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
-                <option value="news">News</option>
-                <option value="technology">Technology</option>
-                <option value="food">Food</option>
+                <option value="" disabled>
+                  Select a category
+                </option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
           </motion.div>
