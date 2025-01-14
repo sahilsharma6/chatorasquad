@@ -39,7 +39,6 @@ const ForgetPassword = () => {
     if (validateForm()) {
       try {
         const res = await apiClient.post("/auth/forget-password", formData);
-        console.log(res.data);
         if (res.status === 200) {
         //   setLoggedIn(true);
           navigate("/login");

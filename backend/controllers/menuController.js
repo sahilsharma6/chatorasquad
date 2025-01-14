@@ -243,7 +243,7 @@ export const addReview = async (req, res) => {
 
         const setreview = new Reviews({
             menuId,
-            userId: req.user._id, // Assuming `req.user` is populated by authentication middleware
+            userId: req.user._id, 
             rating,
             review,
         });

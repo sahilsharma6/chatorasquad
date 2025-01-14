@@ -287,28 +287,33 @@ export const getOrderDetails = async (req, res) => {
   try {
     const id = req.params.id;
 
+  
     const order = await Order.findById(id);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
 
-
+  
+    const address = await Address.findById(order.deliveryAddress);
+    
+    
     const updatedItems = await Promise.all(
       order.items.map(async (item) => {
         const menuItem = await Menu.findById(item.itemid);
         return {
-          ...item.toObject(), 
-          image: menuItem?.images?.[0] || null, 
+          ...item.toObject(),
+          image: menuItem?.images?.[0] || null,
         };
       })
     );
 
+    
     const updatedOrder = {
       ...order.toObject(),
-      items: updatedItems,
+      deliveryAddress: address, 
+      items: updatedItems, 
     };
 
-   
     res.status(200).json({ order: updatedOrder });
   } catch (error) {
     console.error("Error fetching order details:", error);

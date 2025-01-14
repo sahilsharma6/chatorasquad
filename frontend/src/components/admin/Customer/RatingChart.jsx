@@ -11,7 +11,7 @@ const RatingChart = ({ reviews }) => {
 
     useEffect(() => {
         const today = new Date();
-        console.log(today);
+
         
         switch (filter) {
             case 'today':

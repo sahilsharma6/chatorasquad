@@ -10,7 +10,6 @@ const CustomerAreaChart = ({ customers }) => {
     const [customRange, setCustomRange] = useState(false);
     const [selectedRange, setSelectedRange] = useState('All');
 
-    console.log(customers.length);
     
     // Predefined date ranges
     const handlePredefinedRange = (range) => {

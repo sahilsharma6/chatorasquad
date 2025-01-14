@@ -24,7 +24,7 @@ router.post('/checkdelivery',checkdeliveryaddress); // checks if delivery is ava
 router.get('/reviews/:id',getReviws);
 router.post('/addreview/:id',authMiddleware,addReview);
 router.delete('/deletereview/:id',authMiddleware,deleteReview);
-router.post('/updatereviw/:id',authMiddleware,updateReview); 
+router.post('/updatereview/:id',authMiddleware,updateReview); 
 router.get('/rating/:id',getRating);
 
 export default router;
