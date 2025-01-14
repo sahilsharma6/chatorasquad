@@ -67,7 +67,6 @@ export const addToCart = async (req, res) => {
       .json({ message: "Internal server error", error: error.message });
   }
 };
-
 export const getCart = async (req, res) => {
   try {
     const userId = req.user?._id;
@@ -88,7 +87,10 @@ export const getCart = async (req, res) => {
     for (const item of cart.items) {
       const menuItem = await Menu.findById(item.itemId);
       if (menuItem) {
-        validItems.push(item);
+        validItems.push({
+          ...item.toObject(), // Ensure item is a plain object
+          image: menuItem?.images?.[0] || null, // Add images from Menu
+        });
         updatedTotal += item.quantity * item.sellingPrice;
       }
     }
@@ -97,7 +99,22 @@ export const getCart = async (req, res) => {
     cart.total = updatedTotal;
     await cart.save();
 
-    res.status(200).json(cart);
+    const againCart = await Cart.findOne({userId});
+    if (!againCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    const updatedItems = await Promise.all(
+      againCart.items.map(async (item) => {
+        const menuItem = await Menu.findById(item.itemId);
+        return {
+          ...item.toObject(), 
+          image: menuItem?.images?.[0] , 
+        };
+      })
+    );
+
+    res.status(200).json({cart: { ...againCart.toObject(), items: updatedItems }});
   } catch (error) {
     console.error("Error in getCart:", error);
     res
