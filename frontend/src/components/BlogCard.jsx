@@ -6,8 +6,8 @@ import { Link, useNavigate, } from "react-router-dom";
 const BlogCard = ({  _id, title, description, date, author, views, category, image, role, initialLikes,onDelete  }) => {
     const [likeCount, setLikeCount] = useState(initialLikes);
     const [isLiked, setIsLiked] = useState(false);
-    const navigate = useNavigate();
-    const MotionLink = motion(Link);
+   
+    const MotionLink = motion.create(Link);
 
     function handleDelete() {
         onDelete(_id); 
@@ -19,7 +19,7 @@ const BlogCard = ({  _id, title, description, date, author, views, category, ima
     }
 
     return (
-        <Link to={`/blog/details/${_id}`}>
+    
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -94,7 +94,7 @@ const BlogCard = ({  _id, title, description, date, author, views, category, ima
                 </div>
             )}
         </motion.div>
-        </Link>
+       
     );
 };
 

@@ -1,14 +1,13 @@
-
-// export default OrdersPage;
 import React, { useState, useEffect, useMemo, useContext } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {   Filter,   } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Filter } from 'lucide-react';
 import { UserContext } from "../../context/UserContext";
 import apiClient from "../../services/apiClient";
 import OrderItems from '../../components/users/OrderItems';
 import OrderFilters from '../../components/users/OrderFilters';
 import OrderSearchBar from '../../components/users/OrderSearchBar';
 import FilterContent from '../../components/users/OrderFilterContent';
+import { useNavigate } from 'react-router-dom';
 
 const OrdersPage = () => {
   const { user } = useContext(UserContext);
@@ -21,11 +20,17 @@ const OrdersPage = () => {
     time: []
   });
 
+  const navigate = useNavigate();
+
+  const handleOrderClick = (orderId) => {
+    navigate(`/orders/${orderId}`);
+  };
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -33,32 +38,9 @@ const OrdersPage = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await apiClient.get(`/user/getallorders/${user?._id}`); 
+      const response = await apiClient.get(`/user/getallorders/${user?._id}`);
       if (response.status === 200) {
-        let data = response.data.orders;
-        console.log(data);
-        
-        if (data) {
-          const getOrderDetail = await Promise.all(data.map(async (order) => {
-            const itemsWithDetails = await Promise.all(order.items.map(async (item) => {
-              const itemResponse = await apiClient.get('/menu/getdetails/' + item.itemid);
-              if (itemResponse.status === 200) {
-                return {
-                  ...item,
-                  image: itemResponse.data.images?.[0] 
-                };
-              }
-              return item;
-            }));
-  
-            return {
-              ...order,
-              items: itemsWithDetails
-            };
-          }));
-  
-          setOrders(getOrderDetail || []);
-        }
+        setOrders(response.data.orders || []);
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
@@ -66,14 +48,13 @@ const OrdersPage = () => {
   };
 
   useEffect(() => {
-    if (user?._id) { 
+    if (user?._id) {
       fetchOrders();
     }
   }, [user]);
 
   const statusFilters = ['On the way', 'Delivered', 'Cancelled', 'Returned'];
-  const timeFilters = ['Last 30 days','2025', '2024', '2023', 'Older'];
-
+  const timeFilters = ['Last 30 days', '2025', '2024', '2023', 'Older'];
 
   const toggleFilter = (category, value) => {
     setFilters(prev => ({
@@ -88,12 +69,11 @@ const OrdersPage = () => {
     setFilters({ status: [], time: [] });
   };
 
-  
   const filteredOrders = useMemo(() => {
     return orders.filter(order => {
       const matchesStatus = filters.status.length === 0 || filters.status.includes(order.orderStatus);
       const matchesTime = filters.time.length === 0 || filters.time.includes(new Date(order.date).getFullYear().toString());
-      const matchesSearch = order.items?.some(item => 
+      const matchesSearch = order.items?.some(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
@@ -107,7 +87,7 @@ const OrdersPage = () => {
       <div className="sticky top-0 bg-white border-b z-10 shadow-md">
         <div className="max-w-7xl mx-auto">
           <div className="p-4 flex items-center space-x-3 flex-wrap">
-           <OrderSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <OrderSearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {isMobile && (
               <button 
                 onClick={() => setIsFilterOpen(true)}
@@ -141,18 +121,26 @@ const OrdersPage = () => {
                   </button>
                 )}
               </div>
-              <FilterContent timeFilters={timeFilters} toggleFilter={toggleFilter} statusFilters={statusFilters} filters={filters}  />
+              <FilterContent timeFilters={timeFilters} toggleFilter={toggleFilter} statusFilters={statusFilters} filters={filters} />
             </motion.div>
           )}
 
           {/* Orders List */}
-          <OrderItems filteredOrders={filteredOrders} searchQuery={searchQuery}/>
-         
+          <OrderItems filteredOrders={filteredOrders} searchQuery={searchQuery} />
         </div>
       </div>
 
       {/* Mobile Filter Modal */}
-    <OrderFilters isMobile={isMobile} isFilterOpen={isFilterOpen} setIsFilterOpen={setIsFilterOpen} statusFilters={statusFilters} timeFilters={timeFilters} clearFilters={clearFilters} filters={filters} toggleFilter={toggleFilter}  />
+      <OrderFilters 
+        isMobile={isMobile} 
+        isFilterOpen={isFilterOpen} 
+        setIsFilterOpen={setIsFilterOpen} 
+        statusFilters={statusFilters} 
+        timeFilters={timeFilters} 
+        clearFilters={clearFilters} 
+        filters={filters} 
+        toggleFilter={toggleFilter} 
+      />
     </div>
   );
 };

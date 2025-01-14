@@ -143,6 +143,7 @@ function ProfileSettings() {
                     type="email"
                     id="email"
                     value={user?.email}
+                    onChange={handleEmailChange}
                     className="mt-1 w-1/2 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                   <label

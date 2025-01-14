@@ -39,7 +39,6 @@ const FoodMenuSwiper = ({param}) => {
       
     },
   };
-  console.log(foodItems);
 
   return (
     <div className="max-w-full mx-auto px-20 py-8 overflow-hidden">
@@ -106,7 +105,7 @@ const FoodMenuSwiper = ({param}) => {
                   {item.name}
                 </h3>
                 <p className="text-gray-900 text-center text-sm">
-                  {console.log(foodItems)}
+          
                   {item.description.slice(0, 150)}...
                 </p>
               </div>
