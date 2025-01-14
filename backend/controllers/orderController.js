@@ -9,7 +9,7 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import Address from "../models/Address.js";
-
+import Cart from "../models/Cart.js";
 
 export const payment = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ export const payment = async (req, res) => {
       total,
       deliveryAddress,
       orderStatus: "pending",
-      paymentStatus: "pending",
+      paymentStatus: "cancelled",
       merchantTransactionId,
     });
     await order.save();
@@ -151,7 +151,8 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus =
               response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
-              .then((order) => {
+              .then(async(order) => {
+                const cart = await Cart.findOneAndDelete({ userId: order.userId });
                 res.status(200).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
@@ -200,7 +201,8 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus =
               response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
-              .then((order) => {
+              .then(async(order) => {
+                const cart = await Cart.findOneAndDelete({ userId: order.userId });
                 res.status(200).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
