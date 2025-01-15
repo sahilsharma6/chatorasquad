@@ -9,6 +9,7 @@ import OrderItems from '../../components/users/OrderItems';
 import OrderFilters from '../../components/users/OrderFilters';
 import OrderSearchBar from '../../components/users/OrderSearchBar';
 import FilterContent from '../../components/users/OrderFilterContent';
+import Loader from '../../components/Loader';
 
 const OrdersPage = () => {
   const { user } = useContext(UserContext);
@@ -16,11 +17,13 @@ const OrdersPage = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [orders, setOrders] = useState([]);
+  const [isLoading,setisLoading]=useState(true)
   const [filters, setFilters] = useState({
     status: [],
     time: []
   });
 
+  // if(isLoading ) return <Loader />
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -37,7 +40,7 @@ const OrdersPage = () => {
       if (response.status === 200) {
         let data = response.data.orders;
         console.log(data);
-        
+        setisLoading(false)
         if (data) {
           const getOrderDetail = await Promise.all(data.map(async (order) => {
             const itemsWithDetails = await Promise.all(order.items.map(async (item) => {
@@ -62,13 +65,15 @@ const OrdersPage = () => {
       }
     } catch (error) {
       console.error("Error fetching orders:", error);
+    } finally{
+      setisLoading(false);
     }
   };
 
   useEffect(() => {
     if (user?._id) { 
       fetchOrders();
-    }
+    } 
   }, [user]);
 
   const statusFilters = ['On the way', 'Delivered', 'Cancelled', 'Returned'];
@@ -103,6 +108,7 @@ const OrdersPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {isLoading?<Loader/> :""}
       {/* Search Header */}
       <div className="sticky top-0 bg-white border-b z-10 shadow-md">
         <div className="max-w-7xl mx-auto">
