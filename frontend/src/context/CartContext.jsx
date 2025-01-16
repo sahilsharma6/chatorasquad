@@ -25,9 +25,9 @@ export const CartProvider = ({ children }) => {
         try {
           const { data } = await apiClient.get("/user/getcart");
 
-          if (data.items && Array.isArray(data.items)) {
-            setCartItems(data.items);
-            localStorage.setItem("cartItems", JSON.stringify(data.items)); 
+          if (data.cart.items && Array.isArray(data.cart.items)) {
+            setCartItems(data.cart.items);
+            localStorage.setItem("cartItems", JSON.stringify(data.cart.items)); 
           } else {
             setCartItems([]);
             localStorage.setItem("cartItems", JSON.stringify([]));
@@ -64,6 +64,7 @@ export const CartProvider = ({ children }) => {
             name: item.name,
             quantity: 1,
             sellingPrice: item.sellingPrice,
+            image: item.images[0],
           });
         }
 

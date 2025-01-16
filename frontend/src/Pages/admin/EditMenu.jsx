@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import apiClient from "../../services/apiClient";
 
 const EditMenu = () => {
-  const { menuId } = useParams(); // Extract menuId from the route parameters
+  const { menuId } = useParams();
   const navigate = useNavigate();
 
   const [menuData, setMenuData] = useState({
     name: "",
-    title: "",
     type: "",
     cuisine: "",
     quantity: "",
@@ -22,7 +21,6 @@ const EditMenu = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Fetch menu details
     apiClient
       .get(`/menu/getdetails/${menuId}`)
       .then((response) => {
@@ -33,7 +31,6 @@ const EditMenu = () => {
         setError("Failed to fetch menu details");
       });
 
-    // Fetch available cuisines
     apiClient
       .get("/admin/cuisines")
       .then((response) => {
@@ -50,10 +47,10 @@ const EditMenu = () => {
   };
 
   const handleFileChange = (e) => {
-    setMenuData((prevData) => ({
-      ...prevData,
-      images: [...prevData.images, ...Array.from(e.target.files)],
-    }));
+    const files = e.target.files;
+    if (files) {
+      setMenuData((prevData) => ({ ...prevData, images: Array.from(files) }));
+    }
   };
 
   const handleSubmit = (e) => {
@@ -70,7 +67,7 @@ const EditMenu = () => {
     const formData = new FormData();
     Object.keys(menuData).forEach((key) => {
       if (key === "images") {
-        menuData.images.forEach((image) => formData.append("images[]", image));
+        menuData.images.forEach((image) => formData.append("images", image));
       } else {
         formData.append(key, menuData[key]);
       }
@@ -81,7 +78,7 @@ const EditMenu = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-        navigate("/menus"); // Redirect to menu list after update
+        navigate("/menus");
       })
       .catch((error) => {
         console.error("Error updating menu:", error);
@@ -98,8 +95,8 @@ const EditMenu = () => {
       <h1 className="text-4xl text-center mb-6">Edit Menu</h1>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <form className="space-y-6" onSubmit={handleSubmit}>
-        {/* Dish Name and Title */}
-        <div className="grid lg:grid-cols-2 gap-4">
+        {/* Dish Name */}
+        <div className="grid lg:grid-cols-1 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Dish Name</label>
             <motion.input
@@ -109,19 +106,6 @@ const EditMenu = () => {
               placeholder="Enter Dish Name"
               name="name"
               value={menuData.name}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-2">Dish Title</label>
-            <motion.input
-              whileFocus={{ scale: 1.01 }}
-              type="text"
-              className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder="Enter Dish Title"
-              name ="title"
-              value={menuData.title}
               onChange={handleInputChange}
               required
             />
@@ -142,7 +126,7 @@ const EditMenu = () => {
               <option value="">Select a Type</option>
               <option value="Veg">Veg</option>
               <option value="Beverages">Beverages</option>
-              <option value="Dairyproduct">Dairy Product</option>
+              <option value="Dairy">Dairy</option>
             </select>
           </div>
           <div>
@@ -150,7 +134,7 @@ const EditMenu = () => {
             <select
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               name="cuisine"
-              value={menuData.cuisine}
+              value={menuData.Cuisine}
               onChange={handleInputChange}
               required
             >
@@ -221,21 +205,31 @@ const EditMenu = () => {
         </div>
 
         {/* Dish Images */}
+
         <div>
           <label className="block text-gray-700 mb-2">Dish Images</label>
           <div className="flex flex-wrap gap-4">
-
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            className="flex-1 px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
+            <input
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFileChange}
+              className="flex-1 px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
             />
-            {
-                menuData.images.map((val,i)=>
-               
-            <p key={i}>{val}</p> )}
-            </div>
+
+            {menuData.images.map((file, index) => (
+              <div key={index} className="flex items-center space-x-2">
+                <img
+                  src=  { file instanceof File ? import.meta.env.VITE_API_URL + "/" + URL.createObjectURL(file) : import.meta.env.VITE_API_URL + "/" + file}
+                  alt={`Preview ${index}`}
+                  className="w-16 h-16 object-cover rounded-lg"
+                />
+                {file instanceof File && (
+                  <p className="text-gray-600 text-sm">{file.name}</p>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Submit Button */}
@@ -247,7 +241,6 @@ const EditMenu = () => {
         >
           Save Changes
         </motion.button>
-       
       </form>
     </motion.div>
   );
