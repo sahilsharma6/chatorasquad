@@ -17,8 +17,6 @@ const ViewCart = () => {
 
   const { user } = useContext(UserContext);
 
-
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -62,7 +60,6 @@ const ViewCart = () => {
 
     const userId = user?._id;
 
-
     const payload = {
       userId,
       date: new Date().toISOString(),
@@ -85,7 +82,7 @@ const ViewCart = () => {
 
       if (response.data.url) {
         setPaymentProcessing(true);
-        
+
         window.location.href = response.data.url;
       } else {
         alert("Payment initiation failed. Please try again.");
@@ -171,25 +168,30 @@ const ViewCart = () => {
               addresses.map((address) => (
                 <div
                   key={address._id}
-                  className={`p-4 border rounded-lg cursor-pointer ${
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${
                     selectedAddress?._id === address._id
                       ? "border-orange-500 bg-orange-100"
                       : "border-gray-300"
-                  }`}
+                  } hover:shadow-md`}
                   onClick={() => handleAddressChange(address)}
                 >
-                  <div className="flex justify-between items-center">
-                    <span>
+                  <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
+       
+                    <span className="text-sm sm:text-base">
                       {address.location}, {address.city}, {address.state} -{" "}
                       {address.zipCode}
                     </span>
+
+               
                     {selectedAddress?._id === address._id && (
-                      <span className="text-sm text-orange-600 font-semibold">
+                      <span className="text-sm sm:text-base rounded-lg bg-orange-200 text-center py-1 px-2  text-orange-600 font-semibold">
                         Selected Address
                       </span>
                     )}
+
+                 
                     {address.type === "default" && (
-                      <span className="text-sm text-green-600 font-semibold">
+                      <span className=" bg-green-100 rounded-lg text-center text-sm py-1 px-2 sm:text-base text-green-600 font-semibold">
                         Default Address
                       </span>
                     )}

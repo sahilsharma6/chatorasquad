@@ -5,7 +5,7 @@ import paymentImg from "../assets/payment.png";
 import enjoyImg from "../assets/enjoy.png";
 function Work() {
   return (
-    <div className="bg-gradient-to-b from-yellow-50 to-white  w-full h-auto p-20 md:p-10 pb-0 flex flex-col items-center">
+    <div className="bg-gradient-to-b from-yellow-50 to-white  w-full h-auto pt-10  lg:p-20 md:p-10 pb-0 flex flex-col items-center">
       <h2 className="text-2xl md:text-4xl font-bold text-orange-500 mb-8 justify-center text-center">
         How does it work
       </h2>

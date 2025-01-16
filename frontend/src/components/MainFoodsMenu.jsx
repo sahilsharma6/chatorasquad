@@ -66,7 +66,7 @@ const FoodMainMenu = () => {
   };
 
   return (
-    <div className="max-w-full mx-auto px-20 py-6 sm:py-12 bg-gray-100 shadow-lg">
+    <div className="max-w-full mx-auto px-2 lg:px-20 py-6 sm:py-12 bg-gray-100 shadow-lg">
       {/* Header */}
       <div className="text-center mb-6 sm:mb-12">
         <div className="flex items-center justify-center gap-2 mb-2">
