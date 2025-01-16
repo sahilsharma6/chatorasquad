@@ -4,8 +4,10 @@ import { Upload } from "lucide-react";
 import apiClient from "../../services/apiClient";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from "react-router-dom";
 
 const AddBlogPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -64,6 +66,17 @@ const AddBlogPage = () => {
 
       if (response.status === 201) {
         toast.success("Blog post added successfully!");
+        setFormData({
+          title: "",
+          category: "",
+          content: "",
+          images: null,
+        })
+
+        setTimeout(() => {
+          navigate("/admin/blogs/view");
+        }, 2000);
+      
       } else {
         toast.error("Failed to add blog post.");
       }
@@ -118,7 +131,7 @@ const AddBlogPage = () => {
                   Select a category
                 </option>
                 {categories.map((category) => (
-                  <option key={category.id} value={category.name}>
+                  <option key={category._id} value={category.name}>
                     {category.name}
                   </option>
                 ))}

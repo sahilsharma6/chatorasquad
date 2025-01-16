@@ -4,6 +4,7 @@ import { Search, TrendingUp, Clock, Flame } from "lucide-react";
 import BlogCard from "../components/BlogCard";
 import ConfirmationModal from "../components/ConfirmationModal";
 import apiClient from "../services/apiClient";
+import { toast, ToastContainer } from "react-toastify";
 
 const tabs = [
   { label: "All", value: "all" },
@@ -39,12 +40,24 @@ const Blogs = ({ role }) => {
     setIsDeleteModal(true);
   };
 
-  const confirmDelete = () => {
-    setBlogs((prevBlogs) =>
-      prevBlogs.filter((blog) => blog.id !== blogToDelete)
-    );
-    console.log(`Blog with ID ${blogToDelete} deleted.`);
-    setIsDeleteModal(false);
+  const confirmDelete = async () => {
+    try {
+
+      await apiClient.delete(`/blog/delete/${blogToDelete}`);
+      
+      setBlogs((prevBlogs) =>
+        prevBlogs.filter((blog) => blog._id !== blogToDelete)
+      );
+      
+      toast.success("Blog deleted successfully!");
+    } catch (error) {
+  
+      console.error("Error deleting blog:", error);
+      toast.error("Failed to delete blog.");
+    } finally {
+
+      setIsDeleteModal(false);
+    }
   };
 
   const filteredAndSortedBlogs = useMemo(() => {
@@ -78,6 +91,7 @@ const Blogs = ({ role }) => {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+      <ToastContainer position="bottom-right" autoClose={2000} hideProgressBar />
       <motion.h2
         className="text-4xl font-bold mb-8 text-center text-gray-800"
         initial={{ opacity: 0, y: -20 }}
