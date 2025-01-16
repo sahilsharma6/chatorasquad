@@ -15,6 +15,7 @@ export default function GetMenuDetails({ dishDetails }) {
 
   const { name, description, sellingPrice, images } = dishDetails;
 
+
   const { id } = useParams();
 
   const checkDelivery = async () => {

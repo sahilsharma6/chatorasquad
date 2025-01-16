@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Pencil, Trash, X } from 'lucide-react';
-import apiClient from '../../services/apiClient'; 
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Pencil, Trash, X } from "lucide-react";
+import apiClient from "../../services/apiClient";
+import { ToastContainer, toast } from "react-toastify";
 
 const formatDate = (date) => {
-  const options = { year: 'numeric', month: 'short', day: 'numeric' };
-  return new Date(date).toLocaleDateString('en-US', options);
+  const options = { year: "numeric", month: "short", day: "numeric" };
+  return new Date(date).toLocaleDateString("en-US", options);
 };
 
 const CuisineCard = ({ cuisine, date, onEdit, onDelete }) => {
@@ -25,19 +25,19 @@ const CuisineCard = ({ cuisine, date, onEdit, onDelete }) => {
           onClick={onEdit}
           className="bg-orange-500 text-white py-3 rounded hover:bg-orange-600 px-4 "
         >
-         <div className="flex gap-2">
-            <Pencil className='mt-1' />
+          <div className="flex gap-2">
+            <Pencil className="mt-1" />
             <div>Edit</div>
-         </div>
+          </div>
         </button>
         <button
           onClick={onDelete}
           className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
         >
-         <div className="flex gap-2">
-            <Trash className='mt-1' />
+          <div className="flex gap-2">
+            <Trash className="mt-1" />
             <div>Delete</div>
-         </div>
+          </div>
         </button>
       </div>
     </motion.div>
@@ -45,20 +45,20 @@ const CuisineCard = ({ cuisine, date, onEdit, onDelete }) => {
 };
 
 const ViewCuisine = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchDate, setSearchDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchDate, setSearchDate] = useState("");
   const [cuisines, setCuisines] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCuisine, setCurrentCuisine] = useState(null);
-  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false); 
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   useEffect(() => {
     const fetchCuisines = async () => {
       try {
-        const response = await apiClient.get('/admin/cuisines');
+        const response = await apiClient.get("/admin/cuisines");
         setCuisines(response.data);
       } catch (error) {
-        console.error('Error fetching cuisines:', error);
-        toast.error('Failed to fetch cuisines.', {
+        console.error("Error fetching cuisines:", error);
+        toast.error("Failed to fetch cuisines.", {
           position: "bottom-right",
           autoClose: 2000,
         });
@@ -69,7 +69,9 @@ const ViewCuisine = () => {
   }, []);
 
   const filteredCuisines = cuisines.filter((cuisine) => {
-    const matchesName = cuisine?.name?.toLowerCase().includes(searchTerm?.toLowerCase());
+    const matchesName = cuisine?.name
+      ?.toLowerCase()
+      .includes(searchTerm?.toLowerCase());
     const matchesDate = cuisine?.date?.includes(searchDate);
     return matchesName && matchesDate;
   });
@@ -80,31 +82,31 @@ const ViewCuisine = () => {
   };
 
   const handleDelete = (cuisine) => {
-    setCurrentCuisine(cuisine); 
-    setIsConfirmDeleteOpen(true); 
+    setCurrentCuisine(cuisine);
+    setIsConfirmDeleteOpen(true);
   };
 
   const confirmDelete = async () => {
     try {
       await apiClient.delete(`/admin/deletecuisine/${currentCuisine._id}`);
       setCuisines((prev) => prev.filter((c) => c._id !== currentCuisine._id));
-      toast.success('Cuisine deleted successfully.', {
+      toast.success("Cuisine deleted successfully.", {
         position: "bottom-right",
         autoClose: 2000,
       });
     } catch (error) {
-      console.error('Error deleting cuisine:', error);
-      toast.error('Failed to delete cuisine.', {
+      console.error("Error deleting cuisine:", error);
+      toast.error("Failed to delete cuisine.", {
         position: "bottom-right",
         autoClose: 2000,
       });
     } finally {
-      setIsConfirmDeleteOpen(false); 
+      setIsConfirmDeleteOpen(false);
     }
   };
 
   const handleCancelDelete = () => {
-    setIsConfirmDeleteOpen(false); 
+    setIsConfirmDeleteOpen(false);
   };
 
   const handleSave = async () => {
@@ -113,17 +115,20 @@ const ViewCuisine = () => {
         prev.map((c) => (c._id === currentCuisine._id ? currentCuisine : c))
       );
 
-      const response = await apiClient.put(`/admin/updatecuisine/${currentCuisine._id}`, {
-        name: currentCuisine.name,
-      });
+      const response = await apiClient.put(
+        `/admin/updatecuisine/${currentCuisine._id}`,
+        {
+          name: currentCuisine.name,
+        }
+      );
 
-      toast.success('Cuisine updated successfully.', {
+      toast.success("Cuisine updated successfully.", {
         position: "bottom-right",
         autoClose: 2000,
       });
     } catch (error) {
-      console.error('Error updating cuisine:', error);
-      toast.error('Failed to update cuisine.', {
+      console.error("Error updating cuisine:", error);
+      toast.error("Failed to update cuisine.", {
         position: "bottom-right",
         autoClose: 2000,
       });
@@ -170,7 +175,9 @@ const ViewCuisine = () => {
           >
             <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
               <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
-              <p className="mb-4">Are you sure you want to delete this cuisine?</p>
+              <p className="mb-4">
+                Are you sure you want to delete this cuisine?
+              </p>
 
               <div className="flex justify-end gap-2">
                 <button
@@ -212,7 +219,7 @@ const ViewCuisine = () => {
 
               <input
                 type="text"
-                value={currentCuisine?.name || ''}
+                value={currentCuisine?.name || ""}
                 className="border border-orange-500 focus:border-orange-500 rounded p-4 mb-4 w-full"
                 onChange={(e) =>
                   setCurrentCuisine({

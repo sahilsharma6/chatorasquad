@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Plus, Minus, Heart, Trash2 } from "lucide-react";
 
 export default function CartItems({ item, updateQuantity, removeItem }) {
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -12,8 +13,8 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
       <div className="flex gap-4">
         <img
           src={
-            item.images && item.images[0]
-              ? import.meta.env.VITE_API_URL + "/" + item.images[0]
+            item.image
+              ? import.meta.env.VITE_API_URL + "/" + item.image
               : "/default-image.jpg"
           }
           alt={item.name}

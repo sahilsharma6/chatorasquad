@@ -94,11 +94,11 @@ export const getDairyAndBeveragesMenu = async (req, res) => {
 // Update Menu
 export const updateMenu = async (req, res) => {
     try {
-        const { name, type, sellingPrice, discountedPrice, description, isAvailable, cuisine } = req.body;
+        const { name, type, sellingPrice, discountedPrice, description, isAvailable, Cuisine } = req.body;
         const images = req.files.map(file => file.path);
 
         // Basic validation
-        if (!name || !type || !sellingPrice || !description || !cuisine) {
+        if (!name || !type || !sellingPrice || !description || !Cuisine) {
             return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
         }
 
@@ -123,7 +123,7 @@ export const updateMenu = async (req, res) => {
         menu.description = description;
         menu.images = images;
         menu.isAvailable = isAvailable;
-        menu.Cuisine = cuisine;
+        menu.Cuisine = Cuisine;
 
         await menu.save();
         res.status(200).json({ message: "Menu updated successfully" });

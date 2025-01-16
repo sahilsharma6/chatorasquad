@@ -17,6 +17,8 @@ const ViewCart = () => {
 
   const { user } = useContext(UserContext);
 
+
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);

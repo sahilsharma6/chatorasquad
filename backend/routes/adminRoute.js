@@ -10,9 +10,9 @@ const router = express.Router();
 
 router.get('/cuisines',authMiddleware, checkAdmin,getCuisines);     
 router.get('/cuisines/:id',authMiddleware, checkAdmin,getCuisineById); 
-router.post('/addcuisine',authMiddleware,checkAdmin,addCuisine);
+router.post('/addcuisine',authMiddleware,checkAdmin,uploadMiddleware,addCuisine);
 router.delete('/deletecuisine/:id',authMiddleware,checkAdmin,deleteCuisine); 
-router.put('/updatecuisine/:id',authMiddleware,checkAdmin,updateCuisine);
+router.put('/updatecuisine/:id',authMiddleware,checkAdmin,uploadMiddleware,updateCuisine);
 
 router.get('/deliveryLocations',authMiddleware,checkAdmin,getDeliveryaddress);
 router.post('/adddeliveryLocation',authMiddleware,checkAdmin,adddeliveryaddress);

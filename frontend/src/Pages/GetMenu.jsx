@@ -21,7 +21,7 @@ const GetMenu = () => {
       try {
         const response = await apiClient.get(`/menu/getdetails/${id}`);
         setProduct(response.data);
-         setSelectedImage(response.data.images[0]);
+        setSelectedImage(response.data.images[0]);
         setLoading(false); 
         
       } catch (error) {
