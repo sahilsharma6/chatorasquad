@@ -349,7 +349,6 @@ export const getOrdersByFilter = async (req, res) => {
 export const addCuisine = async (req, res) => {
   try {
     const { name } = req.body;
-    const images = req.files.map((file) => file.path);
     const existingCuisine = await Cuisine.findOne({ name });
     if (existingCuisine) {
       return res.status(200).json({ message: "Cuisine already exists" });
@@ -357,9 +356,9 @@ export const addCuisine = async (req, res) => {
     const date = new Date();
     const cuisine = new Cuisine({
       name,
-      image: images[0],
-      date,
+      date
     });
+
     await cuisine.save();
     res.status(200).json({ message: "Cuisine added successfully" });
   } catch (error) {
@@ -372,6 +371,7 @@ export const getCuisines = async (req, res) => {
     const cuisines = await Cuisine.find();
     res.status(200).json(cuisines);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -386,6 +386,7 @@ export const getCuisineById = async (req, res) => {
       res.status(400).json({ message: "Cuisine not found" });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -393,25 +394,13 @@ export const getCuisineById = async (req, res) => {
 export const updateCuisine = async (req, res) => {
   try {
     const id = req.params.id;
-    // const { name} = req.body;
-    const images = req.files.map((file) => file.path);
+    const { name} = req.body;
     const cuisine = await Cuisine.findById(id);
 
     if (!cuisine) {
       return res.status(400).json({ message: "Cuisine not found" });
     }
-
-    if (cuisine.image) {
-      const oldImagePath = path.resolve(cuisine.image);
-      fs.unlink(oldImagePath, (err) => {
-        if (err) {
-          console.error(`Error deleting file: ${oldImagePath}`, err);
-        }
-      });
-    }
-
-    // cuisine.name = name;
-    cuisine.image = images[0];
+    cuisine.name = name;
     await cuisine.save();
     res.status(200).json({ message: "Cuisine updated successfully" });
   } catch (error) {
@@ -431,6 +420,7 @@ export const deleteCuisine = async (req, res) => {
       res.status(400).json({ message: "Cuisine not found" });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

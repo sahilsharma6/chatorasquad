@@ -187,6 +187,19 @@ export const deleteMenu = async (req, res) => {
         if (!menu) {
             return res.status(404).json({ message: "Menu item not found" });
         }
+        
+        if (menu.images && menu.images.length > 0) {
+            menu.images.forEach(imagePath => {
+                const filePath = path.resolve(imagePath);
+                fs.unlink(filePath, (err) => {
+                    if (err) {
+                        console.error(`Error deleting file: ${filePath}`, err);
+                    }
+                });
+            }
+            );
+        }
+        
 
         const cuisine = await Cuisine.findOne({ name: menu.Cuisine });
         if (cuisine) {
