@@ -22,12 +22,12 @@ export default function CellModal({ setSelectedRow, selectedRow ,updateOrderStat
     if (selectedRow) {
       const updatedOrder = {
         ...selectedRow, // Spread the current selectedRow properties
-        status,         // Update the status property with the new value
+        status,        
       };
-      updateOrderStatus(updatedOrder); // Call the function to update the order status
-      // console.log(updateOrderStatus);
+      updateOrderStatus(updatedOrder); 
+    
       
-      closeModal(); // Close the modal after saving changes
+      closeModal();
     }
   };
 

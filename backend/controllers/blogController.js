@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 import User from '../models/User.js';
 import Blogs from '../models/Blogs.js';
 import BlogCategory from '../models/BlogCategory.js';
-
+import path from 'path';
+import fs from 'fs';
 // Create Blog
 export const createBlog = async (req, res) => {
   try {
@@ -29,7 +30,7 @@ export const createBlog = async (req, res) => {
      
     const blogCategory= await BlogCategory.findOne({ name: category });
    
-    blogCategory.blogs.push(blog._id);
+    blogCategory.blogs.push({ blogId: blog._id });
     await blogCategory.save();
     await blog.save();
     res.status(201).json(blog);
@@ -143,6 +144,8 @@ export const updateBlog = async (req, res) => {
   }
 };
 
+
+
 // Delete Blog
 export const deleteBlog = async (req, res) => {
   const { id } = req.params;
@@ -151,12 +154,38 @@ export const deleteBlog = async (req, res) => {
     return res.status(400).json({ message: `Invalid blog ID: ${id}` });
   }
 
-  const blog = await Blogs.findByIdAndRemove(id);
-  if (!blog) {
-    return res.status(404).json({ message: 'Blog not found' });
-  }
+  try {
+    // Find the blog
+    const blog = await Blogs.findById(id);
+    if (!blog) {
+      return res.status(404).json({ message: 'Blog not found' });
+    }
 
-  res.json({ message: 'Blog deleted successfully.' });
+
+    const category = await BlogCategory.findOne({ name: blog.category }); // Use findOne to get a single document
+    if (category && Array.isArray(category.blogs)) {
+      // Filter out the blog by its ID
+      category.blogs = category.blogs.filter(blog => blog.blogId.toString() !== id);
+      await category.save();
+    }
+
+    if (blog.image) {
+      const filePath = path.resolve(blog.image);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error deleting file: ${filePath}`, err);
+        }
+      });
+    }
+    
+    // Finally, delete the blog
+    await Blogs.findByIdAndDelete(id);
+    res.json({ message: 'Blog deleted successfully.' });
+
+  } catch (error) {
+    console.error('Error deleting blog:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 };
 
 // Like Blog
@@ -286,32 +315,37 @@ export const editCategory = async (req, res) => {
         res.status(404).json({ message: error.message });
     }
 };
+
+
 export const deleteCategory = async (req, res) => {
   const { id } = req.params;
 
   try {
+    // Check if the category ID is valid
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: `Invalid category ID: ${id}` });
+    }
 
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-          return res.status(400).json({ message: `Invalid category ID: ${id}` });
-      }
+    // Find the category by ID
+    const category = await BlogCategory.findById(id);
+    if (!category) {
+      return res.status(404).json({ message: 'Category not found' });
+    }
 
+    // Remove all blogs associated with this category
+    if (category.blogs && category.blogs.length > 0) {
+      const blogIds = category.blogs.map(blog => blog.blogId);
+      
+      // Remove all blogs in one query
+      await Blogs.deleteMany({ _id: { $in: blogIds } });
+    }
 
-      const category = await BlogCategory.findById(id).populate('blogs');
-      if (!category) {
-          return res.status(404).json({ message: 'Category not found' });
-      }
+    // Remove the category itself
+    const response=   await BlogCategory.findByIdAndDelete(id);
 
-      if (category.blogs && category.blogs.length > 0) {
-          for (const blog of category.blogs) {
-              await Blogs.findByIdAndRemove(blog._id);
-          }
-      }
-
-      await BlogCategory.findByIdAndRemove(id);
-
-      res.status(200).json({ message: 'Category deleted successfully.' });
+    res.status(200).json({ message: 'Category deleted successfully.' });
   } catch (error) {
-      console.error("Error deleting category:", error);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error("Error deleting category:", error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };

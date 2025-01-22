@@ -3,12 +3,13 @@ import Cuisine from "../models/Cuisine.js";
 import Delivery from "../models/Delivery.js";
 import User from "../models/User.js";
 import uniquid from "uniqid"; // npm install uniqid
+import Menu from "../models/Menu.js";
 import axios from "axios";
 import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 import Address from "../models/Address.js";
-
+import Cart from "../models/Cart.js";
 
 export const payment = async (req, res) => {
   try {
@@ -39,7 +40,7 @@ export const payment = async (req, res) => {
       total,
       deliveryAddress,
       orderStatus: "pending",
-      paymentStatus: "pending",
+      paymentStatus: "cancelled",
       merchantTransactionId,
     });
     await order.save();
@@ -150,7 +151,8 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus =
               response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
-              .then((order) => {
+              .then(async(order) => {
+                const cart = await Cart.findOneAndDelete({ userId: order.userId });
                 res.status(200).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
@@ -199,7 +201,8 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus =
               response.data.code === "PAYMENT_SUCCESS" ? "completed" : "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
-              .then((order) => {
+              .then(async(order) => {
+                const cart = await Cart.findOneAndDelete({ userId: order.userId });
                 res.status(200).redirect(process.env.ORDER_URL);
               })
               .catch((error) => {
@@ -210,7 +213,7 @@ export const checkPaymentStatus = async (req, res) => {
             const paymentStatus = "failed";
             Order.findOneAndUpdate({ merchantTransactionId }, { paymentStatus })
               .then((order) => {
-                res.status(400).json({ message: "Payment failed" });
+                res.status(400).redirect({ message: "Payment failed" });
               })
               .catch((error) => {
                 console.error(error);
@@ -228,7 +231,6 @@ export const checkPaymentStatus = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 export const getOrders = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -238,9 +240,21 @@ export const getOrders = async (req, res) => {
     const updatedOrders = await Promise.all(
       orders.map(async (order) => {
         const address = await Address.findById(order.deliveryAddress);
+
+        const updatedItems = await Promise.all(
+          order.items.map(async (item) => {
+            const menuItem = await Menu.findById(item.itemid);
+            return {
+              ...item.toObject(), 
+              image: menuItem?.images?.[0] || null, 
+            };
+          })
+        );
+
         return {
-          ...order.toObject(),
+          ...order.toObject(), 
           deliveryAddress: address,
+          items: updatedItems, 
         };
       })
     );
@@ -251,6 +265,7 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const updateOrderStatus = async (req, res) => {
   try {
@@ -269,19 +284,45 @@ export const updateOrderStatus = async (req, res) => {
   }
 };
 
+
 export const getOrderDetails = async (req, res) => {
   try {
     const id = req.params.id;
+
+  
     const order = await Order.findById(id);
-    if (order) {
-      res.status(200).json(order);
-    } else {
-      res.status(400).json({ message: "Order not found" });
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
     }
+
+  
+    const address = await Address.findById(order.deliveryAddress);
+    
+    
+    const updatedItems = await Promise.all(
+      order.items.map(async (item) => {
+        const menuItem = await Menu.findById(item.itemid);
+        return {
+          ...item.toObject(),
+          image: menuItem?.images?.[0] || null,
+        };
+      })
+    );
+
+    
+    const updatedOrder = {
+      ...order.toObject(),
+      deliveryAddress: address, 
+      items: updatedItems, 
+    };
+
+    res.status(200).json({ order: updatedOrder });
   } catch (error) {
+    console.error("Error fetching order details:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const getOrdersByFilter = async (req, res) => {
   try {

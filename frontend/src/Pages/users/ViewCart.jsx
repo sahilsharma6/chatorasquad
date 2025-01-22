@@ -60,8 +60,6 @@ const ViewCart = () => {
 
     const userId = user?._id;
 
-    console.log("item", items);
-    console.log("item", items.map((item) => item._id));
 
     const payload = {
       userId,
@@ -84,6 +82,8 @@ const ViewCart = () => {
       const response = await apiClient.post("/user/pay", payload);
 
       if (response.data.url) {
+        setPaymentProcessing(true);
+        
         window.location.href = response.data.url;
       } else {
         alert("Payment initiation failed. Please try again.");
@@ -121,7 +121,7 @@ const ViewCart = () => {
         <div className="flex-1 min-h-screen overflow-y-auto shadow px-4 py-4">
           {cartItems.map((item) => (
             <CartItems
-              key={item._id}
+              key={item.itemId}
               item={item}
               updateQuantity={updateQuantity}
               removeItem={removeItem}

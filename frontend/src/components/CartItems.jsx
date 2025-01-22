@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Minus, Heart, Trash2 } from 'lucide-react';
+import React from "react";
+import { motion } from "framer-motion";
+import { Plus, Minus, Heart, Trash2 } from "lucide-react";
 
 export default function CartItems({ item, updateQuantity, removeItem }) {
   return (
@@ -10,11 +10,15 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
       className="p-4 border rounded-lg mb-4"
     >
       <div className="flex gap-4">
-      <img
-  src={item.images && item.images[0] ? import.meta.env.VITE_API_URL + "/" + item.images[0] : "/default-image.jpg"}
-  alt={item.name}
-  className="w-24 h-24 rounded-lg object-cover"
-/>
+        <img
+          src={
+            item.images && item.images[0]
+              ? import.meta.env.VITE_API_URL + "/" + item.images[0]
+              : "/default-image.jpg"
+          }
+          alt={item.name}
+          className="w-24 h-24 rounded-lg object-cover"
+        />
 
         <div className="flex-1">
           <h3 className="font-semibold text-lg">{item.name}</h3>

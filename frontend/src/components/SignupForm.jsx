@@ -60,7 +60,6 @@ const SignupForm = () => {
        
        try{
         const res = await apiClient.post("/auth/signup", formData);  
-        console.log(res.data);
         if(res.status === 201){
           navigate("/login");
         }

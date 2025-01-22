@@ -29,11 +29,11 @@ const BipolarChart = () => {
   const filteredData = salesData.filter((item) => {
     const itemDate = new Date(item.date);
     const start = new Date(startDate.setHours(0, 0, 0, 0));  // Remove time from startDate
-    const end = new Date(endDate.setHours(23, 59, 59, 999)); // Set endDate to the end of the day
+    const end = new Date(endDate.setHours(23, 59, 59, 999)); 
 
     return itemDate >= start && itemDate <= end;
   });
-  console.log('dssd',startDate);
+
   
 
   return (
