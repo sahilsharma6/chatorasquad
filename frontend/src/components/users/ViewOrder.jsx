@@ -1,12 +1,26 @@
 import { motion } from "framer-motion";
 import { Check, MapPin, Phone, Star } from "lucide-react";
-
+import { useState } from "react";
+// import { set } from "mongoose";
+import { Link } from "react-router-dom";
 export default function ViewOrder({
   orderData,
   shippingData,
   setShowModal,
   review,
+  itemId,
+  setItemId,
+  getReview,
+  setGetReview
 }) {
+  const [status, setStatus] = useState(orderData.orderStatus);
+
+  const handelRatingReview = (id) => {
+    setShowModal(true);
+    console.log(id);
+
+    setItemId(id);
+  }
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Left Column - Order Details */}
@@ -22,21 +36,36 @@ export default function ViewOrder({
               <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 Order Items
               </h2>
-              <div className="space-y-6 h-56 overflow-y-auto">
+              <div className="space-y-6 h-auto overflow-y-auto">
                 {orderData.items.map((item, index) => (
                   <div key={index} className="flex items-center space-x-6">
                     <img
                       src={import.meta.env.VITE_API_URL + "/" + item.image}
-                      alt={item.name}
+                      alt={item.name} l
                       className="w-16 h-16 object-cover rounded-lg"
                     />
                     <div className="flex flex-col">
                       <h3 className="font-semibold text-lg text-gray-800">
-                        {item.name}
+                        <Link to={'/menu/details/' + item.itemid} className="hover:text-orange-500">{item.name}</Link>
                       </h3>
                       <p className="text-gray-600">₹{item.price}</p>
                       <p className="text-gray-600">Quantity: {item.quantity}</p>
                     </div>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handelRatingReview(item.itemid)}
+                      className="mb-6 text-orange-500 flex items-center"
+                    >
+                      {
+                        status === 'Delivered' && (
+                          <>
+                            <Star className="mr-2" />
+                            <span>Add or Edit Rating & Review</span>
+                          </>
+                        )
+                      }
+                    </motion.button>
                   </div>
                 ))}
               </div>
@@ -64,18 +93,12 @@ export default function ViewOrder({
                 </p>
               </div>
             </div>
+
           </motion.div>
         </div>
 
         {/* Rating Button */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setShowModal(true)}
-          className="mb-6 text-orange-500 flex items-center"
-        >
-          <Star className="mr-2" /> {review ? "Edit" : "Add"} Rating & Review
-        </motion.button>
+
 
         {/* Price Details */}
         <motion.div

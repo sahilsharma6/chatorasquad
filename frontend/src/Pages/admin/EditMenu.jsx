@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import apiClient from "../../services/apiClient";
+import { toast, ToastContainer } from "react-toastify";
 
 const EditMenu = () => {
   const { menuId } = useParams();
@@ -9,8 +10,9 @@ const EditMenu = () => {
 
   const [menuData, setMenuData] = useState({
     name: "",
+    title: "",
     type: "",
-    cuisine: "",
+    Cuisine: "",
     quantity: "",
     sellingPrice: 0,
     description: "",
@@ -49,8 +51,18 @@ const EditMenu = () => {
   const handleFileChange = (e) => {
     const files = e.target.files;
     if (files) {
-      setMenuData((prevData) => ({ ...prevData, images: Array.from(files) }));
+      setMenuData((prevData) => ({
+        ...prevData,
+        images: [...prevData.images, ...Array.from(files)],
+      }));
     }
+  };
+
+  const handleDeleteImage = (index) => {
+    setMenuData((prevData) => {
+      const newImages = prevData.images.filter((_, i) => i !== index);
+      return { ...prevData, images: newImages };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -67,7 +79,14 @@ const EditMenu = () => {
     const formData = new FormData();
     Object.keys(menuData).forEach((key) => {
       if (key === "images") {
-        menuData.images.forEach((image) => formData.append("images", image));
+        // Include old images that are not deleted
+        menuData.images.forEach((image) => {
+          if (image instanceof File) {
+            formData.append("images", image); // New file
+          } else {
+            formData.append("oldImages", image); // Existing file path
+          }
+        });
       } else {
         formData.append(key, menuData[key]);
       }
@@ -78,13 +97,21 @@ const EditMenu = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-        navigate("/menus");
+           toast.success('Dish Edited successfully',
+              {
+                position: "top-right",
+                autoClose: 2000,
+              }
+            );
+            setTimeout(()=>  navigate("/admin/menu/view"),2000)
+       
       })
       .catch((error) => {
         console.error("Error updating menu:", error);
         setError("Failed to update menu");
       });
   };
+
 
   return (
     <motion.div
@@ -96,7 +123,7 @@ const EditMenu = () => {
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <form className="space-y-6" onSubmit={handleSubmit}>
         {/* Dish Name */}
-        <div className="grid lg:grid-cols-1 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Dish Name</label>
             <motion.input
@@ -109,6 +136,22 @@ const EditMenu = () => {
               onChange={handleInputChange}
               required
             />
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Dish Title</label>
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
+              type="text"
+              className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
+              placeholder="Enter Dish Name"
+              value={menuData.title}
+              onChange={(e) =>
+                setMenuData({ ...menuData, title: e.target.value })
+              }
+            />
+            {/* {errors.name && (
+                        <p className="text-red-500 text-sm">{errors.name}</p>
+                      )} */}
           </div>
         </div>
 
@@ -134,13 +177,13 @@ const EditMenu = () => {
             <select
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               name="cuisine"
-              value={menuData.Cuisine}
+              value={menuData.Cuisine} // Fixed the casing here
               onChange={handleInputChange}
               required
             >
-              <option value="">Select a cuisine</option>
+              {/* <option value={menuData.cuisine}>Select a cuisine</option> */}
               {cuisines.map((cuisine) => (
-                <option key={cuisine._id} value={cuisine.name}>
+                <option key={cuisine._id} value={cuisine.name} >
                   {cuisine.name}
                 </option>
               ))}
@@ -205,7 +248,6 @@ const EditMenu = () => {
         </div>
 
         {/* Dish Images */}
-
         <div>
           <label className="block text-gray-700 mb-2">Dish Images</label>
           <div className="flex flex-wrap gap-4">
@@ -220,13 +262,20 @@ const EditMenu = () => {
             {menuData.images.map((file, index) => (
               <div key={index} className="flex items-center space-x-2">
                 <img
-                  src=  { file instanceof File ? import.meta.env.VITE_API_URL + "/" + URL.createObjectURL(file) : import.meta.env.VITE_API_URL + "/" + file}
+                  src={file instanceof File ? URL.createObjectURL(file) : import.meta.env.VITE_API_URL + "/" + file}
                   alt={`Preview ${index}`}
                   className="w-16 h-16 object-cover rounded-lg"
                 />
                 {file instanceof File && (
                   <p className="text-gray-600 text-sm">{file.name}</p>
                 )}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteImage(index)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
@@ -242,6 +291,7 @@ const EditMenu = () => {
           Save Changes
         </motion.button>
       </form>
+      <ToastContainer />
     </motion.div>
   );
 };

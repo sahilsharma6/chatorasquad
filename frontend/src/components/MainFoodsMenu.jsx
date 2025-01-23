@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Utensils, Search, Filter, X } from "lucide-react";
 import apiClient from "../services/apiClient";
 import { Link } from "react-router-dom";
+import { Pagination } from "./Pagination";
 const categories = [
   { id: "fast-food", name: "", icon: "" },
   { id: "drinks", name: "  ", icon: "" },
@@ -23,19 +24,25 @@ const FoodMainMenu = () => {
   const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 2;
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await apiClient.get("/menu/all");
-        setMenuItems(response.data);
+        const response = await apiClient.get("/menu/all?page=" + currentPage + "&limit=" + itemsPerPage);
+        console.log(response.data.menu);
+        setCurrentPage(response.data.currentPage);
+        setTotalPages(response.data.totalPages);
+        setMenuItems(response.data.menu);
       } catch (error) {
         console.error("Error fetching menu items:", error);
       }
     };
 
     fetchMenuItems();
-  }, []);
+  }, [currentPage]);
 
   // Memoized filtering to improve performance
   const filteredItems = useMemo(() => {
@@ -217,7 +224,7 @@ const FoodMainMenu = () => {
             <Link
               to={`/menu/details/${item._id}`}
               key={item._id}
-              className="w-full"
+              className="w-full" target="_blank"
             >
               <motion.div
                 key={item.id}
@@ -237,7 +244,7 @@ const FoodMainMenu = () => {
                 </div>
                 <div className="flex-grow">
                   <h3 className="text-sm sm:text-lg font-bold">{item.name}</h3>
-                  <p className="text-xs sm:text-sm">{item.description}</p>
+                  <p className="text-xs sm:text-sm">{item.description.substring(0,60)}</p>
                 </div>
                 <div className="text-base sm:text-xl font-bold text-black">
                   ₹{item?.sellingPrice}
@@ -247,6 +254,7 @@ const FoodMainMenu = () => {
           ))}
         </AnimatePresence>
       </motion.div>
+      <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </div>
   );
 };

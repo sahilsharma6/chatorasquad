@@ -6,6 +6,10 @@ const MenuSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    title:{
+      type: String,
+      default: "No Title",
+    },
     type: {
       type: String,
       required: true,
@@ -34,6 +38,11 @@ const MenuSchema = mongoose.Schema(
     Cuisine: {
       type: String,
       required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      default:10,
     },
     // rating: {
     //   type: Number,

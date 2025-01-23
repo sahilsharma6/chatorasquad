@@ -53,7 +53,7 @@ const OrdersPage = () => {
     }
   }, [user]);
 
-  const statusFilters = ['On the way', 'Delivered', 'Cancelled', 'Returned'];
+  const statusFilters = ['On the way', 'Delivered', 'Cancelled', 'Returned','Pending'];
   const timeFilters = ['Last 30 days', '2025', '2024', '2023', 'Older'];
 
   const toggleFilter = (category, value) => {

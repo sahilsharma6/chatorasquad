@@ -7,7 +7,7 @@ import path from "path";
 // Add Menu
 export const addMenu = async (req, res) => {
     try {
-        const { name, type, sellingPrice, discountedPrice, description, isAvailable, cuisine } = req.body;
+        const { name, type, sellingPrice, discountedPrice, description, isAvailable, cuisine,quantity,title } = req.body;
 
         // Basic validation
         if (!name || !type || !sellingPrice || !description || !cuisine) {
@@ -24,6 +24,8 @@ export const addMenu = async (req, res) => {
             images,
             isAvailable,
             Cuisine: cuisine,
+            quantity,
+            title
         });
 
         await menu.save();
@@ -37,8 +39,17 @@ export const addMenu = async (req, res) => {
 // Get All Menus
 export const getAllMenu = async (req, res) => {
     try {
-        const menu = await Menu.find();
-        res.status(200).json(menu);
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 2;
+        const skip = (page - 1) * limit;
+        const menu = await Menu.find().skip(skip).limit(limit);
+        const totalCount = await Menu.countDocuments();
+        res.status(200).json({
+            totalCount,
+            totalPages: Math.ceil(totalCount / limit),
+            currentPage: page,
+            menu,
+        });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -94,43 +105,55 @@ export const getDairyAndBeveragesMenu = async (req, res) => {
 // Update Menu
 export const updateMenu = async (req, res) => {
     try {
-        const { name, type, sellingPrice, discountedPrice, description, isAvailable, Cuisine } = req.body;
-        const images = req.files.map(file => file.path);
-
-        // Basic validation
-        if (!name || !type || !sellingPrice || !description || !Cuisine) {
-            return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
-        }
-
-        const menu = await Menu.findById(req.params.id);
-        if (!menu) {
-            return res.status(404).json({ message: "Menu not found" });
-        }
-        if (menu.images && menu.images.length > 0) {
-            menu.images.forEach(imagePath => {
-                const filePath = path.resolve(imagePath);
-                fs.unlink(filePath, (err) => {
-                    if (err) {
-                        console.error(`Error deleting file: ${filePath}`, err);
-                    }
-                });
-            });
-        }
-        menu.name = name;
-        menu.type = type;
-        menu.sellingPrice = sellingPrice;
-        menu.discountedPrice = discountedPrice;
-        menu.description = description;
-        menu.images = images;
-        menu.isAvailable = isAvailable;
-        menu.Cuisine = Cuisine;
-
-        await menu.save();
-        res.status(200).json({ message: "Menu updated successfully" });
+      const { name, type, sellingPrice, discountedPrice, description, Cuisine, oldImages,quantity,title } = req.body;
+  
+      // Uploaded new images
+      const newImages = req.files.map(file => file.path);
+  
+      // Merge old and new images
+      const updatedImages = [...(Array.isArray(oldImages) ? oldImages : [oldImages]), ...newImages];
+  
+      // Validation
+      if (!name || !type || !sellingPrice || !description || !Cuisine) {
+        return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
+      }
+  
+      const menu = await Menu.findById(req.params.id);
+      if (!menu) {
+        return res.status(404).json({ message: "Menu not found" });
+      }
+  
+      // Remove images that are not part of `oldImages`
+      if (menu.images) {
+        const imagesToRemove = menu.images.filter((img) => !updatedImages.includes(img));
+        imagesToRemove.forEach((imagePath) => {
+          const filePath = path.resolve(imagePath);
+          fs.unlink(filePath, (err) => {
+            if (err) console.error(`Error deleting file: ${filePath}`, err);
+          });
+        });
+      }
+  
+      // Update menu
+      menu.name = name;
+      menu.type = type;
+      menu.sellingPrice = sellingPrice;
+      menu.discountedPrice = discountedPrice;
+      menu.description = description;
+      menu.Cuisine = Cuisine;
+      menu.images = updatedImages;
+      menu.quantity = quantity;
+      menu. title=title
+  
+      await menu.save();
+  
+      res.status(200).json({ message: "Menu updated successfully", menu });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+      console.error("Error updating menu:", error);
+      res.status(500).json({ message: "Server error" });
     }
-};
+  };
+  
 
 // Update Menu Availability
 export const updateMenuAvailability = async (req, res) => {
@@ -149,7 +172,7 @@ export const updateMenuAvailability = async (req, res) => {
         menu.isAvailable = isAvailable;
         await menu.save();
 
-        res.status(200).json({ message: "Menu availability updated successfully" });
+        res.status(200).json({ message: "Menu availability updated successfully",updatedItem :menu});
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
@@ -246,8 +269,8 @@ export const addReview = async (req, res) => {
         const { rating, review } = req.body;
         const { id: menuId } = req.params;
 
-        if (!menuId || !rating || !review) {
-            return res.status(400).json({ message: "Menu ID, rating, and review content are required" });
+        if (!menuId || !rating ) {
+            return res.status(400).json({ message: "Menu ID, rating,  content are required" });
         }
 
         if (rating < 0 || rating > 5) {
@@ -262,7 +285,7 @@ export const addReview = async (req, res) => {
         });
 
         await setreview.save();
-        res.status(201).json({ message: "Review added successfully" });
+        res.status(200).json({ message: "Review added successfully" });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
@@ -272,9 +295,11 @@ export const addReview = async (req, res) => {
 export const updateReview = async (req, res) => {
     try {
         const { rating, review } = req.body;
+        console.log(req.body);
+        
         const { id } = req.params;
 
-        if (!id || !rating || !review) {
+        if (!id || !rating ) {
             return res.status(400).json({ message: "Review ID, rating, and review content are required" });
         }
 
@@ -344,3 +369,24 @@ export const getRating = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+export const getReview = async (req, res) => {
+    try {
+        const { menuid } = req.params;
+
+        if (!menuid) {
+            return res.status(400).json({ message: "Review ID is required" });
+        }
+
+        const review = await Reviews.findOne({ menuId: menuid, userId: req.user._id });
+
+        if (!review) {
+            return res.status(404).json({ message: "Review not found" });
+        }
+
+        res.status(200).json(review);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}

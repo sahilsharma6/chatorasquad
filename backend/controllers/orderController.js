@@ -39,7 +39,7 @@ export const payment = async (req, res) => {
       items,
       total,
       deliveryAddress,
-      orderStatus: "pending",
+      orderStatus: "Pending",
       paymentStatus: "cancelled",
       merchantTransactionId,
     });

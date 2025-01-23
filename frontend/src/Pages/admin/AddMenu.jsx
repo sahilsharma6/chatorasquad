@@ -7,6 +7,7 @@ import {toast , ToastContainer} from 'react-toastify';
 const AddMenu = () => {
   const [formData, setFormData] = useState({
     name: "",
+    title:"",
     type: "",
     cuisine: "",
     quantity: "",
@@ -91,8 +92,6 @@ const AddMenu = () => {
       {
         position: "bottom-right",
         autoClose: 2000,
-
-        
       }
     );
    
@@ -120,7 +119,7 @@ const AddMenu = () => {
       <h1 className="text-4xl text-center mb-6">Add Dish</h1>
       <form className="space-y-6" onSubmit={handelAdd}>
         {/* Dish Name*/}
-        <div className="grid lg:grid-cols-1 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Dish Name</label>
             <motion.input
@@ -136,6 +135,22 @@ const AddMenu = () => {
             {errors.name && (
               <p className="text-red-500 text-sm">{errors.name}</p>
             )}
+          </div>
+          <div>
+            <label className="block text-gray-700 mb-2">Dish Title</label>
+            <motion.input
+              whileFocus={{ scale: 1.01 }}
+              type="text"
+              className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
+              placeholder="Enter Dish Name"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+            />
+            {/* {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )} */}
           </div>
       
         </div>
