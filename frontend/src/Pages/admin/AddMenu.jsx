@@ -7,13 +7,13 @@ import {toast , ToastContainer} from 'react-toastify';
 const AddMenu = () => {
   const [formData, setFormData] = useState({
     name: "",
-    title: "",
+    title:"",
     type: "",
     cuisine: "",
     quantity: "",
-    sellingPrice: 0,
+    sellingPrice: "",
     description: "",
-    discountedPrice:0,
+    discountedPrice:"",
     images: [], 
   });
 
@@ -56,7 +56,7 @@ const AddMenu = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
-    formDataToSend.append("title", formData.title);
+
     formDataToSend.append("type", formData.type);
     formDataToSend.append("cuisine", formData.cuisine);
     formDataToSend.append("quantity", formData.quantity);
@@ -78,7 +78,7 @@ const AddMenu = () => {
    
       setFormData({
         name: "",
-        title: "",
+      
         type: "",
         cuisine: "",
         quantity: "",
@@ -92,8 +92,6 @@ const AddMenu = () => {
       {
         position: "bottom-right",
         autoClose: 2000,
-
-        
       }
     );
    
@@ -120,7 +118,7 @@ const AddMenu = () => {
     >
       <h1 className="text-4xl text-center mb-6">Add Dish</h1>
       <form className="space-y-6" onSubmit={handelAdd}>
-        {/* Dish Name and Title */}
+        {/* Dish Name*/}
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Dish Name</label>
@@ -144,16 +142,17 @@ const AddMenu = () => {
               whileFocus={{ scale: 1.01 }}
               type="text"
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder="Enter Dish Title"
+              placeholder="Enter Dish Name"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
             />
-            {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title}</p>
-            )}
+            {/* {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )} */}
           </div>
+      
         </div>
 
         {/* Dish Type and Cuisine */}
@@ -170,7 +169,7 @@ const AddMenu = () => {
               <option >Select a Value</option>
               <option>Veg</option>
               <option>Beverages </option>
-              <option>Dairyproduct </option>
+              <option>Dairy </option>
             </select>{errors.type && (
               <p className="text-red-500 text-sm">{errors.type}</p>
             )}
@@ -238,7 +237,7 @@ const AddMenu = () => {
               whileFocus={{ scale: 1.01 }}
               type="number"
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder=" ₹100"
+              placeholder="₹100"
               value={formData.discountedPrice}
               onChange={(e) =>
                 setFormData({ ...formData, discountedPrice: e.target.value })

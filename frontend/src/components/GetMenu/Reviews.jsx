@@ -22,14 +22,22 @@ const RatingBar = ({ rating, count, total }) => {
 };
 
 const RatingsAndReviews = ({ product }) => {
-  const ratings = [
-    { stars: 5, count: 1884 },
-    { stars: 4, count: 547 },
-    { stars: 3, count: 283 },
-    { stars: 2, count: 150 },
-    { stars: 1, count: 311 },
-  ];
-  const totalRatings = ratings.reduce((acc, curr) => acc + curr.count, 0);
+  // Assuming product.reviews is the array of review objects
+  const reviews = product || [];
+  
+  // Calculate the total ratings and the count for each star rating
+  const ratingsCount = [0, 0, 0, 0, 0]; // Index 0 for 1 star, index 1 for 2 stars, etc.
+  
+  reviews.forEach(review => {
+    if (review.rating >= 1 && review.rating <= 5) {
+      ratingsCount[review.rating - 1] += 1; // Increment the count for the corresponding star rating
+    }
+  });
+
+  const totalRatings = reviews.length;
+  const overallRating = totalRatings > 0 
+    ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / totalRatings).toFixed(1) 
+    : 0;
 
   return (
     <motion.div
@@ -39,6 +47,7 @@ const RatingsAndReviews = ({ product }) => {
     >
       <div className="flex justify-between items-start mb-6">
         <h2 className="text-xl font-medium">Ratings & Reviews</h2>
+        {/* Uncomment if you want to allow users to rate the dish */}
         {/* <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -52,23 +61,23 @@ const RatingsAndReviews = ({ product }) => {
         {/* Overall Rating */}
         <div className="text-center">
           <div className="flex items-center gap-2">
-            <span className="text-5xl font-medium">{product.rating || 4.1}</span>
+            <span className="text-5xl font-medium">{overallRating}</span>
             <Star className="w-8 h-8 fill-current" />
           </div>
           <p className="text-sm text-gray-500 mt-1">
             {totalRatings.toLocaleString()} Ratings &<br />
-            {product.reviews.length} Reviews
+            {totalRatings} Reviews
           </p>
         </div>
 
         {/* Rating Bars */}
         <div className="flex-grow space-y-3">
-          {ratings.map((rating) => (
+          {ratingsCount.map((count, index) => (
             <RatingBar
-              key={rating.stars}
-              rating={rating.stars}
-              count={rating.count}
-              total={Math.max(...ratings.map((r) => r.count))}
+              key={index + 1}
+              rating={index + 1}
+              count={count}
+              total={totalRatings}
             />
           ))}
         </div>
@@ -86,7 +95,7 @@ const Reviews = ({ product }) => {
     return 'bg-green-500'
   }
   return (
-    <div className="max-w-7xl mx-auto p-4 bg-gray-100 px-0">
+    <div className="max-w-full  mx-auto p-4 bg-gray-100  mt-6">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Left Column: Ratings and Reviews Summary */}
         <div className="flex-grow md:w-2/5 ">
@@ -95,7 +104,7 @@ const Reviews = ({ product }) => {
 
         {/* Right Column: Individual Reviews */}
         <div className="flex-grow md:w-3/5 flex flex-col gap-4 border rounded-lg px-3 py-3 bg-gray-50">
-          {product.reviews.map((review, index) => (
+          {product.map((review, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
@@ -107,10 +116,10 @@ const Reviews = ({ product }) => {
                 <div className={` ${getRatingColor(review.rating)} text-white px-2 rounded flex items-center gap-1`}>
                   {review.rating} <Star className="fill-white w-4 h-4" />
                 </div>
-                <h2 className="text-lg font-medium">{review.title}</h2>
+                <h2 className="text-lg font-medium"> { review.review.substring(0,10)}</h2>
               </div>
-              <p className="text-gray-600 mb-2">{review.description}</p>
-              <p className="text-gray-400 text-sm">{review.date}</p>
+              <p className="text-gray-600 mb-2">{review.review}</p>
+              <p className="text-gray-400 text-sm">{ new Date(review.updatedAt).toLocaleString() }</p>
             </motion.div>
           ))}
         </div>

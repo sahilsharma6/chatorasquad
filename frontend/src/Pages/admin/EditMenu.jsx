@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import apiClient from "../../services/apiClient";
+import { toast, ToastContainer } from "react-toastify";
 
 const EditMenu = () => {
-  const { menuId } = useParams(); // Extract menuId from the route parameters
+  const { menuId } = useParams();
   const navigate = useNavigate();
 
   const [menuData, setMenuData] = useState({
     name: "",
     title: "",
     type: "",
-    cuisine: "",
+    Cuisine: "",
     quantity: "",
     sellingPrice: 0,
     description: "",
@@ -22,7 +23,6 @@ const EditMenu = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Fetch menu details
     apiClient
       .get(`/menu/getdetails/${menuId}`)
       .then((response) => {
@@ -33,7 +33,6 @@ const EditMenu = () => {
         setError("Failed to fetch menu details");
       });
 
-    // Fetch available cuisines
     apiClient
       .get("/admin/cuisines")
       .then((response) => {
@@ -50,10 +49,20 @@ const EditMenu = () => {
   };
 
   const handleFileChange = (e) => {
-    setMenuData((prevData) => ({
-      ...prevData,
-      images: [...prevData.images, ...Array.from(e.target.files)],
-    }));
+    const files = e.target.files;
+    if (files) {
+      setMenuData((prevData) => ({
+        ...prevData,
+        images: [...prevData.images, ...Array.from(files)],
+      }));
+    }
+  };
+
+  const handleDeleteImage = (index) => {
+    setMenuData((prevData) => {
+      const newImages = prevData.images.filter((_, i) => i !== index);
+      return { ...prevData, images: newImages };
+    });
   };
 
   const handleSubmit = (e) => {
@@ -70,7 +79,14 @@ const EditMenu = () => {
     const formData = new FormData();
     Object.keys(menuData).forEach((key) => {
       if (key === "images") {
-        menuData.images.forEach((image) => formData.append("images[]", image));
+        // Include old images that are not deleted
+        menuData.images.forEach((image) => {
+          if (image instanceof File) {
+            formData.append("images", image); // New file
+          } else {
+            formData.append("oldImages", image); // Existing file path
+          }
+        });
       } else {
         formData.append(key, menuData[key]);
       }
@@ -81,13 +97,21 @@ const EditMenu = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-        navigate("/menus"); // Redirect to menu list after update
+           toast.success('Dish Edited successfully',
+              {
+                position: "top-right",
+                autoClose: 2000,
+              }
+            );
+            setTimeout(()=>  navigate("/admin/menu/view"),2000)
+       
       })
       .catch((error) => {
         console.error("Error updating menu:", error);
         setError("Failed to update menu");
       });
   };
+
 
   return (
     <motion.div
@@ -98,7 +122,7 @@ const EditMenu = () => {
       <h1 className="text-4xl text-center mb-6">Edit Menu</h1>
       {error && <p className="text-red-500 text-sm">{error}</p>}
       <form className="space-y-6" onSubmit={handleSubmit}>
-        {/* Dish Name and Title */}
+        {/* Dish Name */}
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
             <label className="block text-gray-700 mb-2">Dish Name</label>
@@ -119,12 +143,15 @@ const EditMenu = () => {
               whileFocus={{ scale: 1.01 }}
               type="text"
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              placeholder="Enter Dish Title"
-              name ="title"
+              placeholder="Enter Dish Name"
               value={menuData.title}
-              onChange={handleInputChange}
-              required
+              onChange={(e) =>
+                setMenuData({ ...menuData, title: e.target.value })
+              }
             />
+            {/* {errors.name && (
+                        <p className="text-red-500 text-sm">{errors.name}</p>
+                      )} */}
           </div>
         </div>
 
@@ -142,7 +169,7 @@ const EditMenu = () => {
               <option value="">Select a Type</option>
               <option value="Veg">Veg</option>
               <option value="Beverages">Beverages</option>
-              <option value="Dairyproduct">Dairy Product</option>
+              <option value="Dairy">Dairy</option>
             </select>
           </div>
           <div>
@@ -150,13 +177,13 @@ const EditMenu = () => {
             <select
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
               name="cuisine"
-              value={menuData.cuisine}
+              value={menuData.Cuisine} // Fixed the casing here
               onChange={handleInputChange}
               required
             >
-              <option value="">Select a cuisine</option>
+              {/* <option value={menuData.cuisine}>Select a cuisine</option> */}
               {cuisines.map((cuisine) => (
-                <option key={cuisine._id} value={cuisine.name}>
+                <option key={cuisine._id} value={cuisine.name} >
                   {cuisine.name}
                 </option>
               ))}
@@ -224,18 +251,34 @@ const EditMenu = () => {
         <div>
           <label className="block text-gray-700 mb-2">Dish Images</label>
           <div className="flex flex-wrap gap-4">
-
-          <input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-            className="flex-1 px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
+            <input
+              type="file"
+              name="files"
+              multiple
+              onChange={handleFileChange}
+              className="flex-1 px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
             />
-            {
-                menuData.images.map((val,i)=>
-               
-            <p key={i}>{val}</p> )}
-            </div>
+
+            {menuData.images.map((file, index) => (
+              <div key={index} className="flex items-center space-x-2">
+                <img
+                  src={file instanceof File ? URL.createObjectURL(file) : import.meta.env.VITE_API_URL + "/" + file}
+                  alt={`Preview ${index}`}
+                  className="w-16 h-16 object-cover rounded-lg"
+                />
+                {file instanceof File && (
+                  <p className="text-gray-600 text-sm">{file.name}</p>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleDeleteImage(index)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Submit Button */}
@@ -247,8 +290,8 @@ const EditMenu = () => {
         >
           Save Changes
         </motion.button>
-       
       </form>
+      <ToastContainer />
     </motion.div>
   );
 };

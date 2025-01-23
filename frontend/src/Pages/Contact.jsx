@@ -21,7 +21,7 @@ const Contact = () => {
       <h1 className="bg-gray-100 text-center text-3xl font-bold mt-6">
         Contact Us
       </h1>
-      <div className="min-h-screen px-16 bg-gray-100 flex items-center justify-center p-6">
+      <div className="min-h-screen lg:px-16 bg-gray-100 flex items-center justify-center p-6">
         <div className="w-full max-w-full bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden ">
           {/* Form Section */}
           <motion.div

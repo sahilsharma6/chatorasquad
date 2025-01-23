@@ -4,15 +4,16 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import apiClient from "../../services/apiClient";
+import ReviewList from "./Reviews";
 
-const GetMenuDetails = ({ dishDetails }) => {
+const GetMenuDetails = ({ dishDetails,Reviews }) => {
   const { addToCart } = useCart();
   const [pinCode, setPinCode] = useState("");
   const [deliveryMessage, setDeliveryMessage] = useState("");
   const [toastMessage, setToastMessage] = useState("");
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [Ratings, setRatings] = useState({ rating: 0 });
-  const [Reviews, setReviews] = useState([]);
+  // const [Reviews, setReviews] = useState([]);
   const { 
     name, 
     description, 
@@ -23,6 +24,7 @@ const GetMenuDetails = ({ dishDetails }) => {
     isAvailable, 
     type 
   } = dishDetails;
+
 
   const { id } = useParams();
 
@@ -37,18 +39,9 @@ const GetMenuDetails = ({ dishDetails }) => {
       }
     };
 
-    const fetchReviews = async () => {
-      try {
-        const response = await apiClient.get(`/menu/reviews/${id}`);
-        setReviews(response.data);
-      } catch (error) {
-        setReviews([]);
-        console.error("Failed to fetch reviews:", error);
-      }
-    };
-
     fetchRatings();
-    fetchReviews();
+    
+    // fetchReviews();
   }, [id]);
 
   const checkDelivery = async () => {
@@ -124,7 +117,7 @@ const GetMenuDetails = ({ dishDetails }) => {
       {/* Delivery Section */}
       <div className="mt-8">
         <h3 className="font-medium mb-3">Quick Delivery Check</h3>
-        <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg focus-within:ring-2 focus-within:ring-orange-500 transition-all duration-300">
+        <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg focus-within:ring-2 focus-within:ring-orange-500 transition-all duration-300 flex-wrap">
           <MapPin className="w-5 h-5 text-gray-400" />
           <input
             type="text"
@@ -132,7 +125,7 @@ const GetMenuDetails = ({ dishDetails }) => {
             className="bg-transparent border-none outline-none flex-1"
             value={pinCode}
             onChange={(e) => setPinCode(e.target.value)}
-          />
+          /> 
           <button 
             onClick={checkDelivery}
             className="text-orange-500 font-medium hover:text-orange-600 transition-colors duration-300"
@@ -185,11 +178,13 @@ const GetMenuDetails = ({ dishDetails }) => {
 
       {/* Action Buttons */}
       <div className="flex gap-4 mt-8 sticky">
+
         <Link
-          to={`/menu/order/${id}`}
-          className="flex-1 text-center bg-orange-500 text-white py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-orange-600 hover:shadow-lg hover:-translate-y-1"
+          to={isAvailable? '/menu/order/'+id:'/contact'}
+          className={`flex-1 text-center   text-white py-4 rounded-xl font-semibold transition-all duration-300  hover:shadow-lg hover:-translate-y-1
+            ${isAvailable?'bg-orange-500 hover:bg-orange-600' :'bg-blue-500 hover:bg-blue-600'}`}
         >
-          ORDER NOW
+        { isAvailable? "ORDER NOW" :"Notify Us" }
         </Link>
 
         <button
@@ -207,6 +202,9 @@ const GetMenuDetails = ({ dishDetails }) => {
         </div>
       )}
     </div>
+    {console.log(Reviews)
+    }
+    {/* <ReviewList product={Reviews} /> */}
     </>
   );
 };

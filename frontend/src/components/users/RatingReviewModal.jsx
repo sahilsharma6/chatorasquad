@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Star, X } from "lucide-react";
-import { useState } from "react"; 
+import { useEffect, useState } from "react"; 
 
 
-import apiClient from '../../services/apiClient';  
+import apiClient from '../../services/apiClient'; 
+import { toast, ToastContainer } from "react-toastify";
 
 export default function RatingReviewModal({
   showModal,
@@ -17,19 +18,60 @@ export default function RatingReviewModal({
   menuId 
 }) {
   const [loading, setLoading] = useState(false); 
+  const [isAdded, setIsAdded] = useState(true);
+  const [reviewId,setReviewId]=useState('');
+
+  useEffect(() => { 
+    if (menuId) {
+      const fetchReview = async () => {
+        try {
+          const response = await apiClient.get(`/menu/getreview/${menuId}`);
+          console.log(response.data);
+          if (response.status === 200) {
+            console.log(response.data);
+            
+            if(response.data.rating){
+             setIsAdded(false);
+            }
+            setReviewId(response.data._id);
+            setReview(response.data.review);
+            setRating(response.data.rating);
+          } else {
+            console.error('Failed to fetch review or rating');
+          }
+        } catch (error) {
+          console.error('Error fetching review or rating', error);
+        }
+      };
+      fetchReview();
+    }
+  },[menuId])
 
   const handelRatingReview = async () => {
     if (rating && review) {
       setLoading(true);
       try {
       
-        const response = await apiClient.post(`/menu/addreview/${menuId}`, { review, rating });
-
-        if (response.status === 201) {
+        const response = 
+         isAdded? await apiClient.post(`/menu/addreview/${menuId}`, { review, rating })
+        // console.log(menuId)
+        : await apiClient.put(`/menu/updatereview/${reviewId}`, { review, rating })
+      
+        
+        if (response.status === 200) {
           setShowModal(false); 
+          const msg= isAdded?"Review added successfully" : "Review updated successfully"
+           toast.success(msg,
+             {
+               position: "top-right",
+               autoClose: 2000,
+             }
+           );
         } else {
           console.error('Failed to submit review or rating');
         }
+        console.log(response.data);
+        
       } catch (error) {
         console.error('Error submitting review or rating', error);
       } finally {
@@ -41,6 +83,7 @@ export default function RatingReviewModal({
   };
 
   return (
+    <>
     <AnimatePresence>
       {showModal && (
         <motion.div
@@ -106,5 +149,6 @@ export default function RatingReviewModal({
         </motion.div>
       )}
     </AnimatePresence>
+      <ToastContainer /> </>
   );
 }

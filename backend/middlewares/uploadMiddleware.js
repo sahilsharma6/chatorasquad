@@ -3,6 +3,8 @@ import path from 'path';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        console.log('files : ',file);
+        
         cb(null, './uploads/');
     },
     filename: (req, file, cb) => {
@@ -12,6 +14,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
-const uploadMiddleware = upload.array('images', 5);
+const uploadMiddleware = upload.array('images' , 5);
 export default uploadMiddleware;
 

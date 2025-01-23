@@ -12,12 +12,16 @@ const OrderDetails = () => {
   const [rating, setRating] = useState(0);
   const [hoveredStar, setHoveredStar] = useState(0);
   const [review, setReview] = useState('');
+  const [itemId,setItemId]=useState('');
+  const [getReview,setGetReview]=useState('');
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
         const response = await apiClient.get(`/user/orderdetails/${id}`);
         const data = response.data.order;
+        console.log(response.data);
+        
 
         if (data.items && Array.isArray(data.items) && data.items.length > 0) {
           setOrderData(data); 
@@ -45,6 +49,8 @@ const OrderDetails = () => {
         shippingData={shippingData}  
         setShowModal={setShowModal}
         review={review}
+        setItemId={setItemId}
+        itemId={itemId}
       />
 
       {/* Rating Modal */}
@@ -57,7 +63,7 @@ const OrderDetails = () => {
         setShowModal={setShowModal}
         showModal={showModal}
         rating={rating}
-        menuId={id}
+        menuId={itemId}
       />
     </div>
   );

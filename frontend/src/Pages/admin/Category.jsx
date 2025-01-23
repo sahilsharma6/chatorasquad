@@ -67,11 +67,12 @@ const Category = () => {
       const newCategory = {
         name: editingCategory.name,
       };
-      setCategories([...categories, newCategory]);
+    
 
       try {
         const addedCategory = await addCategoryAPI(newCategory);
         toast.success("Category added successfully!");
+        setCategories([...categories, addedCategory]);
       } catch (error) {
         console.error("Error adding category:", error);
         alert("Failed to add category");
@@ -94,7 +95,6 @@ const Category = () => {
     }
   };
 
-  // API Call for Adding Category
   const addCategoryAPI = async (category) => {
     try {
       const response = await apiClient.post("/blog/addcategory", category);

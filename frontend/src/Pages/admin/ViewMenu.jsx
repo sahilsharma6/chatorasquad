@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import apiClient from "../../services/apiClient";
 import { useNavigate } from "react-router-dom";  
 import { toast, ToastContainer } from 'react-toastify';
+import { Pagination } from "../../components/Pagination";
 
 const ViewMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -13,26 +14,34 @@ const ViewMenu = () => {
   const [dateFilter, setDateFilter] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 2; // Set the number of items per page
   const navigate = useNavigate();  
 
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await apiClient.get("/menu/all");
-        setMenuItems(response.data);
+        const response = await apiClient.get(`/menu/all?page=${currentPage}&limit=${itemsPerPage}`);
+        setMenuItems(response.data.menu); // Adjust based on your API response structure
+        setTotalPages(response.data.totalPages); // Adjust based on your API response structure
       } catch (error) {
         console.error("Error fetching menu items:", error);
       }
     };
     fetchMenuItems();
-  }, []);
+  }, [currentPage]);
 
   const handleStockToggle = (index) => {
     const updatedItem = { ...menuItems[index], isAvailable: !menuItems[index].isAvailable };
-    apiClient.put(`/admin/menu/updatestock/${menuItems[index]._id}`, updatedItem).then((response) => {
+    apiClient.put(`/menu/updateAvailability/${menuItems[index]._id}`, updatedItem).then((response) => {
       setMenuItems((prevItems) =>
-        prevItems.map((item, i) => (i === index ? response.data : item))
+        prevItems.map((item, i) => (i === index ? response.data.updatedItem : item))
       );
+      toast.success('Stock status updated successfully', {
+        position: "top-right",
+        autoClose: 2000,
+      });
     }).catch((error) => {
       console.error("Error updating stock status:", error);
     });
@@ -81,6 +90,19 @@ const ViewMenu = () => {
     return matchesSearch && matchesStock && matchesDate;
   });
 
+  // Pagination controls
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
   return (
     <div className="p-5 w-full">
       {/* Filters */}
@@ -110,9 +132,10 @@ const ViewMenu = () => {
       </div>
 
       {/* Menu Items */}
-      <div className="flex flex-wrap gap-6 overflow-auto">
+      <div className="flex flex-wrap gap-6 overflow-hidden">
         {filteredItems.map((item, index) => (
           <MenuCard
+            id={item._id}
             key={index}
             title={item.name}
             price={item.sellingPrice}
@@ -126,6 +149,9 @@ const ViewMenu = () => {
           />
         ))}
       </div>
+
+      {/* Pagination Controls */}
+     <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={totalPages} />
 
       {/* Confirmation Modal */}
       {showModal && (
@@ -157,4 +183,4 @@ const ViewMenu = () => {
   );
 };
 
-export default ViewMenu;
+export default ViewMenu

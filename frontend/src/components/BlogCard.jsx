@@ -35,7 +35,7 @@ const BlogCard = ({  _id, title, description, date, author, views, category, ima
                 />
                 <div className="absolute top-4 left-4 flex gap-2">
                     <span className="px-3 py-1 bg-orange-500 text-white rounded-full text-sm">{category}</span>
-                    <span className="px-3 py-1 bg-orange-500 text-white rounded-full text-sm">ChatroaSquad</span>
+                    
                 </div>
             </div>
 

@@ -41,6 +41,7 @@ const FoodMenuSwiper = ({param}) => {
   };
 
   return (
+    // <div className="max-w-full mx-auto lg:px-20 py-8 overflow-hidden">
     <div className="max-w-7xl mx-auto px-20 py-8 overflow-hidden">
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
@@ -76,7 +77,7 @@ const FoodMenuSwiper = ({param}) => {
           animate="animate"
         >
           {[...foodItems, ...foodItems].map((item, index) => (
-            <Link to={`/menu/details/${item._id}`} key={index}>
+            <Link to={`/menu/details/${item._id}`} key={index} target="_blank">
               <div
                 key={index}
                 className="w-72 bg-yellow-300 rounded-lg shadow-xl flex-shrink-0 p-4 h-96"

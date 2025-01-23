@@ -63,7 +63,7 @@ const DashboardLayout = () => {
             <Route path='blogs/view' element={<Blogs role={'admin'} />} />
             <Route path='blogs/add' element={<AddBlogPage />} />
             <Route path='blogs/categories' element={<Category />} />
-            <Route path='blogs/edit/:blogid' element={<EditBlog />} />
+            <Route path='blogs/edit/:blogId' element={<EditBlog />} />
           </Routes>
         </main>
       </div>
