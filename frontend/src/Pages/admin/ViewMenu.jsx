@@ -103,6 +103,7 @@ const ViewMenu = () => {
     }
   };
 
+  // const ImageFilter=
   return (
     <div className="p-5 w-full">
       {/* Filters */}
@@ -141,7 +142,7 @@ const ViewMenu = () => {
             price={item.sellingPrice}
             rating={item.rating}
             inStock={item.isAvailable}
-            images={item.images}
+            images={ item.images.filter(img=> img !==null && img !=='null')}
             description={item.description}
             onStockToggle={() => handleStockToggle(index)}
             onDelete={() => openDeleteModal(index)} 

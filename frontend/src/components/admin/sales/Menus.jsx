@@ -43,16 +43,18 @@ export default function Menus({categories,selectedCategory,setIsSidebarOpen,filt
             transition={{ duration: 0.5 }}
           >
             {filteredMenuItems.map((item, index) => (
+              
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="flex items-center justify-between p-4 border rounded-xl hover:shadow-md transition-shadow flex-wrap"
-              >
+              > {console.log(item)
+              }
                 <div className="flex gap-4 items-center flex-wrap">
                   <img
-                    src={ import.meta.env.VITE_API_URL + "/" + item.images[0]}
+                    src={ item.image}
                     alt={item.name}
                     className="w-20 h-20 rounded-lg object-cover"
                   />

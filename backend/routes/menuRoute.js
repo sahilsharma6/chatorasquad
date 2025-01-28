@@ -1,7 +1,7 @@
 import express from 'express';
 import authMiddleware from  '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
-import {addMenu,addReview,deleteMenu,deleteReview,getAllMenu,getAvailableMenu,getDairyAndBeveragesMenu,getMenuDetails,getRating,getReview,getReviws,getTrendingMenu,updateMenu,updateMenuAvailability, updateReview} from '../controllers/menuController.js';
+import {addMenu,addReview,deleteMenu,deleteReview,getAllMenu,getAvailableMenu,getDairyAndBeveragesMenu,getMenuDetails,getRating,getReview,getReviws,getTrendingMenu,updateMenu,updateMenuAvailability, updatePrice, updateReview} from '../controllers/menuController.js';
 import { checkdeliveryaddress } from '../controllers/orderController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
 const router = express.Router();
@@ -16,6 +16,7 @@ router.delete('/delete/:id',authMiddleware,checkAdmin,deleteMenu);
 router.get('/toprated',getTrendingMenu);
 router.get('/dairyandbeverages',getDairyAndBeveragesMenu);
 router.get('/getavailable',getAvailableMenu);
+router.put('/updateprice/:id',authMiddleware,checkAdmin,updatePrice)
 
 router.post('/checkdelivery',checkdeliveryaddress); // checks if delivery is available at the given address
 

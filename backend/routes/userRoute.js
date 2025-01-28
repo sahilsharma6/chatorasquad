@@ -27,6 +27,7 @@ router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is addre
 router.get('/getfilteredorders/:id',authMiddleware,getOrdersByFilter); // id is user id
 router.get('/getallorders/:id',authMiddleware,getOrders); // id is user id
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
+
 router.post('/pay',authMiddleware,payment); 
 
 router.get('/getcart',authMiddleware,getCart) ; 

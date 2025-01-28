@@ -19,9 +19,21 @@ export const getUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    // Step 1: Fetch users excluding the password field
+    const user = await User.find({}, { password: 0 });
+
+    // Step 2: Fetch addresses for each user
+    const users = await Promise.all(user.map(async (user) => {
+      const addresses = await Address.find({ userid: user._id }, { userId: 0 }); // Exclude userId from the address response
+      return {
+        ...user.toObject(), // Convert user document to plain object
+        addresses 
+      };
+    }));
+
     res.status(200).json(users);
   } catch (error) {
+    console.error(error); // Log the error for debugging
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -215,4 +227,16 @@ export const getAddresses = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }
+  
 };
+
+export const DeleteUser =async()=>{
+  try {
+    const email=req.body.email;
+    const isDeleted=await User.findOneAndDelete({email})
+    res.status(200).json(isDeleted);
+
+  } catch (error) {
+    
+  }
+}

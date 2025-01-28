@@ -1,66 +1,89 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import DatePicker from "react-datepicker";
-import LineChartComponent from "./LineChartComponent"; 
+import LineChartComponent from "./LineChartComponent";
 import OrderBarChart from "./BarChart";
+import apiClient from "../../../services/apiClient";
 
-const ordersData = [
-  { date: "2024-01-15", orders: 120, revenue: 900 },
-  { date: "2024-02-10", orders: 200, revenue: 300 },
-  { date: "2024-03-05", orders: 150, revenue: 460 },
-  { date: "2024-04-20", orders: 300, revenue: 200 },
-  { date: "2024-05-18", orders: 400, revenue: 409 },
-  { date: "2024-06-22", orders: 220, revenue: 420 },
-  { date: "2024-07-13", orders: 180, revenue: 700 },
-  { date: "2024-12-05", orders: 350, revenue: 940 },
-];
+const convertOrdersData = (orders) => {
+  const result = {};
+
+  orders.forEach(order => {
+    const date = new Date(order.date).toISOString().split("T")[0]; // Get the date in YYYY-MM-DD format
+    const total = order.total;
+
+    if (!result[date]) {
+      result[date] = { orders: 0, revenue: 0 };
+    }
+
+    result[date].orders += 1; // Increment order count
+    result[date].revenue += total; // Add to revenue
+  });
+
+  return Object.keys(result).map(date => ({
+    date,
+    orders: result[date].orders,
+    revenue: result[date].revenue
+  }));
+};
 
 const OrderCharts = () => {
-  const [filteredData, setFilteredData] = useState(ordersData);
-  const [filterType, setFilterType] = useState("This Year");
-  const [customRange, setCustomRange] = useState({ start: "", end: "" });
+  const today = new Date();
+  const [filteredData, setFilteredData] = useState([]);
+  const [filterType, setFilterType] = useState("This Month");
+  const [customRange, setCustomRange] = useState({
+    start: new Date(today.getFullYear(), today.getMonth(), 1),
+    end: new Date(today.getFullYear(), today.getMonth() + 1, 0),
+  });
+
+  const fetchOrderData = async (start, end) => {
+    try {
+      const res = await apiClient.get(
+        `/admin/orders?startDate=${start.toISOString()}&endDate=${end.toISOString()}`
+      );
+      const orders = convertOrdersData(res.data.orders);
+      setFilteredData(orders);
+    } catch (error) {
+      console.error("Failed to fetch orders:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch data whenever customRange or filterType changes
+    fetchOrderData(customRange.start, customRange.end);
+  }, [customRange]);
 
   const applyFilter = (type) => {
-    const now = new Date();
     setFilterType(type);
+    const now = new Date();
+    let start, end;
 
     switch (type) {
       case "This Month": {
         const currentMonth = now.getMonth();
         const currentYear = now.getFullYear();
-        setFilteredData(
-          ordersData.filter((d) => {
-            const date = new Date(d.date);
-            return date.getMonth() === currentMonth && date.getFullYear() === currentYear;
-          })
-        );
+        start = new Date(currentYear, currentMonth, 1);
+        end = new Date(currentYear, currentMonth + 1, 0);
         break;
       }
       case "This Year": {
         const currentYear = now.getFullYear();
-        setFilteredData(
-          ordersData.filter((d) => {
-            const date = new Date(d.date);
-            return date.getFullYear() === currentYear;
-          })
-        );
+        start = new Date(currentYear, 0, 1);
+        end = new Date(currentYear, 11, 31);
         break;
       }
       default:
-        setFilteredData(ordersData);
+        start = customRange.start;
+        end = customRange.end;
     }
+
+    setCustomRange({ start, end });
   };
 
   const applyCustomRange = () => {
     if (customRange.start && customRange.end) {
-      const startDate = new Date(customRange.start);
-      const endDate = new Date(customRange.end);
-      setFilteredData(
-        ordersData.filter((d) => {
-          const date = new Date(d.date);
-          return date >= startDate && date <= endDate;
-        })
-      );
+      setFilterType("Custom Range");
+      // Custom range is already updated in state; no further action needed
     }
   };
 
@@ -72,7 +95,9 @@ const OrderCharts = () => {
       <div className="flex flex-wrap justify-center gap-4 mb-6">
         <button
           className={`px-4 py-2 text-sm font-medium rounded-lg ${
-            filterType === "This Month" ? "bg-orange-500 text-white" : "bg-gray-200"
+            filterType === "This Month"
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200"
           }`}
           onClick={() => applyFilter("This Month")}
         >
@@ -80,7 +105,9 @@ const OrderCharts = () => {
         </button>
         <button
           className={`px-4 py-2 text-sm font-medium rounded-lg ${
-            filterType === "This Year" ? "bg-orange-500 text-white" : "bg-gray-200"
+            filterType === "This Year"
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200"
           }`}
           onClick={() => applyFilter("This Year")}
         >
@@ -88,7 +115,9 @@ const OrderCharts = () => {
         </button>
         <button
           className={`px-4 py-2 text-sm font-medium rounded-lg ${
-            filterType === "Custom Range" ? "bg-orange-500 text-white" : "bg-gray-200"
+            filterType === "Custom Range"
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200"
           }`}
           onClick={() => setFilterType("Custom Range")}
         >
@@ -108,7 +137,9 @@ const OrderCharts = () => {
             <label className="block text-sm font-medium mb-1">Start Date</label>
             <DatePicker
               selected={customRange.start}
-              onChange={(date) => setCustomRange({ ...customRange, start: date })}
+              onChange={(date) =>
+                setCustomRange({ ...customRange, start: date })
+              }
               className="border rounded-lg px-4 py-2 w-full"
               placeholderText="Select start date"
             />
@@ -117,7 +148,9 @@ const OrderCharts = () => {
             <label className="block text-sm font-medium mb-1">End Date</label>
             <DatePicker
               selected={customRange.end}
-              onChange={(date) => setCustomRange({ ...customRange, end: date })}
+              onChange={(date) =>
+                setCustomRange({ ...customRange, end: date })
+              }
               className="border rounded-lg px-4 py-2 w-full"
               placeholderText="Select end date"
             />
@@ -135,7 +168,9 @@ const OrderCharts = () => {
       <OrderBarChart filteredData={filteredData} />
 
       {/* Linear Chart for Orders vs Revenue */}
-      <h2 className="text-xl font-bold text-center mt-8 mb-4">Orders vs Revenue By Dates</h2>
+      <h2 className="text-xl font-bold text-center mt-8 mb-4">
+        Orders vs Revenue By Dates
+      </h2>
       <LineChartComponent data={filteredData} />
     </div>
   );

@@ -86,7 +86,7 @@ const FoodMenuSwiper = ({param}) => {
                   <div className="w-full h-48 rounded-full overflow-hidden mb-4">
                     <img
                       src={
-                        item.image ||
+                       import.meta.env.VITE_API_URL+'/'+ item.images[0] ||
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg4HQZUwt86vrz_zqFyfLKsIkV0ZkfQoCooA&s"
                       }
                       alt={item.name}

@@ -1,52 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import OrderBarChart from "../../components/admin/Inventory/OrderBarChart";
 import PaymentRadarChart from "../../components/admin/Inventory/PaymentRadarChart";
-
-const data = [
-  {
-    date: "2024-12-20",
-    orderStatus: {
-      "Order Returned": 2,
-      "Order Confirmed": 5,
-      "Order Dispatched": 4,
-      "Order Delivered": 8,
-      "Order Cancelled": 1,
-    },
-  },
-  {
-    date: "2024-12-21",
-    orderStatus: {
-      "Order Returned": 1,
-      "Order Confirmed": 6,
-      "Order Dispatched": 3,
-      "Order Delivered": 9,
-      "Order Cancelled": 2,
-    },
-  },
-  {
-    date: "2024-12-22",
-    orderStatus: {
-      "Order Returned": 3,
-      "Order Confirmed": 7,
-      "Order Dispatched": 5,
-      "Order Delivered": 10,
-      "Order Cancelled": 1,
-    },
-  },
-];
-
-const transformedData = data.map((entry) => ({
-  date: entry.date,
-  ...entry.orderStatus,
-}));
+import apiClient from "../../services/apiClient";
 
 export default function Inventory() {
+  const [orderDetails,setOrderDetails]=useState([])
+  useEffect(() => {
+    async function fetchOrder() {
+      try {
+        const res = await apiClient.get('/admin/orders');
+        console.log(res.data);
+        if(res.data){
+        //  const transData= transformOrders(res.data.orders);
+         console.log(res.data.orders);
+         setOrderDetails(res.data.orders)
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    }
+  
+    fetchOrder();
+  }, []);
+  
+   console.log(orderDetails);
    
     return (
       <div className="flex flex-wrap justify-center" >
-        <OrderBarChart transformedData={transformedData} />
-        <PaymentRadarChart />
+        <OrderBarChart transformedDt={orderDetails} />
+        <PaymentRadarChart transformData={orderDetails} />
       </div>
   );
 }

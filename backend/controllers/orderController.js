@@ -10,6 +10,7 @@ import fs from "fs";
 import path from "path";
 import Address from "../models/Address.js";
 import Cart from "../models/Cart.js";
+import Reviews from "../models/Reviews.js";
 
 export const payment = async (req, res) => {
   try {
@@ -502,3 +503,110 @@ export const checkdeliveryaddress = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const Orders=async (req,res)=>{
+  try {
+    // Get page and limit from query parameters, with defaults
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit) || Infinity; // Default to limit of 10
+    console.log(limit);
+    
+    const skip = (page - 1) * limit; // Calculate how many records to skip
+  
+    // Get startDate and endDate from query parameters
+    const startDate = req.query.startDate ? new Date(req.query.startDate) : null;
+    const endDate = req.query.endDate ? new Date(req.query.endDate) : null;
+  
+    // Build the query object
+    const query = {};
+    if (startDate) {
+      query.createdAt = { $gte: startDate }; // Greater than or equal to startDate
+    }
+    if (endDate) {
+      query.createdAt = { ...query.createdAt, $lte: endDate }; // Less than or equal to endDate
+    }
+  
+    // Fetch orders with pagination and date filtering
+    const orders = await Order.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("userId", "firstName lastName email phoneNo")
+      .populate("deliveryAddress", "zipCode location");
+      console.log(orders);
+      
+  
+    // Get the total count of orders for pagination info
+    const totalOrders = await Order.countDocuments(query);
+  
+    return res.status(200).json({
+      orders,
+      totalOrders,
+      totalPages: Math.ceil(totalOrders / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+
+}
+
+export const GetAllReviews =async (req,res)=>{
+  try {
+    const {
+      search = '',
+      startDate,
+      endDate,
+      sort = 'recent', // 'highest', 'lowest', or 'recent'
+      page = 1,
+      limit = 10
+  } = req.query;
+
+  // Build the query object
+  const query = {
+      review: { $regex: search, $options: 'i' } 
+  };
+
+  // Add date range filter if provided
+  if (startDate || endDate) {
+      query.createdAt = {};
+      if (startDate) {
+          query.createdAt.$gte = new Date(startDate);
+      }
+      if (endDate) {
+          query.createdAt.$lte = new Date(endDate);
+      }
+  }
+
+  // Determine sorting
+  let sortOption;
+  if (sort === 'highest') {
+      sortOption = { rating: -1 }; // Sort by highest rating
+  } else if (sort === 'lowest') {
+      sortOption = { rating: 1 }; // Sort by lowest rating
+  } else {
+      sortOption = { createdAt: -1 }; // Sort by most recent
+  }
+
+  // Pagination
+  const reviews = await Reviews.find(query)
+      .sort(sortOption)
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .populate('menuId', 'name description images type') // Populate menuId with name field
+      .populate('userId', 'firstName lastName '); // Populate userId with username field
+
+  // Get total count for pagination
+  const totalReviews = await Reviews.countDocuments(query);
+
+  res.status(200).json({
+      success: true,
+      data: reviews,
+      total: totalReviews,
+      page: Number(page),
+      totalPages: Math.ceil(totalReviews / limit)
+  });
+  } catch (error) {
+    
+  }
+}
