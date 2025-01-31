@@ -26,6 +26,8 @@ const CustomerList = () => {
       try {
         const response = await apiClient.get('/admin/allusers');
         setCustomers(response.data);
+        console.log(response.data);
+        
       } catch (error) {
         console.error('Error fetching customers:', error);
         toast.error('Failed to fetch customers.');

@@ -97,14 +97,14 @@ const EditMenu = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then(() => {
-           toast.success('Dish Edited successfully',
-              {
-                position: "top-right",
-                autoClose: 2000,
-              }
-            );
-            setTimeout(()=>  navigate("/admin/menu/view"),2000)
-       
+        toast.success('Dish Edited successfully',
+          {
+            position: "top-right",
+            autoClose: 2000,
+          }
+        );
+        setTimeout(() => navigate("/admin/menu/view"), 2000)
+
       })
       .catch((error) => {
         console.error("Error updating menu:", error);
@@ -258,25 +258,28 @@ const EditMenu = () => {
               onChange={handleFileChange}
               className="flex-1 px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
             />
-
+            {console.log(menuData)
+            }
             {menuData.images.map((file, index) => (
-              <div key={index} className="flex items-center space-x-2">
-                <img
-                  src={file instanceof File ? URL.createObjectURL(file) : import.meta.env.VITE_API_URL + "/" + file}
-                  alt={`Preview ${index}`}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-                {file instanceof File && (
-                  <p className="text-gray-600 text-sm">{file.name}</p>
-                )}
-                <button
-                  type="button"
-                  onClick={() => handleDeleteImage(index)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Delete
-                </button>
-              </div>
+              file && file !== 'null' ? ( // Check if file is truthy and not the string 'null'
+                <div key={index} className="flex items-center space-x-2">
+                  <img
+                    src={file instanceof File ? URL.createObjectURL(file) : `${import.meta.env.VITE_API_URL}/${file}`}
+                    alt={`Preview ${index}`}
+                    className="w-16 h-16 object-cover rounded-lg"
+                  />
+                  {file instanceof File && (
+                    <p className="text-gray-600 text-sm">{file.name}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteImage(index)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ) : null
             ))}
           </div>
         </div>

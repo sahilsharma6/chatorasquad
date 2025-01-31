@@ -24,8 +24,8 @@ export default function TrendingMenus ({trendingItems}){
                 className="flex gap-3 items-center"
               >
                 <div className="relative">
-                  <img
-                    src={ import.meta.env.VITE_API_URL + "/" + item.images[0]}
+                  <img  
+                    src={  item.image}
                     alt={item.name}
                     className="w-16 h-16 rounded-lg object-cover"
                   />
@@ -36,7 +36,7 @@ export default function TrendingMenus ({trendingItems}){
                 <div className="flex-1">
                   <h3 className="font-medium text-sm">{item.name}</h3>
                   <div className="flex justify-between items-center mt-1">
-                    <span className="font-bold">${item.price}</span>
+                    <span className="font-bold">	₹{item.price}</span>
                     <span className="text-gray-500 text-sm">Order {item.orderRate}</span>
                   </div>
                 </div>

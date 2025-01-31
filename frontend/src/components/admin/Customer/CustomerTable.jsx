@@ -1,7 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp, Edit, Trash2 } from "lucide-react";
+import DeleteUserModal from "./DeleteUserModal";
+import { useState } from "react";
 
 export default function CustomerTable({setSelectedCustomer,setShowModal,sortConfig,sortData,currentData}){
+  const [isOpenDelete, setIsOpenDelete] = useState(false);
     
     return (
         <div className="hidden md:block overflow-x-auto bg-white rounded-lg shadow-sm">
@@ -59,7 +62,7 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
             <AnimatePresence>
               {currentData.map((customer) => (
                 <motion.tr
-                  key={customer.id}
+                  key={customer._id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -90,6 +93,7 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
                       <button className="text-red-500  hover:text-red-700 hover:bg-red-200 transition-all delay-100"  onClick={(event) => {
                     event.stopPropagation(); 
                     console.log('Delete action for customer:', customer);
+                    setIsOpenDelete({open:true,deleteEmail:customer.email})
                   }} >
                         <Trash2 size={26} />
                       </button>
@@ -100,6 +104,7 @@ export default function CustomerTable({setSelectedCustomer,setShowModal,sortConf
             </AnimatePresence>
           </tbody>
         </table>
+              <DeleteUserModal isOpen={isOpenDelete} setIsOpen={setIsOpenDelete} />
       </div>
     )
 }

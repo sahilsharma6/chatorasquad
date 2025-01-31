@@ -12,24 +12,62 @@ import {
 } from "recharts";
 import { motion } from "framer-motion";
 
-const PaymentRadarChart = () => {
-  const rawData = [
-    {
-      date: "2024-12-20",
-      paymentStatus: { Pending: 10, Paid: 50, Failed: 5 },
-    },
-    {
-      date: "2024-12-21",
-      paymentStatus: { Pending: 20, Paid: 30, Failed: 10 },
-    },
-    {
-      date: "2024-12-22",
-      paymentStatus: { Pending: 15, Paid: 40, Failed: 8 },
-    },
-  ];
+function transformOrders(orders) {
+  const result = {};
 
-  const [dateRange, setDateRange] = useState([new Date("2024-12-10"), new Date("2024-12-30")]);
+  orders.forEach(order => {
+    // Extract the date in YYYY-MM-DD format
+    const date = new Date(order.date).toISOString().split('T')[0];
+    const paymentStatus = order.paymentStatus;
+
+    // Initialize the result object for the date if it doesn't exist
+    if (!result[date]) {
+      result[date] = {
+        date: date,
+        paymentStatus: {
+          Pending: 0,
+          Paid: 0,
+          Failed: 0
+        }
+      };
+    }
+
+    // Increment the count based on the payment status
+    if (paymentStatus === 'completed') {
+      result[date].paymentStatus.Paid++;
+    } else if (paymentStatus === 'cancelled') {
+      result[date].paymentStatus.Failed++;
+    } else {
+      result[date].paymentStatus.Pending++; 
+    }
+  });
+
+  // Convert the result object into an array
+  return Object.values(result);
+}
+function getCurrentMonthStartAndEnd() {
+  const date = new Date();
+
+  // Start date: First day of the current month
+  const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  const startFormatted = startDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  // End date: Last day of the current month
+  const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const endFormatted = endDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  return {
+    start: startFormatted,
+    end: endFormatted
+  };
+}
+const getDate=getCurrentMonthStartAndEnd()
+const PaymentRadarChart = ({transformData}) => {
+  const rawData = transformOrders(transformData)
+
+  const [dateRange, setDateRange] = useState([new Date(getDate.start), new Date(getDate.end)]);
   const [startDate, endDate] = dateRange;
+console.log(rawData);
 
   const filteredData = rawData
     .filter((entry) => {

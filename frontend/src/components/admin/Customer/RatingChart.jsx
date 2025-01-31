@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 const RatingChart = ({ reviews }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [filter, setFilter] = useState('today');
+    const [filter, setFilter] = useState('month');
 
     useEffect(() => {
         const today = new Date();

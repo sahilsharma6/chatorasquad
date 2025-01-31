@@ -2,12 +2,67 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { Bar, BarChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+function getCurrentMonthStartAndEnd() {
+  const date = new Date();
 
+  // Start date: First day of the current month
+  const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  const startFormatted = startDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
 
-export default function OrderBarChart({transformedData}) {
-    const [startDate, setStartDate] = useState(new Date("2024-12-20"));
-    const [endDate, setEndDate] = useState(new Date("2024-12-22"));
-  
+  // End date: Last day of the current month
+  const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const endFormatted = endDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+  return {
+    start: startFormatted,
+    end: endFormatted
+  };
+}
+
+const currentMonthDates = getCurrentMonthStartAndEnd();
+function transformOrders(orders) {
+  const result = {};
+
+  orders?.forEach(order => {
+    const date = new Date(order.date).toISOString().split('T')[0]; // Extract date in YYYY-MM-DD format
+    const status = order.orderStatus;
+
+    // Initialize the date object if it doesn't exist
+    if (!result[date]) {
+      result[date] = {
+        date: date,
+        'Order Cancelled': 0,
+        'Order Confirmed': 0,
+        'Order Delivered': 0,
+        'Order "completed"': 0,
+        'Order Returned': 0,
+      };
+    }
+
+    // Increment the count for the respective status
+    if (status === 'Cancel') {
+      result[date]['Order Cancelled']++;
+    } else if (status === 'Confirm') {
+      result[date]['Order Confirmed']++;
+    } else if (status === 'Delivered') {
+      result[date]['Order Delivered']++;
+    } else if (status === 'Dispatched') {
+      result[date]['Order Dispatched']++;
+    } else if (status === 'Returned') {
+      result[date]['Order Returned']++;
+    }
+  });
+
+  // Convert the result object into an array
+  return Object.values(result);
+}
+
+export default function OrderBarChart({transformedDt}) {
+    const [startDate, setStartDate] = useState(new Date(currentMonthDates.start));
+    const [endDate, setEndDate] = useState(new Date(currentMonthDates.end));
+    // console.log(transformedDt);
+    
+  const transformedData= transformOrders(transformedDt)
     const filteredData = transformedData.filter(
       (entry) =>
         new Date(entry.date) >= new Date(startDate) && new Date(entry.date) <= new Date(endDate)

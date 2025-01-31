@@ -16,7 +16,7 @@ const ReviewCard = ({ review, animate = true }) => {
         className="bg-white rounded-lg shadow-lg p-4 mb-4 w-96 flex-grow"
       >
         <div className="flex items-start gap-4 flex-wrap h-auto">
-          <img src={review.img} alt="Food" className="w-20 h-20 rounded-lg object-cover" />
+          <img src={import.meta.env.VITE_API_URL + "/" + review.img} alt="Food" className="w-20 h-20 rounded-lg object-cover" />
           <div className="flex-1">
             <h3 className="text-lg font-semibold">{review.dish}</h3>
             <p className="text-sm text-gray-600">{review.restaurant}</p>
@@ -27,7 +27,7 @@ const ReviewCard = ({ review, animate = true }) => {
         <div className="mt-4 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg p-4 py-6 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <img src={review.reviewer.img} alt={review.reviewer.name} className="w-10 h-10 rounded-full" />
+              <img src={ import.meta.env.VITE_API_URL + "/" +review.reviewer.img} alt={review.reviewer.name} className="w-10 h-10 rounded-full" />
               <div>
                 <p className="font-semibold">{review.reviewer.name}</p>
                 <p className="text-sm opacity-80">{review.reviewer.role}</p>

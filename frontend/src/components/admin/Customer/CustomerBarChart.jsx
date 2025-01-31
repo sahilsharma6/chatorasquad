@@ -56,7 +56,7 @@ const CustomerAreaChart = ({ customers }) => {
     const data = useMemo(() => {
         const counts = {};
         filteredCustomers.forEach(customer => {
-            const createdDate = new Date(customer.created);
+            const createdDate = new Date(customer.createdAt);
             const dateKey = createdDate.toLocaleDateString(); // Group by date
 
             counts[dateKey] = (counts[dateKey] || 0) + 1;

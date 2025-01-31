@@ -5,8 +5,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const SparklineChart = ({ data }) => {
-  const [dateRange, setDateRange] = useState([null, null]);
+  const today = new Date();
+  const [dateRange, setDateRange] = useState([new Date(today.getFullYear(), today.getMonth(), 1),  new Date(today.getFullYear(), today.getMonth() + 1, 0)]);
   const [filteredData, setFilteredData] = useState(data);
+console.log(dateRange);
 
   const handleDateChange = (range) => {
     setDateRange(range);
@@ -17,6 +19,8 @@ const SparklineChart = ({ data }) => {
 
       const updatedData = data.filter((item) => {
         const itemDate = new Date(item.date).getTime();
+        // console.log(range);
+        
         return itemDate >= start && itemDate <= end;
       });
 

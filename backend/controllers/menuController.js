@@ -81,7 +81,7 @@ export const getAvailableMenu = async (req, res) => {
 // Get Trending Menus
 export const getTrendingMenu = async (req, res) => {
     try {
-        const menu = await Menu.find().sort({ rating: -1 }).limit(5);
+        const menu = await Menu.find().sort({ rating: -1 }).limit(10);
         res.status(200).json(menu);
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
@@ -105,49 +105,60 @@ export const getDairyAndBeveragesMenu = async (req, res) => {
 // Update Menu
 export const updateMenu = async (req, res) => {
     try {
-      const { name, type, sellingPrice, discountedPrice, description, Cuisine, oldImages,quantity,title } = req.body;
-  
-      // Uploaded new images
-      const newImages = req.files.map(file => file.path);
-  
-      // Merge old and new images
-      const updatedImages = [...(Array.isArray(oldImages) ? oldImages : [oldImages]), ...newImages];
-  
-      // Validation
-      if (!name || !type || !sellingPrice || !description || !Cuisine) {
-        return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
-      }
-  
-      const menu = await Menu.findById(req.params.id);
-      if (!menu) {
-        return res.status(404).json({ message: "Menu not found" });
-      }
-  
-      // Remove images that are not part of `oldImages`
-      if (menu.images) {
-        const imagesToRemove = menu.images.filter((img) => !updatedImages.includes(img));
-        imagesToRemove.forEach((imagePath) => {
-          const filePath = path.resolve(imagePath);
-          fs.unlink(filePath, (err) => {
-            if (err) console.error(`Error deleting file: ${filePath}`, err);
-          });
-        });
-      }
-  
-      // Update menu
-      menu.name = name;
-      menu.type = type;
-      menu.sellingPrice = sellingPrice;
-      menu.discountedPrice = discountedPrice;
-      menu.description = description;
-      menu.Cuisine = Cuisine;
-      menu.images = updatedImages;
-      menu.quantity = quantity;
-      menu. title=title
-  
-      await menu.save();
-  
-      res.status(200).json({ message: "Menu updated successfully", menu });
+        let { name, type, sellingPrice, discountedPrice, description, Cuisine, oldImages, quantity, title } = req.body;
+
+        // Uploaded new images
+        oldImages = oldImages || [];
+        const newImages = req.files.filter(file => file.path).map(file => file.path); // Extract only the paths
+        console.log(newImages);
+        
+        // Merge old and new images
+        const updatedImages = [...(Array.isArray(oldImages) ? oldImages : [oldImages]), ...newImages];
+        
+        // Validation
+        if (!name || !type || !sellingPrice || !description || !Cuisine) {
+            return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
+        }
+        
+        const menu = await Menu.findById(req.params.id);
+        if (!menu) {
+            return res.status(404).json({ message: "Menu not found" });
+        }
+        
+        // Remove images that are not part of `oldImages`
+        console.log(menu.images);
+        
+        if (menu.images) {
+            const imagesToRemove = menu.images.filter((img) => {
+                if (img !== null && img !== 'null') {
+                    console.log(img);
+                    return !updatedImages.includes(img);
+                }
+            });
+            imagesToRemove.forEach((imagePath) => {
+                if (!imagePath) return;
+                const filePath = path.resolve(imagePath);
+                fs.unlink(filePath, (err) => {
+                    if (err) console.error(`Error deleting file: ${filePath}`, err);
+                });
+            });
+        }
+        console.log('abc ', updatedImages);
+        
+        // Update menu
+        menu.name = name;
+        menu.type = type;
+        menu.sellingPrice = sellingPrice;
+        menu.discountedPrice = discountedPrice;
+        menu.description = description;
+        menu.Cuisine = Cuisine;
+        menu.images = updatedImages; // This should now be an array of strings
+        menu.quantity = quantity;
+        menu.title = title;
+        
+        await menu.save();
+        
+        res.status(200).json({ message: "Menu updated successfully", menu });
     } catch (error) {
       console.error("Error updating menu:", error);
       res.status(500).json({ message: "Server error" });
@@ -213,6 +224,7 @@ export const deleteMenu = async (req, res) => {
         
         if (menu.images && menu.images.length > 0) {
             menu.images.forEach(imagePath => {
+                if(!imagePath) return
                 const filePath = path.resolve(imagePath);
                 fs.unlink(filePath, (err) => {
                     if (err) {
@@ -388,5 +400,18 @@ export const getReview = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const updatePrice =async (req,res)=>{
+    try {
+        const {id}=req.params
+
+     const isUpdated=await Menu.findByIdAndUpdate({_id:id},{discountedPrice:req.body.discountedPrice},{ new: true, runValidators: true }) 
+     res.status(200).json(isUpdated)
+    } catch (error) {
+        console.log(error);
+        
+        res.status(500).json({message:"Internal error"})
     }
 }

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Coffee, IndianRupee, ClipboardList, Users } from 'lucide-react';
 import DatePicker from 'react-datepicker';
@@ -7,29 +7,100 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Piechart from '../../components/admin/Dashboard/Piechart';
 import Areachart from '../../components/admin/Dashboard/Areachart';
 import StatCard from '../../components/admin/Dashboard/StatCard';
+import apiClient from '../../services/apiClient';
+import { Link } from 'react-router-dom';
 
 const data = [
-  { name: '2023-02-01', netProfit: 20, revenue: 15 },
-  { name: '2023-06-02', netProfit: 30, revenue: 25 },
-  { name: '2023-09-03', netProfit: 35, revenue: 40 },
-  { name: '2023-05-04', netProfit: 40, revenue: 35 },
-  { name: '2023-10-05', netProfit: 45, revenue: 40 },
-  { name: '2023-01-06', netProfit: 80, revenue: 45 },
-  { name: '2023-03-07', netProfit: 90, revenue: 40 },
-];
-
-const orderData = [
-  { name: 'On Delivery', value: 25, color: '#FF6B6B', date: '2023-06-01' },
-  { name: 'Deliverd', value: 60, color: '#4ADE80', date: '2023-03-02' },
-  { name: 'Cancel', value: 7, color: '#94A3B8', date: '2023-09-03' },
-  { name: 'Cancel', value: 8, color: '#94A3B8', date: '2023-09-03' },
+  { name: '2024-02-01', netProfit: 20, revenue: 15 },
+  { name: '2024-06-02', netProfit: 30, revenue: 25 },
+  { name: '2024-09-03', netProfit: 35, revenue: 40 },
+  { name: '2024-05-04', netProfit: 40, revenue: 35 },
+  { name: '2024-10-05', netProfit: 45, revenue: 40 },
+  { name: '2025-01-06', netProfit: 80, revenue: 45 },
+  { name: '2025-03-07', netProfit: 90, revenue: 40 },
 ];
 
 
+function convertOrdersToOrderData(orders) {
+  const orderStatusCount = {};
+
+  // Count the occurrences of each order status
+  orders.forEach(order => {
+      const status = order.orderStatus;
+      if (!orderStatusCount[status]) {
+          orderStatusCount[status] = {
+              name: status,
+              value: 0,
+              color: getColorForStatus(status), // Function to get color based on status
+              date: order.date.split('T')[0] // You can choose to use the latest date or any specific logic to determine the date
+          };
+      }
+      orderStatusCount[status].value += 1;
+  });
+
+  // Convert the object to an array
+  return Object.values(orderStatusCount);
+}
+
+function getColorForStatus(status) {
+  switch (status) {
+      case 'On Delivery':
+          return '#FF6B6B';
+      case 'Delivered':
+          return '#4ADE80';
+      case 'Cancelled':
+          return '#94A3B8';
+      case 'Pending':
+          return '#FFD700'; // Example color for Pending
+      default:
+          return '#000000'; // Default color
+  }
+}
+
+// const orderData = convertOrdersToOrderData(orders);
 const Dashboard = () => {
-  const [startDate, setStartDate] = useState(new Date('2023-01-01'));
-  const [endDate, setEndDate] = useState(new Date('2023-12-07'));
+  const [startDate, setStartDate] = useState(new Date(new Date().getFullYear(), 0, 1));
+  const [endDate, setEndDate] = useState(new Date(new Date().getFullYear(), 11, 31));
+  const [getOrder,setOrder] = useState([]);
+  const [getMenu,setMenu] = useState();
+  const[getUsers,setUsers]=useState([]);
 
+
+
+  useEffect( () => {
+    try{
+    async function fetchOrderData() {
+        const res=await apiClient.get('/admin/orders');
+    console.log(res.data.orders);
+    setOrder(res.data.orders);
+    }    
+
+    async function fetchMenuData() {
+        const res=await apiClient.get('/menu/all');
+        console.log(res.data);
+        setMenu(res.data.totalCount);
+        
+    }
+
+    async function getUsers() {
+      const res = await apiClient.get('/admin/allusers');
+      console.log(res.data);
+      if(res.data){
+        setUsers(res.data);
+      }
+    }
+    
+    fetchOrderData();
+    fetchMenuData();
+    getUsers();
+  }catch(error){
+    console.log("Failed to fetch data",error);
+  }
+  },[])
+
+  const orderData=convertOrdersToOrderData(getOrder);
+  console.log(orderData);
+  
   const filteredData = data.filter(item => {
     const date = new Date(item.name);
     return date >= startDate && date <= endDate;
@@ -73,7 +144,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={Coffee}
-            value="56"
+            value={getMenu}
             label="TOTAL MENUS"
             className="bg-yellow-50 text-yellow-600 shadow-md"
           />
@@ -85,13 +156,13 @@ const Dashboard = () => {
           />
           <StatCard
             icon={ClipboardList}
-            value={filteredOrderData.length}
+            value={getOrder.length}
             label="TOTAL ORDERS"
             className="bg-yellow-50 text-yellow-600 shadow-md"
           />
           <StatCard
             icon={Users}
-            value="65"
+            value={getUsers?.length}
             label="TOTAL CLIENT"
             className="bg-yellow-50 text-yellow-600 shadow-md"
           />
@@ -117,10 +188,11 @@ const Dashboard = () => {
 
             <div className="bg-green-50 p-4 rounded-lg flex justify-between items-center mb-6 gap-4">
               <div className="flex items-center space-x-2 justify-center text-center">
-                <span className="text-2xl font-bold text-orange-600">{filteredOrderData.length}</span>
+                <span className="text-2xl font-bold text-orange-600">{filteredOrderData.filter((val)=> val.name==="Pending")[0]?.value
+                   }</span>
                 <span className="text-orange-600">New Orders</span>
               </div>
-              <button className="text-blue-600 hover:underline">Manage orders →</button>
+              <Link to={'/admin/orders'} className="text-blue-600 hover:underline">Manage orders →</Link>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-6 justify-center">

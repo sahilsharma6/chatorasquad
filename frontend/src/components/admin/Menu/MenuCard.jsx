@@ -19,16 +19,23 @@ const MenuCard = ({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isInStock, setIsInStock] = useState(inStock);
 
+  // Filter out invalid images
+  const validImages = images.filter(img => img !== null && img !== 'null');
+
   const totalStars = 5;
   const filledStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    if (validImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % validImages.length);
+    }
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    if (validImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + validImages.length) % validImages.length);
+    }
   };
 
   const handleStockToggle = () => {
@@ -44,9 +51,9 @@ const MenuCard = ({
       transition={{ duration: 0.2 }}
     >
       <motion.div className="relative h-52 overflow-hidden transition-all delay-100 rounded-lg mb-4">
-        {images.length > 0 && (
+        {validImages.length > 0 && (
           <motion.img
-            src={import.meta.env.VITE_API_URL + "/" + images[currentImageIndex]}
+            src={import.meta.env.VITE_API_URL + "/" + validImages[currentImageIndex]}
             alt={title}
             className="w-full h-full object-cover"
             initial={{ opacity: 0 }}
@@ -55,22 +62,26 @@ const MenuCard = ({
           />
         )}
 
-        <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
-          <button
-            onClick={prevImage}
-            className="bg-gray-800 text-white p-2 rounded-l hover:bg-gray-900"
-          >
-            <ChevronLeft />
-          </button>
-        </div>
-        <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
-          <button
-            onClick={nextImage}
-            className="bg-gray-800 text-white p-2 rounded-r hover:bg-gray-900"
-          >
-            <ChevronRight />
-          </button>
-        </div>
+        {validImages.length > 0 && (
+          <>
+            <div className="absolute top-1/2 left-0 transform -translate-y-1/2">
+              <button
+                onClick={prevImage}
+                className="bg-gray-800 text-white p-2 rounded-l hover:bg-gray-900"
+              >
+                <ChevronLeft />
+              </button>
+            </div>
+            <div className="absolute top-1/2 right-0 transform -translate-y-1/2">
+              <button
+                onClick={nextImage}
+                className="bg-gray-800 text-white p-2 rounded-r hover:bg-gray-900"
+              >
+                <ChevronRight />
+              </button>
+            </div>
+          </>
+        )}
       </motion.div>
 
       <div className="flex justify-between items-start mb-2">
@@ -118,18 +129,17 @@ const MenuCard = ({
             </span>
           </label>
           <span
-            className={`text-sm px-2 py-1 rounded ${
-              isInStock
+            className={`text-sm px-2 py-1 rounded ${isInStock
                 ? "bg-green-100 text-green-800"
                 : "bg-red-100 text-red-800"
-            }`}
+              }`}
           >
             {isInStock ? "In Stock" : "Out of Stock"}
           </span>
         </div>
       </div>
 
-      <p className="text-md text-gray-600 mb-4">{ description.substring(0,50)}.... <Link to={'/menu/details/'+id} className="text-blue-800">Read More</Link> </p> 
+      <p className="text-md text-gray-600 mb-4">{description.substring(0, 50)}.... <Link to={'/menu/details/' + id} className="text-blue-800">Read More</Link></p>
 
       <div className="flex gap-4 mx-8 flex-wrap">
         <motion.button
