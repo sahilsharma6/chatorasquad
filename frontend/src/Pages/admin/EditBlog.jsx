@@ -4,6 +4,7 @@ import { Upload } from "lucide-react";
 import { useParams } from "react-router-dom";
 import apiClient from "../../services/apiClient";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function EditBlog() {
   const { blogId } = useParams();
@@ -75,14 +76,15 @@ export default function EditBlog() {
         },
       });
 
-      alert("Blog updated successfully!");
+     toast.success("Blog post Edited successfully!");
       setFormData({
         title: "",
         category: "",
         content: "",
         image: null,
       });
-      navigate("/admin/blogs/view");
+      setTimeout(()=>navigate("/admin/blogs/view"),2000
+      );
     } catch (err) {
       alert("Failed to update the blog. Please try again.");
     }
@@ -186,9 +188,9 @@ export default function EditBlog() {
               <p className="text-gray-600">
                 Drag and drop your image here, or click to select
               </p>
-              {formData.preview && (
+              {formData.image && (
                 <img
-                  src={formData.preview}
+                  src={import.meta.env.VITE_API_URL+'/'+ formData.image}
                   alt="Preview"
                   className="mt-4 w-32 h-32 object-cover rounded-lg"
                 />
@@ -207,6 +209,7 @@ export default function EditBlog() {
           </motion.button>
         </form>
       </motion.div>
+      <ToastContainer />
     </div>
   );
 }

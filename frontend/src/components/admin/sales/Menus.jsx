@@ -54,7 +54,7 @@ export default function Menus({categories,selectedCategory,setIsSidebarOpen,filt
               }
                 <div className="flex gap-4 items-center flex-wrap">
                   <img
-                    src={ item.image}
+                    src={ import.meta.env.VITE_API_URL + "/"+item.image}
                     alt={item.name}
                     className="w-20 h-20 rounded-lg object-cover"
                   />

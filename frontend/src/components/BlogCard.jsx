@@ -1,11 +1,15 @@
 import { motion } from "framer-motion";
 import { ChevronRight, Pencil, ThumbsUp, Trash } from "lucide-react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, } from "react-router-dom";
+import apiClient from "../services/apiClient";
+import { UserContext } from "../context/UserContext";
 
-const BlogCard = ({  _id, title, description, date, author, views, category, image, role, initialLikes,onDelete  }) => {
-    const [likeCount, setLikeCount] = useState(initialLikes);
+const BlogCard = ({  _id, title, content, date, author, views, category, image, role, likes,onDelete  }) => {
+    const [likeCount, setLikeCount] = useState(likes.length);
     const [isLiked, setIsLiked] = useState(false);
+   const { user } = useContext(UserContext);
+   console.log(likes);
    
     const MotionLink = motion.create(Link);
 
@@ -13,9 +17,25 @@ const BlogCard = ({  _id, title, description, date, author, views, category, ima
         onDelete(_id); 
     }
 
-    function onLike() {
+    useEffect(() => {
+        // Check if the user has liked the post
+        console.log(user);
+        if(user){
+        const hasLiked = likes.some((val) => val._id === user._id);
+        setIsLiked(hasLiked);
+        }
+    }, [likes, user])
+        
+  async  function onLike() {
+    if(user){
+        const res=await apiClient.post('/blog/like/'+_id)
+        console.log(res.data);
+        if(res.data){
         setIsLiked(!isLiked); 
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+        }
+    }
+ 
     }
 
     return (
@@ -43,7 +63,7 @@ const BlogCard = ({  _id, title, description, date, author, views, category, ima
                 <h3 className="text-xl font-bold mb-3 hover:text-orange-500 transition-colors duration-200">
                     {title}
                 </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">{description}</p>
+                <p className="text-gray-600 mb-4 line-clamp-3">{content.substring(0,200)}</p>
                 <div className="flex justify-between">
                     <MotionLink
                         whileHover={{ x: 5 }}

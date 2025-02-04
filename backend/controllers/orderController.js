@@ -41,7 +41,7 @@ export const payment = async (req, res) => {
       total,
       deliveryAddress,
       orderStatus: "Pending",
-      paymentStatus: "cancelled",
+      paymentStatus: "failed",
       merchantTransactionId,
     });
     await order.save();
@@ -71,7 +71,8 @@ export const payment = async (req, res) => {
     };
     axios
       .request(options)
-      .then((response) => {
+      .then(async (response) => {
+      await  Order.findOneAndUpdate({_id:order._id},{orderStatus:'Confirm'})
         res.status(200).json({
           url: response.data.data.instrumentResponse.redirectInfo.url,
         });
@@ -609,4 +610,32 @@ export const GetAllReviews =async (req,res)=>{
   } catch (error) {
     
   }
+}
+
+export const favoritesmenu=async (req,res)=>{
+  try {
+    // Step 1: Fetch all reviews
+    const reviews = await Reviews.find().populate('menuId').populate('userId'); // Populate to get user info if needed
+
+    // Step 2: Prepare a list of menuIds from the reviews
+    const menuIds = reviews.map(review => review.menuId);
+
+    // Step 3: Fetch all orders where the items match the menuIds and the order status indicates delivery
+    const deliveredOrders = await Order.find({
+      'items.itemid': { $in: menuIds },
+      orderStatus: 'Delivered' // Adjust this condition based on your actual statuses
+    }).limit(10).populate('items.itemid');
+
+    const menuCount=await Menu.countDocuments()
+    // Step 4: Return or process the results as needed
+    return res.status(200).json({
+      reviews,
+      deliveredOrders,
+      menuCount
+    }) ;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Handle error as appropriate for your application
+  }
+
 }

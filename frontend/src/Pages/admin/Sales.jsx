@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Menus from '../../components/admin/sales/Menus';
 import TrendingMenus from '../../components/admin/sales/TrendingMenus';
 import CategoriesSidebar from '../../components/admin/sales/CategoriesSidebar';
 import SalesDashboard from '../../components/admin/sales/SalesDashboard';
+import apiClient from '../../services/apiClient';
 
 const menuItems = [
   {
@@ -11,7 +12,7 @@ const menuItems = [
     image: 'https://previews.123rf.com/images/photodee/photodee1508/photodee150803081/43717848-watermelon-smoothies.jpg',
     rating: 3,
     reviews: 454,
-    likes: '259K',
+    // likes: '259K',
     interest: 45,
     totalSales: 6732,
     progress: 87,
@@ -23,7 +24,7 @@ const menuItems = [
     image: 'https://img.freepik.com/free-photo/side-view-pizza-with-slices-bell-pepper-pizza-slices-flour-board-cookware_176474-3185.jpg?t=st=1735302905~exp=1735306505~hmac=36760e3e8271ea2c07bc902d73f69480be66f87d0ffa7e39664b1b088806bfe0&w=360',
     rating: 2,
     reviews: 454,
-    likes: '259K',
+    // likes: '259K',
     interest: 26,
     totalSales: 5721,
     progress: 75,
@@ -35,7 +36,7 @@ const menuItems = [
     image: 'https://img.freepik.com/free-photo/side-view-pizza-with-slices-bell-pepper-pizza-slices-flour-board-cookware_176474-3185.jpg?t=st=1735302905~exp=1735306505~hmac=36760e3e8271ea2c07bc902d73f69480be66f87d0ffa7e39664b1b088806bfe0&w=360',
     rating: 2,
     reviews: 454,
-    likes: '259K',
+    // likes: '259K',
     interest: 26,
     totalSales: 3515,
     progress: 93,
@@ -79,6 +80,37 @@ const categories = ['All Categories', 'Main Course', 'Pizza', 'Drink', 'Dessert'
 export default function Sales() {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [getFavoir,setFavoir]=useState([])
+
+  useEffect(()=>{
+    try {
+      async function FetchFavoir() {
+        const res=await apiClient.get('/admin/favoritesmenu')
+        console.log(res.data);
+        const formattedData = res.data.reviews.map((review, index) => {
+          const menuItem = review.menuId || {};
+          
+          return {
+            id: index + 1,
+            name: menuItem.name || "No Title",
+            image: menuItem.images ? menuItem.images[0] : "",  // Use the first image or an empty string
+            rating: review.rating,
+            reviews: 1,  // Assuming each review is counted as one review
+            interest: res.data.deliveredOrders.map((val)=>val.items.itemid===menuItem).length*100/res.data.menuCount, // Placeholder for interest (you can modify this logic as needed)
+            totalSales: 1, // Placeholder for total sales (you can modify this logic as needed)
+            progress: 100, // Placeholder for progress (you can modify this logic as needed)
+            category: menuItem.type || "Unknown" // Using type or setting to "Unknown"
+          };
+        });
+        console.log(formattedData);
+        setFavoir(formattedData)
+      }
+      FetchFavoir()
+    } catch (error) {
+      
+    }
+  },[])
+
 
   const filteredMenuItems = selectedCategory === 'All Categories' 
     ? menuItems 
@@ -92,7 +124,7 @@ export default function Sales() {
      <CategoriesSidebar categories={categories} isSidebarOpen={isSidebarOpen} selectedCategory={selectedCategory} setIsSidebarOpen={setIsSidebarOpen} setSelectedCategory={setSelectedCategory} />
 
       {/* Main Content */}
-      <Menus categories={categories} selectedCategory={selectedCategory} setIsSidebarOpen={setIsSidebarOpen} filteredMenuItems={filteredMenuItems} setSelectedCategory={setSelectedCategory} />
+      <Menus categories={categories} selectedCategory={selectedCategory} setIsSidebarOpen={setIsSidebarOpen} filteredMenuItems={getFavoir} setSelectedCategory={setSelectedCategory} />
       {/* Trending Section */}
       <TrendingMenus trendingItems={trendingItems} />
     </div>

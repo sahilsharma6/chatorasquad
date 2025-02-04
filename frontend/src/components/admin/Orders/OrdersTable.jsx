@@ -8,7 +8,7 @@ import { Pagination } from '../../Pagination';
 const OrdersTable = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortConfig, setSortConfig] = useState({ key: 'DishesName', direction: 'ascending' });
+  const [sortConfig, setSortConfig] = useState({ key: 'Date', direction: 'descending' });
   const [getOrder, setOrder] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalOrderPage,setTotalOrderPage]=useState(0);
@@ -43,7 +43,8 @@ const OrdersTable = () => {
       Date: order.date.split('T')[0], // Extracting date in 'YYYY-MM-DD' format
       status: order.orderStatus, // Order status
       userId: order.userId._id, // User ID
-      phone: order.userId.phoneNo // Assuming phoneNo exists in userId
+      phone: order.userId.phoneNo,
+      paymentStatus:order.paymentStatus // Assuming phoneNo exists in userId
     }))
   );
   console.log(data);

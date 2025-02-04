@@ -44,12 +44,12 @@ function convertOrdersToOrderData(orders) {
 
 function getColorForStatus(status) {
   switch (status) {
-      case 'On Delivery':
-          return '#FF6B6B';
+      case 'Refund':
+          return '#94A3B8';
       case 'Delivered':
           return '#4ADE80';
-      case 'Cancelled':
-          return '#94A3B8';
+      case 'Cancel':
+          return '#FF6B6B';
       case 'Pending':
           return '#FFD700'; // Example color for Pending
       default:

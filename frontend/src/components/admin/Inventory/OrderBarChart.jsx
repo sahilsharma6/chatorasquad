@@ -48,7 +48,7 @@ function transformOrders(orders) {
       result[date]['Order Delivered']++;
     } else if (status === 'Dispatched') {
       result[date]['Order Dispatched']++;
-    } else if (status === 'Returned') {
+    } else if (status === 'Refund') {
       result[date]['Order Returned']++;
     }
   });

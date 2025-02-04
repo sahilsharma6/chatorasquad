@@ -13,6 +13,7 @@ const AdminOfferPage = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItemDate, setSelectedItemDate] = useState(null);
   const [offer, setOffer] = useState(0);
   const [currentPage,setCurrentPage]=useState(1)
   const [totalPage,setTotalPage]=useState(0)
@@ -29,7 +30,8 @@ const AdminOfferPage = () => {
           name: item.name,
           price: item.sellingPrice,
           offer: Math.round( ((item.sellingPrice - item.discountedPrice) / item.sellingPrice) * 100*10)/10,
-          date: item.createdAt.split("T")[0] // Extracting the date from createdAt
+          date: item.createdAt.split("T")[0] ,// Extracting the date from createdAt
+          offerDates: item.offerDates
       }));
       console.log(transformedMenu);
       setMenuItems(transformedMenu)
@@ -57,6 +59,7 @@ const AdminOfferPage = () => {
 
   const handleCellClick = (item) => {
     setSelectedItem(item);
+    setSelectedItemDate(item.offerDates.end.split('T')[0])
     setOffer(item.offer || 0);
     setIsModalOpen(true);
   };
@@ -69,13 +72,18 @@ console.log(totalPage);
       console.log(dis);
       
       const res=await apiClient.put('/menu/updateprice/'+selectedItem.id,{
-        discountedPrice:dis
+        discountedPrice:dis,
+        end:selectedItemDate
       })
       console.log(res.data);
       if(res.data){
         setMenuItems((prevItems) =>
           prevItems.map((item) =>
-            item.id === selectedItem.id ? { ...item, offer } : item
+            item.id === selectedItem.id ? { 
+              ...item, 
+              offer, 
+              
+            }  : item
           )
         );
         setIsModalOpen(false);
@@ -112,7 +120,7 @@ updateDiscountedPrice()
         <motion.table
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="table-auto w-full border border-gray-200 rounded-lg shadow-lg overflow-auto"
+          className="table-auto w-full border border-gray-200 rounded-lg shadow-lg overflow-hidden"
         >
           <thead>
             <tr className="bg-gray-100 text-gray-700">
@@ -125,6 +133,7 @@ updateDiscountedPrice()
                 <div className="flex">Offer (%)</div>
                 {sortColumn === "offer" && (sortOrder === "asc" ? <MoveUp /> : <MoveDown />)}
               </th>
+              <th className="p-4">Offer Time</th>
             </tr>
           </thead>
           <tbody>
@@ -138,6 +147,7 @@ updateDiscountedPrice()
                 <td className="p-4 border">{item.name}</td>
                 <td className="p-4 border flex"><IndianRupee className="mt-1" /> {item.price}</td>
                 <td className="p-4 border">{item.offer}%</td>
+                <td className="p-4 border">  {item.offerDates.end.split('T')[0]}</td>
               </motion.tr>
             ))}
           </tbody>
@@ -153,6 +163,8 @@ updateDiscountedPrice()
         offer={offer} 
         setOffer={setOffer} 
         handleUpdateOffer={handleUpdateOffer} 
+        setEndDate={setSelectedItemDate}
+        endDate={selectedItemDate}
       />
       <SparklineChart data={menuItems} />
     </div>
