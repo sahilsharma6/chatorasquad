@@ -62,11 +62,12 @@ const MenuSchema = mongoose.Schema(
   }
 );
 
-// Post-find middleware to update discountedPrice after retrieving documents
 MenuSchema.post('find', function (docs) {
   const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() - 1); // Set 'tomorrow' to one day in the future
   docs.forEach(doc => {
-    if (now > doc.offerDates.end) {
+    if (tomorrow > doc.offerDates.end) {
       doc.discountedPrice = doc.sellingPrice; // Update discounted price if the offer has expired
       doc.markModified('discountedPrice'); // Mark the field as modified
     }

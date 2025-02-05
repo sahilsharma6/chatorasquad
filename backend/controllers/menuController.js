@@ -13,6 +13,7 @@ export const addMenu = async (req, res) => {
         if (!name || !type || !sellingPrice || !description || !cuisine) {
             return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
         }
+console.log(title);
 
         const images = req.files.map(file => file.path);
         const menu = new Menu({

@@ -12,7 +12,7 @@ const OrdersTable = () => {
   const [getOrder, setOrder] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalOrderPage,setTotalOrderPage]=useState(0);
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const fetchOrder = async () => {
