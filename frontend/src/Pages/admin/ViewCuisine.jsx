@@ -162,7 +162,7 @@ const ViewCuisine = () => {
             <div className="bg-white rounded-lg shadow-lg p-6 w-1/3">
               <h2 className="text-xl font-bold mb-4">Confirm Delete {currentCuisine.name} Cuisine </h2>
               <p className="mb-4">
-              </p>
+              </p> a
               <div className="flex justify-end gap-2">
                 <button
                   onClick={handleCancelDelete}
