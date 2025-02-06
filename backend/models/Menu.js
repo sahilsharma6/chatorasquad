@@ -21,6 +21,11 @@ const MenuSchema = mongoose.Schema(
     },
     discountedPrice: {
       type: Number,
+      default :0
+    },
+    offerDates:{
+      start:{type:Date , default: Date.now},
+      end:{type:Date , default: Date.now},
     },
     description: {
       type: String,
@@ -56,6 +61,18 @@ const MenuSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+MenuSchema.post('find', function (docs) {
+  const now = new Date();
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() - 1); // Set 'tomorrow' to one day in the future
+  docs.forEach(doc => {
+    if (tomorrow > doc.offerDates.end) {
+      doc.discountedPrice = doc.sellingPrice; // Update discounted price if the offer has expired
+      doc.markModified('discountedPrice'); // Mark the field as modified
+    }
+  });
+});
 
 const Menu = mongoose.model("Menu", MenuSchema);
 

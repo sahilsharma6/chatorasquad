@@ -13,6 +13,7 @@ export const addMenu = async (req, res) => {
         if (!name || !type || !sellingPrice || !description || !cuisine) {
             return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
         }
+console.log(title);
 
         const images = req.files.map(file => file.path);
         const menu = new Menu({
@@ -402,16 +403,40 @@ export const getReview = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
-
-export const updatePrice =async (req,res)=>{
+export const updatePrice = async (req, res) => {
     try {
-        const {id}=req.params
+        const { id } = req.params;
 
-     const isUpdated=await Menu.findByIdAndUpdate({_id:id},{discountedPrice:req.body.discountedPrice},{ new: true, runValidators: true }) 
-     res.status(200).json(isUpdated)
+        // Validate that required fields are present in the request body
+        if (!req.body.discountedPrice || !req.body.end) {
+            return res.status(400).json({ message: "Discounted price and end date are required." });
+        }
+console.log(req.body.end);
+
+        // Check if the end date is in the past
+        if (new Date(req.body.end) < new Date().setHours(0, 0, 0, 0)) {
+            return res.status(400).json({ message: "End date must be in the future." });
+        }
+
+        // Update the menu item with the new discounted price and end date
+        const updatedMenu = await Menu.findByIdAndUpdate(
+            { _id: id },
+            {
+                discountedPrice: req.body.discountedPrice,
+                'offerDates.end': req.body.end
+            },
+            { new: true, runValidators: true }
+        );
+
+        // If the menu item is not found, return a 404 error
+        if (!updatedMenu) {
+            return res.status(404).json({ message: "Menu item not found." });
+        }
+
+        // Return the updated menu item
+        res.status(200).json(updatedMenu);
     } catch (error) {
-        console.log(error);
-        
-        res.status(500).json({message:"Internal error"})
+        console.error(error); // Log the error for debugging
+        res.status(500).json({ message: "Internal server error." });
     }
-}
+};

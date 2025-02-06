@@ -46,7 +46,8 @@ export const createBlog = async (req, res) => {
 export const getBlogs = async (req, res) => {
   try {
     const blogs = await Blogs.find();
-    res.status(200).json(blogs);
+    res.status(200).json(blogs)
+    ;
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -182,7 +183,9 @@ export const deleteBlog = async (req, res) => {
 export const likeBlog = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
+    const  userId  = req.user;
+    console.log(userId);
+    
     if (!userId) {
       return res.status(400).json({ message: "User ID is required" });
     }
@@ -201,6 +204,8 @@ export const likeBlog = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const index = blog.likes.findIndex((id) => id === String(userId));
+    console.log(index);
+    
     if (index === -1) {
       blog.likes.push(userId);
     } else {

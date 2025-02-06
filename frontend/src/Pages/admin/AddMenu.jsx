@@ -62,7 +62,8 @@ const AddMenu = () => {
     formDataToSend.append("quantity", formData.quantity);
     formDataToSend.append("sellingPrice", formData.sellingPrice);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("discountedPrice", formData.discountedPrice);
+    formDataToSend.append("discountedPrice", formData.discountedPrice || formData.sellingPrice);
+    formDataToSend.append("title", formData.title);
 
 
     formData.images.forEach((image) => {
@@ -78,7 +79,7 @@ const AddMenu = () => {
    
       setFormData({
         name: "",
-      
+      title:'',
         type: "",
         cuisine: "",
         quantity: "",
@@ -99,6 +100,7 @@ const AddMenu = () => {
       console.error("Error adding menu:", error);
     }
   };
+console.log(formData);
 
   const handleImageChange = (e) => {
     const files = e.target.files;

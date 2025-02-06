@@ -57,6 +57,7 @@ function convertOrdersToOrderData(orders) {
   // Count the occurrences of each order status
   orders.forEach(order => {
       const status = order.orderStatus;
+      if(status==='Pending') return ''
       if (!orderStatusCount[status]) {
           orderStatusCount[status] = {
               title: status,
@@ -78,6 +79,7 @@ function convertOrdersToOrderData(orders) {
 }
 
 function getColorForStatus(status) {
+  
   switch (status) {
       case 'On Delivery':
           return FileText;
@@ -85,8 +87,8 @@ function getColorForStatus(status) {
           return BarChart;
       case 'Cancel':
           return Calendar;
-      case 'Pending':
-          return Box; // Example color for Pending
+      // case 'Pending':
+      //     return Box; // Example color for Pending
       default:
           return Box; // Default color
   }

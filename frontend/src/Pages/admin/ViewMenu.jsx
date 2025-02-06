@@ -16,7 +16,7 @@ const ViewMenu = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 2; // Set the number of items per page
+  const itemsPerPage = 4; // Set the number of items per page
   const navigate = useNavigate();  
 
   useEffect(() => {

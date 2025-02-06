@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useEffect } from "react";
 import apiClient from "../../../services/apiClient";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // Make sure to import the CSS for styling
 
-export default function TableModal({ isModalOpen, setIsModalOpen, selectedItem, setOffer, offer, handleUpdateOffer }) {
+export default function TableModal({ isModalOpen, setIsModalOpen, selectedItem, setOffer, offer, handleUpdateOffer, endDate, setEndDate }) {
   
-  
-    
- 
+  const today = new Date();
+  const minDate = new Date(today.setDate(today.getDate() + 1)); // Set minimum date to tomorrow
+
   return (
     <>
       {isModalOpen && (
@@ -29,6 +31,16 @@ export default function TableModal({ isModalOpen, setIsModalOpen, selectedItem, 
                 onChange={(e) => setOffer(e.target.value)}
                 className="w-full border rounded-lg px-4 py-4 border-orange-500 focus:ring-yellow-500 focus:border-yellow-500"
                 placeholder="Enter Offer Discount %"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2">Offer End</label>
+              <DatePicker
+                selected={endDate} // Use 'selected' prop instead of 'value'
+                onChange={(date) => setEndDate(date)} // Set the date directly
+                className="w-full border rounded-lg px-4 py-4 border-orange-500 focus:ring-yellow-500 focus:border-yellow-500"
+                placeholderText="Enter Offer End Date"
+                minDate={minDate} // This sets the minimum selectable date
               />
             </div>
             <div className="flex justify-end gap-2">
