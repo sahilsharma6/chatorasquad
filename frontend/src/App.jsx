@@ -54,7 +54,11 @@ function Layout() {
         <Route path="/menu/getmenu" element={<GetMenu />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/orders"  element={
+            <ProtectedRoute allowedRoles={["admin", "user"]}>
+              <Orders />
+            </ProtectedRoute>
+          } />
         <Route path="/menu/details/:id" element={<GetMenu />} />
 
         <Route path="/refund-shiping-return" element={<RefundPolicy />} />

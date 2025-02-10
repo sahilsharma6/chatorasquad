@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { LayoutDashboard } from "lucide-react";
 
 
 const Profile = () => {
@@ -138,6 +139,14 @@ const Profile = () => {
                   onClick={() => navigate("/update")}
                 >
                   <span className="mr-3">⚙️</span> Settings
+                </button>
+              </li>
+              <li className="mb-4">
+                <button
+                  className="flex items-center text-gray-700 hover:text-red-600 font-medium"
+                  onClick={() => navigate("/admin")}
+                >
+                  <span className="mr-3"><LayoutDashboard /> </span> Dashboard
                 </button>
               </li>
             </ul>

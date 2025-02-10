@@ -67,7 +67,7 @@ function convertOrdersToOrderData(orders) {
               date: order.date.split('T')[0] // You can choose to use the latest date or any specific logic to determine the date
           };
       }
-      orderStatusCount[status].value += 1;
+      orderStatusCount[status].value += order.items.length;
   });
 
   for (const status in orderStatusCount) {
@@ -81,11 +81,13 @@ function convertOrdersToOrderData(orders) {
 function getColorForStatus(status) {
   
   switch (status) {
-      case 'On Delivery':
+      case 'Confirm':
           return FileText;
       case 'Delivered':
           return BarChart;
       case 'Cancel':
+          return Calendar;
+      case 'Refund':
           return Calendar;
       // case 'Pending':
       //     return Box; // Example color for Pending

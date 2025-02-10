@@ -87,6 +87,18 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-orange-500 font-semibold text-lg"
+                    : "text-gray-700 hover:text-orange-500 text-lg"
+                }
+              >
+                orders
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
                 to="/blogs"
                 className={({ isActive }) =>
                   isActive

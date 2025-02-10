@@ -35,6 +35,11 @@ const LoginForm = () => {
         console.log(res.data);
         if (res.status === 200) {
           setLoggedIn(true);
+          const data=res.data.data
+          if(data.user.role=='hotel'){
+            window.location.href=`${import.meta.env.VITE_HOTEL_URL}/${data.user.hotel}/profile?token=${data.token}`
+            return;
+          }
           window.location.href = "/";
         }
       } catch (err) {
