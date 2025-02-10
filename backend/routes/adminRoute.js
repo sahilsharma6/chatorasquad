@@ -5,7 +5,8 @@ import menuRoute from './menuRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
 import { getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
-
+import { createHotel, deleteHotel, getAllHotels, getHotelById, updateHotel } from '../controllers/hotelController.js';
+import { createRestaurant, deleteRestaurant, getAllRestaurants, getRestaurantById, updateRestaurant } from '../controllers/RestuarantController.js';
 const router = express.Router();
 
 router.get('/cuisines',authMiddleware, checkAdmin,getCuisines);     
@@ -30,5 +31,25 @@ router.put('/updateorderstatus/:id',authMiddleware,checkAdmin,updateOrderStatus)
 router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order id
 router.get('/allreview',authMiddleware,checkAdmin,GetAllReviews)
 router.get('/favoritesmenu',authMiddleware,checkAdmin,favoritesmenu)
+
+router.post('/addhotel',authMiddleware,checkAdmin,createHotel)
+router.put('/updatehotel',authMiddleware,checkAdmin,updateHotel)
+router.get('/hotel/:id',authMiddleware,checkAdmin,getHotelById)
+router.get('/hotels',authMiddleware,checkAdmin,getAllHotels)
+router.get('/deletehotel',authMiddleware,checkAdmin,deleteHotel)
+
+router.post('/addrestaurant', authMiddleware, checkAdmin, createRestaurant);
+
+// Update an existing restaurant
+router.put('/updaterestaurant/:id', authMiddleware, checkAdmin, updateRestaurant);
+
+// Get a specific restaurant by ID
+router.get('/restaurant/:id', authMiddleware, checkAdmin, getRestaurantById);
+
+// Get all restaurants
+router.get('/restaurants', authMiddleware, checkAdmin, getAllRestaurants);
+
+// Delete a restaurant
+router.delete('/deleterestaurant/:id', authMiddleware, checkAdmin, deleteRestaurant);
 
 export default router;
