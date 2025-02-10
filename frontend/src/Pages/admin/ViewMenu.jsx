@@ -23,6 +23,8 @@ const ViewMenu = () => {
     const fetchMenuItems = async () => {
       try {
         const response = await apiClient.get(`/menu/all?page=${currentPage}&limit=${itemsPerPage}`);
+        console.log(response.data);
+        
         setMenuItems(response.data.menu); // Adjust based on your API response structure
         setTotalPages(response.data.totalPages); // Adjust based on your API response structure
       } catch (error) {

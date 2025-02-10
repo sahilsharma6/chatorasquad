@@ -66,21 +66,21 @@ export default function CellModal({ setSelectedRow, selectedRow }) {
     if (status === "Pending") {
       return (
         <>
-          <option value="Confirm">Confirm</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancel">Cancel</option>
+          <option value="Confirm" className="hover:bg-orange-400">Confirm</option>
+          <option value="Delivered" className="hover:bg-orange-400">Delivered</option>
+          <option value="Cancel" className="hover:bg-orange-400">Cancel</option>
         </>
       );
     } else if (status === "Confirm") {
       return (
         <>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancel">Cancel</option>
-          <option value="Refund">Refund</option>
+          <option value="Delivered" className="hover:bg-orange-400">Delivered</option>
+          <option value="Cancel" className="hover:bg-orange-400">Cancel</option>
+          <option value="Refund" className="hover:bg-orange-400">Refund</option>
         </>
       );
     } else if (status === "Delivered") {
-      return <option value="Refund">Refund</option>;
+      return <option value="Refund" className="hover:bg-orange-400">Refund</option>;
     }
     return '';
   };
@@ -123,6 +123,9 @@ export default function CellModal({ setSelectedRow, selectedRow }) {
                 <strong>Order Item Name:</strong> {OrderItm?.item?.name || "N/A"}
               </p>
               <p>
+                <strong>Order Item Quantity:</strong> {OrderItm?.item?.quantity || "N/A"}
+              </p>
+              <p>
                 <strong>Customer Name:</strong> {selectedRow?.Name || "N/A"}
               </p>
               <p>
@@ -159,11 +162,11 @@ export default function CellModal({ setSelectedRow, selectedRow }) {
                   htmlFor="orderStatus"
                   className="block mb-2 text-sm font-medium text-gray-900"
                 >
-                  Select Order Status
+                  Update Order Status
                 </label>
                 <select
                   id="orderStatus"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 "
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
