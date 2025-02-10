@@ -16,6 +16,7 @@ const userSchema = mongoose.Schema(
       unique: true,
       validate: [validator.isEmail, 'Invalid email format'], 
     },
+    hotel:{default:"abc",type:String},
     password: {
       type: String,
       required: true,

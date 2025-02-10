@@ -44,7 +44,8 @@ const OrdersTable = () => {
       status: order.orderStatus, // Order status
       userId: order.userId._id, // User ID
       phone: order.userId.phoneNo,
-      paymentStatus:order.paymentStatus // Assuming phoneNo exists in userId
+      paymentStatus:order.paymentStatus, // Assuming phoneNo exists in userId
+      quantity:item.quantity
     }))
   );
   console.log(data);

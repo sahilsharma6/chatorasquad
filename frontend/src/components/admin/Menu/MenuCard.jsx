@@ -25,6 +25,8 @@ const MenuCard = ({
   const totalStars = 5;
   const filledStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
+  console.log(rating);
+  
 
   const nextImage = () => {
     if (validImages.length > 0) {
