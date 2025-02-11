@@ -27,8 +27,11 @@ export const getUserForHotel = async (req, res) => {
    const id= jwt.verify(token,process.env.JWT_SECRET)
   console.log(id);
     const user = await User.findById(id.userId);
+    // const tok=await jwt.sign(token,process.env.JWT_SECRET)
+    // console.log(tok);
+    
     if (user) {
-      res.status(200).json(user);
+      res.status(200).json({user,tok:token});
     } else {
       res.status(400).json({ message: "User not found" });
     }
