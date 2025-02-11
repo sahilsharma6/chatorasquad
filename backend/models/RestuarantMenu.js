@@ -34,7 +34,6 @@ const RestuarantMenuSchema = mongoose.Schema(
     },
     images: {
       type: [String],
-      // required: true,
     },
     isAvailable: {
       type: Boolean,
@@ -50,13 +49,6 @@ const RestuarantMenuSchema = mongoose.Schema(
       required: true,
       default:10,
     },
-    // rating: {
-    //   type: Number,
-    //   default: 0,
-    // },
-    // reviews: {
-    //   type: [String],
-    // },
     restaurantId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',  // Link to the Restaurant model
