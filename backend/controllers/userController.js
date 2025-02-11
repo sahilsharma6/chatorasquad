@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import Address from "../models/Address.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
@@ -9,6 +10,28 @@ export const getUser = async (req, res) => {
     const user = await User.findById(id);
     if (user) {
       res.status(200).json(user);
+    } else {
+      res.status(400).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const getUserForHotel = async (req, res) => {
+  try {
+    const token = req.body.token;
+  
+    if(!token){
+      res.status(400).json({ message: "User not found" });
+    }
+   const id= jwt.verify(token,process.env.JWT_SECRET)
+  console.log(id);
+    const user = await User.findById(id.userId);
+    // const tok=await jwt.sign(token,process.env.JWT_SECRET)
+    // console.log(tok);
+    
+    if (user) {
+      res.status(200).json({user,tok:token});
     } else {
       res.status(400).json({ message: "User not found" });
     }
