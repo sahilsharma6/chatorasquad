@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, deleteAddress, getAddresses, addAddress, UpdatePhone, UpdateEmail, setDefaultAddress} from '../controllers/userController.js';
+import { getUser, UpdateUser, getdefaultAddress ,UpdatePassword ,UpdateAddress, deleteAddress, getAddresses, addAddress, UpdatePhone, UpdateEmail, setDefaultAddress, getUserForHotel} from '../controllers/userController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import {  getOrderDetails, getOrdersByFilter, payment, updateOrderStatus, checkPaymentStatus, getOrders} from '../controllers/orderController.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
@@ -8,6 +8,7 @@ import { addToCart, DeleteFromCart, getCart, updateQuantity } from '../controlle
 const router = express.Router();
 
 router.get('/details',authMiddleware ,getUser); // id is user id
+router.post('/auth/verify-token',getUserForHotel)
 router.put('/updatedetails',authMiddleware,UpdateUser); // id is user id
 router.put('/updatepassword',authMiddleware,UpdatePassword); // id is user id
 router.put('/updatephone',authMiddleware,UpdatePhone); // id is user id
