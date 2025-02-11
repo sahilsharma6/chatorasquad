@@ -5,9 +5,25 @@ const hotelSchema = new mongoose.Schema(
   {
     name: { 
       type: String, 
-      required: true, 
+      required: false, 
       unique: true,  
       trim: true  
+    },
+    address: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    phoneNo: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    email: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: ''
     },
     isValid: { 
       type: Boolean, 
@@ -16,11 +32,11 @@ const hotelSchema = new mongoose.Schema(
     userId: { 
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User', 
-      required: true, 
     },
   },
   {
-    timestamps: true }
+    timestamps: true
+  }
 );
 
 // Create and export the Hotel model
