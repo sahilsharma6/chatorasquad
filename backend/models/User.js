@@ -16,7 +16,6 @@ const userSchema = mongoose.Schema(
       unique: true,
       validate: [validator.isEmail, 'Invalid email format'], 
     },
-    hotel:{default:"abc",type:String},
     password: {
       type: String,
       required: true,
@@ -25,11 +24,11 @@ const userSchema = mongoose.Schema(
     },
     age: {
       type: Number,
-
+     default:18,
     },
     role: {
       type: String,
-      // enum: ['user', 'admin'],
+      enum: ['user', 'admin','hotel','resturant'],
       default: 'user',
     },
     phoneNo: {
@@ -38,22 +37,7 @@ const userSchema = mongoose.Schema(
     },
     gender:{
       type:String,
-      // enum:['Male','Female','Other',''],
-
     },
-    // address:[
-    //     {
-    //         type:mongoose.Schema.Types.ObjectId,
-    //         ref:'Address',
-    //     },
-    // ],
-    // orders: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Order',
-    //   },
-    // ],
-
   },
   {
     timestamps: true,
