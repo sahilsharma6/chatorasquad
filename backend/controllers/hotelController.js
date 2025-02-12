@@ -39,8 +39,6 @@ export const createHotel = async (req, res) => {
       phoneNo,
     });
 
-    await newUser.save();
-
     // If user exists, create the hotel
     const newHotel = new Hotel({
       name,
@@ -48,6 +46,8 @@ export const createHotel = async (req, res) => {
       isValid: false,
     });
 
+     newUser.hotelId = newHotel._id;
+    await newUser.save();
     await newHotel.save();
     return res.status(201).json(newHotel);
   } catch (error) {
@@ -158,6 +158,40 @@ export const deleteHotel = async (req, res) => {
 };
 
 
+// change role to hotel 
+
+export const changeRoleToHotel = async (req, res) => {
+  try {
+    const {id}=req.params;
+    const {name}=req.body;
+    const user = await User.findById(id);
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+
+    const hotel = await Hotel.findOne({name});
+    if(hotel){
+      return res.status(400).json({message:"Hotel already exists"});
+    }
+
+    const newHotel = new Hotel({
+      name,
+      userId:id,
+      isValid:true,
+    });
+
+    user.role = 'hotel';
+    user.hotelId = newHotel._id;
+    await user.save();
+    await newHotel.save();
+    return res.status(201).json(newHotel);
+  }
+  catch(error){
+    console.log(error);
+    return res.status(500).json({message:"internal Server error",error});
+  }
+}
+
 // create a room 
 
 export const createRoom = async (req, res) => {
@@ -228,69 +262,92 @@ export const deleteRoom = async (req, res) => {
 }
 
 
+
+
 export const createHotelAdmin = async (req, res) => {
   try {
-    const { name, address, phoneNo, email, } = req.body;
+    const { name, phoneNo, firstName,lastName ,email,password,gender} = req.body;
 
-    // Input validation
-    if (!name || !phoneNo) {
-      return res.status(400).json({ message: "Name and phone number are required." });
+
+   if (!name || !phoneNo || !firstName || !lastName || !email || !password) {
+     console.log(req.body);
+      return res.status(400).json({ message: "Please fill in all fields" });
     }
 
-    // Check if the hotel already exists
+    // Check if hotel already exists
     const existingHotel = await Hotel.findOne({ name });
     if (existingHotel) {
-      return res.status(409).json({ message: "Hotel already exists." });
+      return res.status(400).json({ message: "Hotel already exists. use unique name" });
+    }
+    
+   
+    // Check if user exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists .Use diffrent email " });
     }
 
-    // Create a new hotel
-    const newHotel = new Hotel({
-      name: name.trim(),
-      phoneNo: phoneNo.trim(),
-      address,
+    // Create a new user
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = new User({
+      firstName,
+      lastName,
       email,
-      isValid:true,
-    });
-
-    await newHotel.save();
-
-    return res.status(201).json({
-      message: "Hotel created successfully.",
-      hotel: newHotel,
-    });
-  } catch (error) {
-    console.error("Error creating hotel:", error);
-    return res.status(500).json({ message: "Internal server error." });
-  }
-};
-
-export const updateHotelAdmin = async (req, res) => {
-  const { id } = req.params;
-  const { name, address, phoneNo, email, isValid} = req.body;
-  try {
-    const updatedHotel = await Hotel.findByIdAndUpdate(id, {
-      name,
+      password: hashedPassword,
+      role: 'hotel',
+      gender,
       phoneNo,
-      isValid,address,email
-    }, { new: true });
-    if (!updatedHotel) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
-    return res.status(200).json(updatedHotel);
+    });
+
+    // If user exists, create the hotel
+    const newHotel = new Hotel({
+      name,
+      userId: newUser._id,
+      isValid: true,
+    });
+
+     newUser.hotelId = newHotel._id;
+    await newUser.save();
+    await newHotel.save();
+    return res.status(201).json(newHotel);
   } catch (error) {
-    return res.status(500).json({ message: "Server error", error });
+    console.log(error);
+    return res.status(500).json({ message: "internal Server error", error });
   }
 };
-// Delete a hotel
-export const deleteHotelAdmin = async (req, res) => {
-  const { id } = req.params;
-  try {
-    const deletedHotel = await Hotel.findByIdAndDelete(id);
-    if (!deletedHotel) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
-    return res.status(200).json({ message: "Hotel deleted successfully" });
-  } catch (error) {
-    return res.status(500).json({ message: "Server error", error });
-  }
-};
+
+
+
+// export const updateHotelAdmin = async (req, res) => {
+//   const { id } = req.params;
+//   const { name, email,isVal} = req.body;
+//   try {
+//     const updatedHotel = await Hotel.findByIdAndUpdate(id, {
+//       name,
+//       phoneNo,
+//       isValid,address,email
+//     }, { new: true });
+//     if (!updatedHotel) {
+//       return res.status(404).json({ message: "Hotel not found" });
+//     }
+//     return res.status(200).json(updatedHotel);
+//   } catch (error) {
+//     return res.status(500).json({ message: "Server error", error });
+//   }
+// };
+
+// // Delete a hotel
+// export const deleteHotelAdmin = async (req, res) => {
+//   const { id } = req.params;
+//   try {
+//     const deletedHotel = await Hotel.findByIdAndDelete(id);
+//     if (!deletedHotel) {
+//       return res.status(404).json({ message: "Hotel not found" });
+//     }
+//     return res.status(200).json({ message: "Hotel deleted successfully" });
+//   } catch (error) {
+//     return res.status(500).json({ message: "Server error", error });
+//   }
+// };
+

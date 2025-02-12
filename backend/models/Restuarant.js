@@ -9,12 +9,6 @@ const RestuarantSchema = new mongoose.Schema(
       unique: true,  
       trim: true  
     },
-    phoneNo: { 
-      type: String, 
-      required: true,
-      match: /^[0-9]{10}$/, 
-      trim: true 
-    },
     isValid: { 
       type: Boolean, 
       default: false 
