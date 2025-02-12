@@ -3,9 +3,9 @@ import checkAdmin from '../middlewares/checkAdmin.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import menuRoute from './menuRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
-import { getUsers } from '../controllers/userController.js';
+import { changeUserRole, getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
-import { createHotel, deleteHotel, getAllHotels, getHotelById, updateHotel } from '../controllers/hotelController.js';
+import { createHotel, createHotelAdmin, deleteHotel, deleteHotelAdmin, getAllHotels, getHotelById, updateHotel, updateHotelAdmin } from '../controllers/hotelController.js';
 import { createRestaurant, deleteRestaurant, getAllRestaurants, getRestaurantById, updateRestaurant } from '../controllers/RestuarantController.js';
 const router = express.Router();
 
@@ -33,10 +33,15 @@ router.get('/allreview',authMiddleware,checkAdmin,GetAllReviews)
 router.get('/favoritesmenu',authMiddleware,checkAdmin,favoritesmenu)
 
 router.post('/addhotel',authMiddleware,checkAdmin,createHotel)
+router.post('/addhoteladmin',authMiddleware,checkAdmin,createHotelAdmin)
 router.put('/updatehotel',authMiddleware,checkAdmin,updateHotel)
+router.put('/updatehotelAdmin/:id',authMiddleware,checkAdmin,updateHotelAdmin)
 router.get('/hotel/:id',authMiddleware,checkAdmin,getHotelById)
 router.get('/hotels',authMiddleware,checkAdmin,getAllHotels)
-router.get('/deletehotel',authMiddleware,checkAdmin,deleteHotel)
+router.delete('/deletehotel',authMiddleware,checkAdmin,deleteHotel)
+router.delete('/deletehotelAdmin/:id',authMiddleware,checkAdmin,deleteHotelAdmin)
+
+router.put('/changeuserrole',authMiddleware,checkAdmin,changeUserRole)
 
 router.post('/addrestaurant', authMiddleware, checkAdmin, createRestaurant);
 
