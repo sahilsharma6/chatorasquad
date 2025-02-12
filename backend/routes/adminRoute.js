@@ -2,10 +2,10 @@ import express from 'express';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import menuRoute from './menuRoute.js';
+import hotelRoute from './hotelRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
 import { changeUserRole, getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
-import { createHotel, createHotelAdmin, deleteHotel, deleteHotelAdmin, getAllHotels, getHotelById, updateHotel, updateHotelAdmin } from '../controllers/hotelController.js';
 import { createRestaurant, deleteRestaurant, getAllRestaurants, getRestaurantById, updateRestaurant } from '../controllers/RestuarantController.js';
 const router = express.Router();
 
@@ -32,14 +32,8 @@ router.get('/orderdetails/:id',authMiddleware,getOrderDetails); // id is order i
 router.get('/allreview',authMiddleware,checkAdmin,GetAllReviews)
 router.get('/favoritesmenu',authMiddleware,checkAdmin,favoritesmenu)
 
-router.post('/addhotel',authMiddleware,checkAdmin,createHotel)
-router.post('/addhoteladmin',authMiddleware,checkAdmin,createHotelAdmin)
-router.put('/updatehotel',authMiddleware,checkAdmin,updateHotel)
-router.put('/updatehotelAdmin/:id',authMiddleware,checkAdmin,updateHotelAdmin)
-router.get('/hotel/:id',authMiddleware,checkAdmin,getHotelById)
-router.get('/hotels',authMiddleware,checkAdmin,getAllHotels)
-router.delete('/deletehotel',authMiddleware,checkAdmin,deleteHotel)
-router.delete('/deletehotelAdmin/:id',authMiddleware,checkAdmin,deleteHotelAdmin)
+
+router.use('/hotel',hotelRoute); // hotel routes for admin
 
 router.put('/changeuserrole',authMiddleware,checkAdmin,changeUserRole)
 

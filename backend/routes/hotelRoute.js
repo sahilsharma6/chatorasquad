@@ -1,5 +1,5 @@
 import express from 'express';
-import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom } from '../controllers/hotelController.js';
+import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom, changeRoleToHotel, createHotelAdmin } from '../controllers/hotelController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 
@@ -15,7 +15,8 @@ router.put('/validate/:id',authMiddleware,checkAdmin,validateHotel);
 router.put('/update/:id',authMiddleware,updateHotel);
 
 router.post('/create',createHotel);
-
+router.post('/addhotel',authMiddleware,checkAdmin,createHotelAdmin);
+router.post('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
 router.delete('/delete/:id',authMiddleware,deleteHotel);
 
 

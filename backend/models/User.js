@@ -38,6 +38,14 @@ const userSchema = mongoose.Schema(
     gender:{
       type:String,
     },
+    hotelId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Hotel'
+    },
+    resturantId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'Resturant'
+    }
   },
   {
     timestamps: true,
