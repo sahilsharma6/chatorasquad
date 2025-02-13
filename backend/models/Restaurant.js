@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 // Define the hotel schema
-const RestuarantSchema = new mongoose.Schema(
+const RestaurantSchema = new mongoose.Schema(
   {
     name: { 
       type: String, 
@@ -24,5 +24,5 @@ const RestuarantSchema = new mongoose.Schema(
 );
 
 // Create and export the Hotel model
-const Restuarant = mongoose.model('Restuarant', RestuarantSchema);
-export default Restuarant;
+const Restaurant = mongoose.model('Restaurant', RestaurantSchema);
+export default Restaurant;
