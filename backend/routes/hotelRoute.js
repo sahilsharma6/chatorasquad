@@ -7,9 +7,9 @@ import checkAdmin from '../middlewares/checkAdmin.js';
 const router = express.Router();
 
 
-router.get('/valid-hotels',authMiddleware,getValidatedHotels);
+router.get('/valid-hotels',getValidatedHotels);
 router.get('/all-hotels',authMiddleware,checkAdmin,getAllHotels);
-router.get('/:id',authMiddleware,getHotelById);
+router.get('/:id',getHotelById);
 
 router.put('/validate/:id',authMiddleware,checkAdmin,validateHotel);
 router.put('/update/:id',authMiddleware,updateHotel);

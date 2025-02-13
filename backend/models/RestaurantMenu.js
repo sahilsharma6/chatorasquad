@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const RestuarantMenuSchema = mongoose.Schema(
+const RestaurantMenuSchema = mongoose.Schema(
   {
     
     name: {
@@ -61,6 +61,6 @@ const RestuarantMenuSchema = mongoose.Schema(
   }
 );
 
-const Restuarant = mongoose.model("Restuarant", RestuarantMenuSchema);
+const RestaurantMenu = mongoose.model("RestaurantMenu", RestaurantMenuSchema);
 
-export default Restuarant;
+export default RestaurantMenu;
