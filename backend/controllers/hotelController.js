@@ -99,11 +99,11 @@ export const getAllHotels = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 };
+//roomsdetails also
 
 // Get a single hotel by ID
 export const getHotelById = async (req, res) => {
   const { id } = req.params;
-
   try {
     const hotel = await Hotel.findById(id).populate('userId');
     if (!hotel) {
@@ -115,7 +115,7 @@ export const getHotelById = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 };
-
+//rooms details
 // Update hotel details
 export const updateHotel = async (req, res) => {
   const { id } = req.params;
@@ -339,7 +339,7 @@ export const createHotelAdmin = async (req, res) => {
 //     return res.status(500).json({ message: "Server error", error });
 //   }
 // };
-
+//get all hotel get all rooms all cloud kitchen
 // // Delete a hotel
 // export const deleteHotelAdmin = async (req, res) => {
 //   const { id } = req.params;
