@@ -128,15 +128,18 @@ export const updateHotel = async (req, res) => {
     }
 
     hotel.name = name || hotel.name;
-    hotel.firstName = firstName || hotel.firstName;
-    hotel.lastName = lastName || hotel.lastName;
-    hotel.gender= gender || "";
-    hotel.age = age || hotel.age;
 
+    const user = await User.findById(hotel.userId);
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.gender = gender || "";
+    user.age = age || user.age;
+    await user.save();
     await hotel.save();
     
+    const updatedHotel = await Hotel.findById(id).populate('userId');
 
-    return res.status(200).json(hotel);
+    return res.status(200).json(updatedHotel);
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }
