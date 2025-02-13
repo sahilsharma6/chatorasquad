@@ -17,25 +17,35 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const getUserForHotel = async (req, res) => {
   try {
-    const token = req.body.token;
-  
-    if(!token){
-      res.status(400).json({ message: "User not found" });
+    const cookieToken = req.cookies.token; // Token stored in cookies after login
+    const frontToken = req.body.token || req.headers.authorization?.split(" ")[1]; // Token sent by frontend
+    console.log(cookieToken)
+    console.log(frontToken)
+    if (!cookieToken || !frontToken) {
+      return res.status(400).json({ message: "Both tokens are required" });
     }
-   const id= jwt.verify(token,process.env.JWT_SECRET)
-  console.log(id);
-    const user = await User.findById(id.userId);
-    // const tok=await jwt.sign(token,process.env.JWT_SECRET)
-    // console.log(tok);
-    
-    if (user) {
-      res.status(200).json({user,tok:token});
-    } else {
-      res.status(400).json({ message: "User not found" });
+
+    if (cookieToken !== frontToken) {
+      return res.status(403).json({ message: "Tokens do not match" });
     }
+
+    const decoded = jwt.verify(cookieToken, process.env.JWT_SECRET);
+    console.log("Decoded token:", decoded);
+
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Token is valid", user });
   } catch (error) {
+    console.error("Error in verifyToken:", error);
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
     res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -57,7 +57,7 @@ export const getRestaurantById = async (req, res) => {
     return res.status(500).json({ message: "Server error", error });
   }
 };
-
+// menu
 // Update restaurant details
 export const updateRestaurant = async (req, res) => {
   try {
@@ -95,5 +95,58 @@ export const deleteRestaurant = async (req, res) => {
     return res.status(200).json({ message: "Restaurant deleted successfully." });
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
+  }
+};
+export const createRestaurantAdmin = async (req, res) => {
+  try {
+    const { name, phoneNo, firstName, lastName, email, password, gender } = req.body;
+
+    // Check if all required fields are provided
+    if (!name || !phoneNo || !firstName || !lastName || !email || !password) {
+      console.log(req.body);
+      return res.status(400).json({ message: "Please fill in all fields" });
+    }
+
+    // Check if restaurant already exists
+    const existingRestaurant = await Restuarant.findOne({ name });
+    if (existingRestaurant) {
+      return res.status(400).json({ message: "Restaurant already exists. Use a unique name" });
+    }
+
+    // Check if user already exists with the same email
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists. Use a different email" });
+    }
+
+    // Hash the password for the new user
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      role: 'restaurant', // Set role as restaurant admin
+      gender,
+      phoneNo,
+    });
+
+    // Create the restaurant after creating the user
+    const newRestaurant = new Restuarant({
+      name,
+      phoneNo,
+      userId: newUser._id,
+    });
+
+    newUser.restaurantId = newRestaurant._id;
+
+    // Save the user and restaurant
+    await newUser.save();
+    await newRestaurant.save();
+
+    return res.status(201).json(newRestaurant);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error", error });
   }
 };
