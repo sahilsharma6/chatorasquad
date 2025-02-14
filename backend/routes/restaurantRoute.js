@@ -1,10 +1,9 @@
 import express from 'express';
-import { changeRoleToRestaurant, createRestaurant, createRestaurantAdmin, deleteRestaurant, getAllRestaurants, getRestaurantById, getValidatedRestaurants, updateRestaurant, validateRestaurant } from '../controllers/RestaurantController';
-import authMiddleware from '../middlewares/authMiddleware';
-import checkAdmin from '../middlewares/checkAdmin';
-import router from './hotelRoute';
+import { changeRoleToRestaurant, createRestaurant, createRestaurantAdmin, deleteRestaurant, getAllRestaurants, getRestaurantById, getValidatedRestaurants, updateRestaurant, validateRestaurant } from '../controllers/RestaurantController.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import checkAdmin from '../middlewares/checkAdmin.js';
 
-router = express.Router();
+const router = express.Router();
 
 
 router.get('/valid-restaurants',getValidatedRestaurants);
@@ -21,4 +20,5 @@ router.post('/addrestaurant',authMiddleware,checkAdmin,createRestaurantAdmin);
 router.delete('/delete/:id',authMiddleware,deleteRestaurant); // id is restaurant id
 
 router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToRestaurant); // id is user id
+
 export default router;
