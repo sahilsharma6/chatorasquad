@@ -99,11 +99,11 @@ export const getAllHotels = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 };
+//roomsdetails also
 
 // Get a single hotel by ID
 export const getHotelById = async (req, res) => {
   const { id } = req.params;
-
   try {
     const hotel = await Hotel.findById(id).populate('userId');
     if (!hotel) {
@@ -115,11 +115,12 @@ export const getHotelById = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 };
-
+//rooms details
 // Update hotel details
 export const updateHotel = async (req, res) => {
   const { id } = req.params;
   const { name,firstName,lastName,gender,age} = req.body;
+console.log(req.body);
 
   try {
     const hotel = await Hotel.findById(id);
@@ -128,15 +129,18 @@ export const updateHotel = async (req, res) => {
     }
 
     hotel.name = name || hotel.name;
-    hotel.firstName = firstName || hotel.firstName;
-    hotel.lastName = lastName || hotel.lastName;
-    hotel.gender= gender || "";
-    hotel.age = age || hotel.age;
 
+    const user = await User.findById(hotel.userId);
+    user.firstName = firstName || user.firstName;
+    user.lastName = lastName || user.lastName;
+    user.gender = gender || "";
+    user.age = age || user.age;
+    await user.save();
     await hotel.save();
     
+    const updatedHotel = await Hotel.findById(id).populate('userId');
 
-    return res.status(200).json(hotel);
+    return res.status(200).json(updatedHotel);
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }
@@ -202,6 +206,8 @@ export const createRoom = async (req, res) => {
     if(!hotel){
       return res.status(404).json({message:"Hotel not found"});
     }
+    console.log(room);
+    
     const rooms = await Room.find({hotelId:id});
      rooms.map((x)=>{
        if(x.room===room){
@@ -336,7 +342,7 @@ export const createHotelAdmin = async (req, res) => {
 //     return res.status(500).json({ message: "Server error", error });
 //   }
 // };
-
+//get all hotel get all rooms all cloud kitchen
 // // Delete a hotel
 // export const deleteHotelAdmin = async (req, res) => {
 //   const { id } = req.params;

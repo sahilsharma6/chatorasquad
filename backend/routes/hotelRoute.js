@@ -7,16 +7,16 @@ import checkAdmin from '../middlewares/checkAdmin.js';
 const router = express.Router();
 
 
-router.get('/valid-hotels',authMiddleware,getValidatedHotels);
+router.get('/valid-hotels',getValidatedHotels);
 router.get('/all-hotels',authMiddleware,checkAdmin,getAllHotels);
-router.get('/:id',authMiddleware,getHotelById);
+router.get('/:id',getHotelById);
 
 router.put('/validate/:id',authMiddleware,checkAdmin,validateHotel);
 router.put('/update/:id',authMiddleware,updateHotel);
 
 router.post('/create',createHotel);
 router.post('/addhotel',authMiddleware,checkAdmin,createHotelAdmin);
-router.post('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
+router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
 router.delete('/delete/:id',authMiddleware,deleteHotel);
 
 

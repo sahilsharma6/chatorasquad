@@ -1,8 +1,12 @@
 import mongoose from "mongoose";
 
-const RestuarantMenuSchema = mongoose.Schema(
+const RestaurantMenuSchema = mongoose.Schema(
   {
-    
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Restaurant',  // Link to the Restaurant model
+      required: true,
+    },
     name: {
       type: String,
       required: true,
@@ -49,11 +53,7 @@ const RestuarantMenuSchema = mongoose.Schema(
       required: true,
       default:10,
     },
-    restaurantId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Restaurant',  // Link to the Restaurant model
-        required: true,
-      },
+  
   },
   
   {
@@ -61,6 +61,6 @@ const RestuarantMenuSchema = mongoose.Schema(
   }
 );
 
-const Restuarant = mongoose.model("Restuarant", RestuarantMenuSchema);
+const RestaurantMenu = mongoose.model("RestaurantMenu", RestaurantMenuSchema);
 
-export default Restuarant;
+export default RestaurantMenu;

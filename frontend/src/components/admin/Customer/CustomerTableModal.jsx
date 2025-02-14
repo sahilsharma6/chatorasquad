@@ -6,6 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function CustomerTableModal({ isOpen, onClose, customer }) {
   const [selectedRole, setSelectedRole] = useState(customer.role);
+  const [hotelName,setHotelName]=useState('')
   console.log(selectedRole);
 
 
@@ -26,7 +27,11 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
 
   const handelChangeRole=async ()=>{
     try {
-       const isChanged=await apiClient.put('/admin/changeuserrole',{newRole:selectedRole,userId:customer._id})
+      let roleUrl='/admin/changeuserrole'
+      if(selectedRole!=='user'){
+      roleUrl=  selectedRole ==='hotel' ? '/hotel/changerole/'+customer._id :'/restaurant/changerole/'+customer._id
+      }
+       const isChanged=await apiClient.put(roleUrl,{newRole:selectedRole,userId:customer._id,name:hotelName})
 
        if(isChanged.data.user){
         console.log();
@@ -126,7 +131,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
         </div>
      { selectedRole!=='admin' &&   <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-6 text-gray-800">Update Customer Role</h2>
-      
+      <div>
       <div className="relative bg-gray-100 rounded-lg p-2">
         <motion.div
           className="absolute h-12 bg-orange-500 rounded-md"
@@ -160,8 +165,21 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
             </motion.button>
           ))}
         </div>
+        
       </div>
-      
+    {selectedRole!=='user' &&  <input 
+                type="text"
+                required={true}
+                value={hotelName}
+                onChange={(e) => {
+                  setHotelName(e.target.value);
+                  // setError('');
+                }}
+                placeholder={selectedRole=='hotel'? "Enter Hotel Name " :"Enter Rsturant Name "}
+                className="w-full p-4 border rounded mb-2 focus:outline-none focus:ring-2 focus:ring-orange-400 mt-6"
+              />
+}
+      </div>
       <motion.button
         className="mt-6 w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-medium
           hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"

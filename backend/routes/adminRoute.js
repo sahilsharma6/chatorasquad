@@ -3,10 +3,10 @@ import checkAdmin from '../middlewares/checkAdmin.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import menuRoute from './menuRoute.js';
 import hotelRoute from './hotelRoute.js';
+import restaurantRoute from './restaurantRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
 import { changeUserRole, getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
-import { createRestaurant, deleteRestaurant, getAllRestaurants, getRestaurantById, updateRestaurant } from '../controllers/RestuarantController.js';
 const router = express.Router();
 
 router.get('/cuisines',authMiddleware, checkAdmin,getCuisines);     
@@ -34,21 +34,8 @@ router.get('/favoritesmenu',authMiddleware,checkAdmin,favoritesmenu)
 
 
 router.use('/hotel',hotelRoute); // hotel routes for admin
+router.use('/restaurant',restaurantRoute); // restaurant routes for admin
 
 router.put('/changeuserrole',authMiddleware,checkAdmin,changeUserRole)
-
-router.post('/addrestaurant', authMiddleware, checkAdmin, createRestaurant);
-
-// Update an existing restaurant
-router.put('/updaterestaurant/:id', authMiddleware, checkAdmin, updateRestaurant);
-
-// Get a specific restaurant by ID
-router.get('/restaurant/:id', authMiddleware, checkAdmin, getRestaurantById);
-
-// Get all restaurants
-router.get('/restaurants', authMiddleware, checkAdmin, getAllRestaurants);
-
-// Delete a restaurant
-router.delete('/deleterestaurant/:id', authMiddleware, checkAdmin, deleteRestaurant);
 
 export default router;

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Address from "../models/Address.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import Hotel from "../models/Hotel.js";
 
 export const getUser = async (req, res) => {
   try {
@@ -17,18 +18,19 @@ export const getUser = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const getUserForHotel = async (req, res) => {
   try {
-    const token = req.body.token;
-  
-    if(!token){
-      res.status(400).json({ message: "User not found" });
-    }
+   const token=req.body.token
+   const hotel=req.body.hotel
+   console.log(hotel);
+   
    const id= jwt.verify(token,process.env.JWT_SECRET)
   console.log(id);
-    const user = await User.findById(id.userId);
+    const user = await Hotel.findOne({userId:id.userId,name:hotel})
+    .populate('userId','_id role firstName lastName email phoneNo age phoneNo gender');
     // const tok=await jwt.sign(token,process.env.JWT_SECRET)
-    // console.log(tok);
+    console.log(user);
     
     
     if (user) {
@@ -43,6 +45,10 @@ export const getUserForHotel = async (req, res) => {
       res.status(400).json({ message: "User not found" });
     }
   } catch (error) {
+    console.error("Error in verifyToken:", error);
+    if (error instanceof jwt.JsonWebTokenError) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
     res.status(500).json({ message: "Internal server error" });
   }
 };
