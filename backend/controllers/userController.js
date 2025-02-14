@@ -30,7 +30,14 @@ export const getUserForHotel = async (req, res) => {
     // const tok=await jwt.sign(token,process.env.JWT_SECRET)
     // console.log(tok);
     
+    
     if (user) {
+      res.cookie('token', token, {
+        httpOnly: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 36000000, 
+        sameSite: 'Lax', 
+      });
       res.status(200).json({user,tok:token});
     } else {
       res.status(400).json({ message: "User not found" });
@@ -265,7 +272,9 @@ export const DeleteUser =async()=>{
 }
 export const changeUserRole = async (req, res) => {
   try {
+    
     const { userId, newRole } = req.body; // Assuming new role is passed in request body
+    console.log('kj',userId);
 
     // Validate role
     const validRoles = ['user', 'admin', 'hotel', 'resturant'];

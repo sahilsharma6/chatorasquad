@@ -18,7 +18,7 @@ const CustomerList = () => {
   const [dateFilter, setDateFilter] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 3;
+  const itemsPerPage = 15;
 
   // Fetch customers from API
   useEffect(() => {
