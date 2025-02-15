@@ -37,7 +37,7 @@ const LoginForm = () => {
           setLoggedIn(true);
           const data=res.data.data
           if(data.user.role=='hotel'){
-            window.location.href=`${import.meta.env.VITE_HOTEL_URL}/${data.user.hotel}/profile?token=${data.token}`
+            window.location.href=`${import.meta.env.VITE_HOTEL_URL}/${data.hotel}/profile?token=${data.token}`
             return;
           }
           window.location.href = "/";

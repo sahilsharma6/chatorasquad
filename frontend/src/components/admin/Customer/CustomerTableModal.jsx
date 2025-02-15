@@ -1,12 +1,60 @@
 import { motion } from "framer-motion";
 import { X, MapPin } from "lucide-react";
+import { useState } from "react";
+import apiClient from "../../../services/apiClient";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function CustomerTableModal({ isOpen, onClose, customer }) {
+  const [selectedRole, setSelectedRole] = useState(customer.role);
+  const [hotelName,setHotelName]=useState('')
+  console.log(selectedRole);
 
+
+  
   if (!isOpen) return null;
+  const getHighlightPosition = () => {
+    switch (selectedRole) {
+      case 'user':
+        return '0%';
+      case 'hotel':
+        return '33.33%';
+      case 'resturant':
+        return '66.66%';
+      default:
+        return '0%';
+    }
+  };
 
+  const handelChangeRole=async ()=>{
+    try {
+      let roleUrl='/admin/changeuserrole'
+      if(selectedRole!=='user'){
+      roleUrl=  selectedRole ==='hotel' ? '/hotel/changerole/'+customer._id :'/restaurant/changerole/'+customer._id
+      }
+       const isChanged=await apiClient.put(roleUrl,{newRole:selectedRole,userId:customer._id,name:hotelName})
+
+       if(isChanged.data.user){
+        console.log();
+        toast.success('User Role Changed successfully',
+              {
+                position: "top-right",
+                autoClose: 2000,
+              }
+        
+       )
+      }
+    } catch (error) {
+      toast.info('User Role Changed Failed',{
+        position: "top-right",
+        autoClose: 2000,
+      })
+    }
+  
+
+  }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <ToastContainer />
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -49,7 +97,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
             <div>
               <div className="mb-2">
                 <label className="text-sm text-gray-600">Phone</label>
-                <p className="font-medium">{customer.phone}</p>
+                <p className="font-medium">{customer.phoneNo}</p>
               </div>
               <div>
                 <label className="text-sm text-gray-600">Email</label>
@@ -81,8 +129,68 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
             ))}
           </div>
         </div>
+     { selectedRole!=='admin' &&   <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-6 text-gray-800">Update Customer Role</h2>
+      <div>
+      <div className="relative bg-gray-100 rounded-lg p-2">
+        <motion.div
+          className="absolute h-12 bg-orange-500 rounded-md"
+          layoutId="highlight"
+          initial={false}
+          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+          style={{
+            width: '33.33%',
+            height: '80%',
+            top: '10%',
+            left: getHighlightPosition()
+          }}
+        />
+        
+        <div className="relative grid grid-cols-3 gap-4">
+          {[
+    { id: 'user', label: 'User', icon: '👤' },
+    { id: 'hotel', label: 'Hotel', icon: '🏨' },
+    { id: 'resturant', label: 'Resturant', icon: '🍽️ ' }
+  ].map((role) => (
+            <motion.button
+              key={role.id}
+              onClick={() => setSelectedRole(role.id)}
+              className={`relative z-10 p-3 h  text-center rounded-md transition-colors
+                ${selectedRole === role.id ? 'text-white' : 'text-gray-600 hover:text-gray-800'}`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="text-xl mb-1">{role.icon}</span>
+              <span className="block font-medium">{role.label}</span>
+            </motion.button>
+          ))}
+        </div>
+        
+      </div>
+    {selectedRole!=='user' &&  <input 
+                type="text"
+                required={true}
+                value={hotelName}
+                onChange={(e) => {
+                  setHotelName(e.target.value);
+                  // setError('');
+                }}
+                placeholder={selectedRole=='hotel'? "Enter Hotel Name " :"Enter Rsturant Name "}
+                className="w-full p-4 border rounded mb-2 focus:outline-none focus:ring-2 focus:ring-orange-400 mt-6"
+              />
+}
+      </div>
+      <motion.button
+        className="mt-6 w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-medium
+          hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={handelChangeRole}
+      >
+        Save Changes
+      </motion.button>
+    </div> }
       </motion.div>
-            
     </div>
   );
 }

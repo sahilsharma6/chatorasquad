@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js'; 
+import Hotel from '../models/Hotel.js';
 
 // SignUp Controller
 export const signUp = async (req, res) => {
@@ -9,7 +10,7 @@ export const signUp = async (req, res) => {
     console.log(req.body+ "req reached");
     const { firstName,lastName, email, password, phoneNo,gender,age,role } = req.body;
 
-    if (!firstName || !lastName || !email || !password || !phoneNo || !role ) {
+    if (!firstName || !lastName || !email || !password || !phoneNo  ) {
       return res.status(400).json({ message: 'Please provide all the required fields' });
     }
 
@@ -27,7 +28,7 @@ export const signUp = async (req, res) => {
       lastName,
       email,
       gender,
-      role,
+      role:role || 'user',
       age,
       password: hashedPassword,
       phoneNo,
@@ -60,14 +61,19 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET || "secretkey", {
       expiresIn: "24h",
     });
+    const getHotel=await Hotel.findOne({userId:user._id})
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, 
       maxAge: 24 * 60 * 60 * 1000, 
       sameSite: "None", 
-      domain: "http://localhost:5174",
+      // domain: "http://localhost:5174",
     });
-    return res.status(200).json({ success: true, message: "Login successful", data: { user, token } });
+    if(getHotel){
+
+      return res.status(200).json({ success: true, message: "Login successful", data: { user, token,hotel:getHotel.name } });
+    }
+    res.status(200).json({ success: true, message: "Login successful", data: { user, token, } });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Something went wrong. Please try again later." });
