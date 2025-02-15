@@ -111,6 +111,7 @@ export const getHotelById = async (req, res) => {
 export const updateHotel = async (req, res) => {
   const { id } = req.params;
   const { name,firstName,lastName,gender,age} = req.body;
+console.log(req.body);
 
   try {
     const hotel = await Hotel.findById(id);
@@ -206,6 +207,8 @@ export const createRoom = async (req, res) => {
     if(!hotel){
       return res.status(404).json({message:"Hotel not found"});
     }
+    console.log(room);
+    
     const rooms = await Room.find({hotelId:id});
      rooms.map((x)=>{
        if(x.room===room){

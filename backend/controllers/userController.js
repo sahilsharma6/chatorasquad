@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Address from "../models/Address.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import Hotel from "../models/Hotel.js";
 
 export const getUser = async (req, res) => {
   try {
@@ -20,27 +21,29 @@ export const getUser = async (req, res) => {
 
 export const getUserForHotel = async (req, res) => {
   try {
-    const cookieToken = req.cookies.token; // Token stored in cookies after login
-    const frontToken = req.body.token || req.headers.authorization?.split(" ")[1]; // Token sent by frontend
-    console.log(cookieToken)
-    console.log(frontToken)
-    if (!cookieToken || !frontToken) {
-      return res.status(400).json({ message: "Both tokens are required" });
+   const token=req.body.token
+   const hotel=req.body.hotel
+   console.log(hotel);
+   
+   const id= jwt.verify(token,process.env.JWT_SECRET)
+  console.log(id);
+    const user = await Hotel.findOne({userId:id.userId,name:hotel})
+    .populate('userId','_id role firstName lastName email phoneNo age phoneNo gender');
+    // const tok=await jwt.sign(token,process.env.JWT_SECRET)
+    console.log(user);
+    
+    
+    if (user) {
+      res.cookie('token', token, {
+        httpOnly: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 36000000, 
+        sameSite: 'Lax', 
+      });
+      res.status(200).json({user,tok:token});
+    } else {
+      res.status(400).json({ message: "User not found" });
     }
-
-    if (cookieToken !== frontToken) {
-      return res.status(403).json({ message: "Tokens do not match" });
-    }
-
-    const decoded = jwt.verify(cookieToken, process.env.JWT_SECRET);
-    console.log("Decoded token:", decoded);
-
-    const user = await User.findById(decoded.userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json({ message: "Token is valid", user });
   } catch (error) {
     console.error("Error in verifyToken:", error);
     if (error instanceof jwt.JsonWebTokenError) {
@@ -275,7 +278,9 @@ export const DeleteUser =async()=>{
 }
 export const changeUserRole = async (req, res) => {
   try {
+    
     const { userId, newRole } = req.body; // Assuming new role is passed in request body
+    console.log('kj',userId);
 
     // Validate role
     const validRoles = ['user', 'admin', 'hotel', 'resturant'];

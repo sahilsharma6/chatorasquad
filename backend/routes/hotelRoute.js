@@ -16,7 +16,7 @@ router.put('/update/:id',authMiddleware,updateHotel);
 
 router.post('/create',createHotel);
 router.post('/addhotel',authMiddleware,checkAdmin,createHotelAdmin);
-router.post('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
+router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
 router.delete('/delete/:id',authMiddleware,deleteHotel);
 
 

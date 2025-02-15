@@ -13,7 +13,7 @@ const SignupForm = () => {
     password: "",
     phoneNo: "",
     confirmPassword: "",
-    role: ''
+    // role: ''
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -49,11 +49,11 @@ const SignupForm = () => {
     } else if (!/^[0-9]{10}$/.test(formData.phoneNo)) {
       newErrors.phoneNo = "Invalid phone number. It must be 10 digits long and contain only numbers";
     }
-    if (!formData.role) {
-      console.log('sd');
+    // if (!formData.role) {
+    //   console.log('sd');
       
-      newErrors.role = 'Role Must be Admin User or hotel'
-    }
+    //   newErrors.role = 'Role Must be Admin User or hotel'
+    // }
 
 
     setErrors(newErrors);
@@ -240,7 +240,7 @@ console.log(errors);
                   </p>
                 )}
               </div>
-              <div className="mb-4">
+              {/*<div className="mb-4">
                 <div className="flex items-center border-orange-300 py-2">
                   <User className="text-orange-500 mr-3" />
                   <label className="mr-4"> Admin
@@ -277,7 +277,7 @@ console.log(errors);
                 {errors.role && (
                   <p className="text-red-500 text-xs mt-1">{errors.role}</p>
                 )}
-              </div>
+               </div>  */}
               <button
                 type="submit"
                 className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition duration-300"
