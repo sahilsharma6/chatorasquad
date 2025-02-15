@@ -76,16 +76,7 @@ export const validateHotel = async (req, res) => {
   }
 };
 
-// Get all validated hotels
-export const getValidatedHotels = async (req, res) => {
-  try {
-    const hotels = await Hotel.find({ isValid: true }).populate('userId');
-    return res.status(200).json(hotels);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "internal Server error", error });
-  }
-};
+
 
 
 
@@ -162,7 +153,17 @@ export const deleteHotel = async (req, res) => {
 
 
 // change role to hotel 
-
+// Get all validated hotels
+export const getValidatedHotels = async (req, res) => {
+  try {
+    const hotels = await Hotel.find({ isValid: true })
+    // .populate('userId');
+    return res.status(200).json(hotels);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "internal Server error", error });
+  }
+};
 export const changeRoleToHotel = async (req, res) => {
   try {
     const {id}=req.params;
