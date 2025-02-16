@@ -134,34 +134,44 @@ export const createRestaurantAdmin = async (req, res) => {
 export const changeRoleToRestaurant = async (req, res) => {
   try {
     const { id } = req.params;
-    const {name} = req.body;
+    const { name } = req.body;
+
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    user.role = 'restaurant';
-    
-    const restaurant = await Restaurant.findOne({name});
-    if (!restaurant) {
-      return res.status(404).json({ message: "Restaurant not found" });
+
+    // Check if the user already has a restaurant
+    const existingRestaurant = await Restaurant.findOne({ userId: user._id });
+    if (existingRestaurant) {
+      return res.status(400).json({ message: "User already has a restaurant" });
     }
 
-    const newRestaurant = new Restaurant({
-      name,
-      userId: user._id,
-      isValid: true,
-    });
+    user.role = "restaurant";
 
-    user.restaurantId = newRestaurant._id;
+    // Check if a restaurant with the given name already exists
+    let restaurant = await Restaurant.findOne({ name });
+    if (!restaurant) {
+      restaurant = new Restaurant({
+        name,
+        userId: user._id,
+        isValid: true,
+      });
+
+      await restaurant.save();
+    }
+
+    user.restaurantId = restaurant._id;
     await user.save();
-    await newRestaurant.save();
-    return res.status(201).json(newRestaurant);
-  }
-  catch (error) {
+
+    return res.status(201).json(restaurant);
+  } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "internal Server error", error });
+    return res.status(500).json({ message: "Internal Server Error", error });
   }
 };
+
+
 
 
 export const getValidatedRestaurants = async (req, res) => {

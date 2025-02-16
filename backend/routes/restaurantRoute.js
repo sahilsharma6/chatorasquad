@@ -27,7 +27,7 @@ router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToRestaurant); 
 
 router.get('/menus/:id',authMiddleware,getRestaurantMenu); // id is restaurant id
 router.get('/menus/:id',authMiddleware,getRestaurantMenuById); // id is restaurantMenu id
-router.post('/add-menu/:id',authMiddleware,uploadMiddleware,addRestaurantMenu); // id is restaurant id
+router.post('/add-menu/:id',authMiddleware,checkAdmin,uploadMiddleware,addRestaurantMenu); // id is restaurant id
 
 router.delete('/delete-menu/:id',authMiddleware,deleteRestaurantMenu); // id is restaurantMenu id
 router.put('/update-menu/:id',authMiddleware,uploadMiddleware,updateRestaurantMenu); // id is restaurantMenu id

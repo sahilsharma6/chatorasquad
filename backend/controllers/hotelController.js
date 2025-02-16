@@ -56,7 +56,34 @@ export const createHotel = async (req, res) => {
   }
 };
 
+export const setHotelPassword = async (req, res) => {
+  try {
+    const { id } = req.params; // Get hotel ID from request params
+    const { password } = req.body; // Get new password from request body
 
+    if (!password) {
+      return res.status(400).json({ message: 'Password is required' });
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Find the hotel by ID and update the password
+    const updatedHotel = await Hotel.findByIdAndUpdate(
+      id,
+      { protected_password: hashedPassword },
+      { new: true }
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: 'Hotel not found' });
+    }
+
+    res.status(200).json({ message: 'Password set successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
+  }
+};
 // validate hotel
 
 export const validateHotel = async (req, res) => {
@@ -105,7 +132,7 @@ export const getHotelById = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: "internal Server error", error });
   }
-};
+}
 //rooms details
 // Update hotel details
 export const updateHotel = async (req, res) => {
@@ -167,35 +194,44 @@ export const getValidatedHotels = async (req, res) => {
 };
 export const changeRoleToHotel = async (req, res) => {
   try {
-    const {id}=req.params;
-    const {name}=req.body;
+    const { id } = req.params;
+    const { name } = req.body;
+
     const user = await User.findById(id);
-    if(!user){
-      return res.status(404).json({message:"User not found"});
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const hotel = await Hotel.findOne({name});
-    if(hotel){
-      return res.status(400).json({message:"Hotel already exists"});
+    // Check if the user already has a hotel
+    const existingHotel = await Hotel.findOne({ userId: user._id });
+    if (existingHotel) {
+      return res.status(400).json({ message: "User already has a hotel" });
+    }
+
+    // Check if a hotel with the given name already exists
+    const hotelExists = await Hotel.findOne({ name });
+    if (hotelExists) {
+      return res.status(400).json({ message: "Hotel already exists" });
     }
 
     const newHotel = new Hotel({
       name,
-      userId:id,
-      isValid:true,
+      userId: user._id,
+      isValid: true,
     });
 
-    user.role = 'hotel';
+    user.role = "hotel";
     user.hotelId = newHotel._id;
     await user.save();
     await newHotel.save();
+
     return res.status(201).json(newHotel);
-  }
-  catch(error){
+  } catch (error) {
     console.log(error);
-    return res.status(500).json({message:"internal Server error",error});
+    return res.status(500).json({ message: "Internal Server Error", error });
   }
-}
+};
+
 
 // create a room 
 
@@ -232,21 +268,36 @@ export const createRoom = async (req, res) => {
 // get all rooms of a hotel
 
 export const getRooms = async (req, res) => {
-  try{
-    const {id}=req.params;
+  try {
+    const { id } = req.params; // Get hotel ID from URL params
+    const { password } = req.body; // Get password from request body
+
+    // Find the hotel by ID
     const hotel = await Hotel.findById(id);
-    if(!hotel){
-      return res.status(404).json({message:"Hotel not found"});
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
     }
 
-    const rooms = await Room.find({hotelId:id});
+    // Check if password is provided
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
+    // Compare the provided password with the stored hashed password
+    const isMatch = await bcrypt.compare(password, hotel.protected_password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // If password matches, retrieve rooms
+    const rooms = await Room.find({ hotelId: id });
     return res.status(200).json(rooms);
+    
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
-  catch(error){
-    console.log(error);
-    return res.status(500).json({message:"internal Server error",error});
-  }
-}
+};
 
 // get a single room of a hotel
 

@@ -2,7 +2,7 @@ import RestaurantMenu from "../models/RestaurantMenu.js";
 import RestaurantCuisine from "../models/RestaurantCuisine.js";
 import fs from "fs";
 import path from "path";
-
+import Restaurant from "../models/Restaurant.js";
 // Create a new restaurant menu
 
 
@@ -12,11 +12,11 @@ export const addRestaurantMenu = async (req, res) => {
         const { name, type, sellingPrice, discountedPrice, description, isAvailable, cuisine,quantity,title,restaurantId } = req.body;
 
         // Basic validation
-        if (!name || !type || !sellingPrice || !description || !cuisine || restaurantId) {
+        if (!name || !type || !sellingPrice || !description || !cuisine || !restaurantId) {
             return res.status(400).json({ message: "Name, type, selling price, description, and cuisine are required" });
         }
 
-        const images = req.files.map(file => file.path);
+        const images = req.files ? req.files.map(file => file.path) : [];
 
         const findRestaurant = await RestaurantCuisine.findOne({ _id: restaurantId });
         if (!findRestaurant) {

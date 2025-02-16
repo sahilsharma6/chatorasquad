@@ -74,6 +74,27 @@ export const getUsers = async (req, res) => {
   }
 };
 
+//getuserbyid
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract user ID from URL params
+
+    // Step 1: Find the user by ID, excluding the password field
+    const user = await User.findById(id, { password: 0 });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Step 2: Fetch the addresses for the user
+    const addresses = await Address.find({ userid: user._id }, { userId: 0 });
+
+    // Step 3: Return the user data along with their addresses
+    res.status(200).json({ ...user.toObject(), addresses });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ message: "Internal server error", error: error.message });
+  }
+};
 export const UpdatePassword = async (req, res) => {
   try {
     const id = req.user._id;
