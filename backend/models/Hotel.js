@@ -33,6 +33,12 @@ const hotelSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User', 
     },
+    protected_password: {
+      type: String,
+      required: true,
+      trim: true,
+      default: ''
+    }
   },
   {
     timestamps: true

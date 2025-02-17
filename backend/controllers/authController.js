@@ -67,7 +67,7 @@ export const login = async (req, res) => {
       secure: true, 
       maxAge: 24 * 60 * 60 * 1000, 
       sameSite: "None", 
-      // domain: "http://localhost:5174",
+      domain: "",
     });
     if(getHotel){
 
