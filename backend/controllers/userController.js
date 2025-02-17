@@ -287,14 +287,17 @@ export const getAddresses = async (req, res) => {
   
 };
 
-export const DeleteUser =async()=>{
+export const DeleteUser =async(req,res)=>{
   try {
     const email=req.body.email;
+    // console.log(req.body);
+    
+    console.log(email);
+    
     const isDeleted=await User.findOneAndDelete({email})
     res.status(200).json(isDeleted);
-
   } catch (error) {
-    
+    res.status(500).json({ message: "Internal server error" });
   }
 }
 export const changeUserRole = async (req, res) => {
@@ -342,3 +345,4 @@ export const changeUserRole = async (req, res) => {
     });
   }
 };
+

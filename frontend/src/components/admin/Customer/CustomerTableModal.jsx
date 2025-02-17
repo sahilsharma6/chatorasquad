@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { X, MapPin } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import apiClient from "../../../services/apiClient";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -24,6 +24,24 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
         return '0%';
     }
   };
+  useEffect(() => {
+    try {
+      async function fetchUser(url) {
+        const response = await apiClient.get(url);
+        if(!response.data) return
+        console.log(response.data);
+        
+        setHotelName(response.data.name)
+      }
+
+      if(selectedRole!=='user' && customer._id && customer.role!=='admin'){ 
+        const url = selectedRole === 'hotel' ? `/hotel/${customer._id}` : `/restaurant/${customer._id}`;
+        fetchUser(url);
+      }
+    } catch (error) {
+      
+    }
+  },[selectedRole,customer._id,customer.role]);
 
   const handelChangeRole=async ()=>{
     try {
@@ -34,7 +52,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
        const isChanged=await apiClient.put(roleUrl,{newRole:selectedRole,userId:customer._id,name:hotelName})
 
        if(isChanged.data.user){
-        console.log();
+        // console.log();
         toast.success('User Role Changed successfully',
               {
                 position: "top-right",

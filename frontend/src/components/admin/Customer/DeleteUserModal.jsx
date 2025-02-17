@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, X } from 'lucide-react';
+import apiClient from '../../../services/apiClient';
+import { toast, ToastContainer } from 'react-toastify';
 
 const DeleteUserModal = ({deleteEmail,isOpen,setIsOpen}) => {
   
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+console.log(email);
 
-  const handleDelete = () => {
+  const handleDelete =async () => {
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -16,8 +19,16 @@ const DeleteUserModal = ({deleteEmail,isOpen,setIsOpen}) => {
     }
 
     // TODO: Implement actual delete user logic
-    console.log('Deleting user with email:', email);
+    console.log(email);
     
+    const res= await apiClient.put(`/admin/user/delete`,{email});
+    if(!res)return setError('Invalid email');
+    console.log('Deleting user with email:', email);
+    toast.success('User Deleted successfully',{
+      position: "top-right",
+      autoClose: 2000,
+    });
+    setTimeout(()=> window.location.reload(),2000);
     // Reset state and close modal
     setEmail('');
     setError('');
@@ -29,6 +40,7 @@ const DeleteUserModal = ({deleteEmail,isOpen,setIsOpen}) => {
       
 
       <AnimatePresence>
+        <ToastContainer />
         {isOpen && (
           <motion.div 
             initial={{ opacity: 0 }}

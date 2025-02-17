@@ -123,7 +123,7 @@ export const getAllHotels = async (req, res) => {
 export const getHotelById = async (req, res) => {
   const { id } = req.params;
   try {
-    const hotel = await Hotel.findById(id).populate('userId');
+    const hotel = await Hotel.findOne({userId:id}).populate('userId');
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }

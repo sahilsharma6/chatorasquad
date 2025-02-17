@@ -17,7 +17,14 @@ router.post('/addpassword/:id', authMiddleware, checkAdmin, setHotelPassword);
 router.post('/create', createHotel);
 router.post('/addhotel', authMiddleware, checkAdmin, createHotelAdmin);
 router.put('/changerole/:id', authMiddleware, checkAdmin, changeRoleToHotel); // id is user id
-router.delete('/delete/:id', authMiddleware, deleteHotel);
+// router.delete('/delete/:id', authMiddleware, deleteHotel);
+router.put('/validate/:id',authMiddleware,checkAdmin,validateHotel);
+router.put('/update/:id',authMiddleware,updateHotel);
+router.post('/addpassword/:id',authMiddleware,setHotelPassword);
+router.post('/create',createHotel);
+router.post('/addhotel',authMiddleware,checkAdmin,createHotelAdmin);
+router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
+router.delete('/delete/:id',authMiddleware,deleteHotel);
 
 
 router.get('/rooms/:id', getRooms); // id is hotel id
