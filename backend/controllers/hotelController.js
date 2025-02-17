@@ -66,19 +66,15 @@ export const setHotelPassword = async (req, res) => {
     }
 
     // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Find the hotel by ID and update the password
     const updatedHotel = await Hotel.findByIdAndUpdate(
       id,
-      { protected_password: hashedPassword },
+      { protected_password: password },
       { new: true }
     );
-
     if (!updatedHotel) {
       return res.status(404).json({ message: 'Hotel not found' });
     }
-
     res.status(200).json({ message: 'Password set successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Internal Server Error', error: error.message });
@@ -269,30 +265,13 @@ export const createRoom = async (req, res) => {
 
 export const getRooms = async (req, res) => {
   try {
-    const { id } = req.params; // Get hotel ID from URL params
-    const { password } = req.body; // Get password from request body
-
-    // Find the hotel by ID
+    const { id } = req.params;
     const hotel = await Hotel.findById(id);
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
-
-    // Check if password is provided
-    if (!password) {
-      return res.status(400).json({ message: "Password is required" });
-    }
-
-    // Compare the provided password with the stored hashed password
-    const isMatch = await bcrypt.compare(password, hotel.protected_password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid password" });
-    }
-
-    // If password matches, retrieve rooms
     const rooms = await Room.find({ hotelId: id });
     return res.status(200).json(rooms);
-    
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal Server Error", error: error.message });
@@ -318,6 +297,38 @@ export const deleteRoom = async (req, res) => {
     return res.status(500).json({message:"internal Server error",error});
   }
 }
+
+export const getRoomById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ message: "Password is required" });
+    }
+
+    // Fetch the room
+    const room = await Room.findById(id);
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    // Fetch the associated hotel
+    const hotel = await Hotel.findById(room.hotelId);
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+    if (password!=hotel.protected_password) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    return res.status(200).json(room);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
 
 
 
