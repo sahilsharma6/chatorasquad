@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 router.get('/valid-hotels', getValidatedHotels);
-router.get('/all-hotels', authMiddleware, checkAdmin, getAllHotels);
+router.get('/all-hotels', getAllHotels);
 router.get('/:id', getHotelById);
 
 router.put('/validate/:id', authMiddleware, checkAdmin, validateHotel);
@@ -26,8 +26,8 @@ router.post('/addhotel',authMiddleware,checkAdmin,createHotelAdmin);
 router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToHotel); // id is user id
 router.delete('/delete/:id',authMiddleware,deleteHotel);
 
-router.post('/roomsbyid/:id',authMiddleware,getRoomById)
-router.get('/rooms/:id',authMiddleware,getRooms); // id is hotel id
+router.post('/roomsbyid/:id',getRoomById)
+router.get('/rooms/:id',getRooms); // id is hotel id
 router.post('/add-room/:id',authMiddleware,createRoom); // id is hotel id
 router.delete('/delete-room/:id',authMiddleware,deleteRoom); // id is room id
 

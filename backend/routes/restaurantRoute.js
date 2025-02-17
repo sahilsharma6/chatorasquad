@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.get('/valid-restaurants',getValidatedRestaurants);
-router.get('/all-restaurants',authMiddleware,checkAdmin,getAllRestaurants);
+router.get('/all-restaurants',getAllRestaurants);
 router.get('/:id',getRestaurantById);
 
 
@@ -25,8 +25,8 @@ router.put('/changerole/:id',authMiddleware,checkAdmin,changeRoleToRestaurant); 
 
 
 
-router.get('/menus/:id',authMiddleware,getRestaurantMenu); // id is restaurant id
-router.get('/menus/:id',authMiddleware,getRestaurantMenuById); // id is restaurantMenu id
+router.get('/menus/:id',getRestaurantMenu); // id is restaurant id
+router.get('/menus/:id',getRestaurantMenuById); // id is restaurantMenu id
 router.post('/add-menu/:id',authMiddleware,checkAdmin,uploadMiddleware,addRestaurantMenu); // id is restaurant id
 
 router.delete('/delete-menu/:id',authMiddleware,deleteRestaurantMenu); // id is restaurantMenu id
@@ -34,7 +34,7 @@ router.put('/update-menu/:id',authMiddleware,uploadMiddleware,updateRestaurantMe
 
 
 router.post('/add-cuisine/:id',authMiddleware,addRestaurantCuisine); // id is restaurant id
-router.get('/cuisines/:id',authMiddleware,getRestaurantCuisine); // id is restaurant id
+router.get('/cuisines/:id',getRestaurantCuisine); // id is restaurant id
 router.put('/update-cuisine/:id',authMiddleware,updateRestaurantCuisine); // id is restaurantCuisine id
 router.delete('/delete-cuisine/:id',authMiddleware,deleteRestaurantCuisine); // id is restaurantCuisine id
 
