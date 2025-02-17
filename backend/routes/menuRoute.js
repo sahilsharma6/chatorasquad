@@ -2,7 +2,7 @@ import express from 'express';
 import authMiddleware from  '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import {addMenu,addReview,deleteMenu,deleteReview,getAllMenu,getAvailableMenu,getDairyAndBeveragesMenu,getMenuDetails,getRating,getReview,getReviws,getTrendingMenu,updateMenu,updateMenuAvailability, updatePrice, updateReview} from '../controllers/menuController.js';
-import { checkdeliveryaddress } from '../controllers/orderController.js';
+import { checkdeliveryaddress, getItemsWithCategory } from '../controllers/orderController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
 const router = express.Router();
 
@@ -28,5 +28,10 @@ router.delete('/deletereview/:id',authMiddleware,deleteReview);
 router.put('/updatereview/:id',authMiddleware,updateReview); 
 router.get('/getreview/:menuid',authMiddleware,getReview)
 router.get('/rating/:id',getRating);
+
+
+// get cuisine with items
+router.get('/getItemsWithCategory', getItemsWithCategory);
+
 
 export default router;
