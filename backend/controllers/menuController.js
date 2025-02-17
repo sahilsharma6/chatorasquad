@@ -29,6 +29,10 @@ console.log(title);
             title
         });
 
+        const cuisine_item = await Cuisine.findOne({ name: cuisine });
+         const menu_item = await Cuisine.findByIdAndUpdate({ _id: cuisine_item._id }, { $push: { items: menu._id } });
+
+         await cuisine_item.save();
         await menu.save();
         res.status(201).json({ message: "Menu added successfully" });
     } catch (error) {

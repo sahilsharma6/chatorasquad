@@ -639,3 +639,12 @@ export const favoritesmenu=async (req,res)=>{
   }
 
 }
+
+export const getItemsWithCategory = async (req, res) => {
+  try {
+    const cuisine = await Cuisine.find().populate('items');
+    res.status(200).json(cuisine);
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
