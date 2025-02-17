@@ -5,7 +5,7 @@ import menuRoute from './menuRoute.js';
 import hotelRoute from './hotelRoute.js';
 import restaurantRoute from './restaurantRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
-import { changeUserRole, getUsers } from '../controllers/userController.js';
+import { changeUserRole, DeleteUser, getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.put('/updatedeliveryLocation/:id',authMiddleware,checkAdmin,updatedeliver
 router.use('/menu', menuRoute); // menu routes for admin
 
 router.use("/allusers",authMiddleware,checkAdmin,getUsers); // get all users
-router.delete('/user/delete/:id',authMiddleware,checkAdmin)
+router.put('/user/delete',authMiddleware,checkAdmin,DeleteUser)
 
 router.get('/orders',authMiddleware,Orders)
 router.get('/getallorders/:id',authMiddleware,getOrders); // id is user id
