@@ -1,4 +1,8 @@
+import Hotel from "../models/Hotel.js";
 import Restaurant from "../models/Restaurant.js";
+import RestaurantMenu from "../models/RestaurantMenu.js";
+import RestaurantOrder from "../models/RestuarantOrder.js";
+import Room from "../models/Room.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 
@@ -257,5 +261,119 @@ export const deleteRestaurant = async (req, res) => {
     return res.status(200).json({ message: "Restaurant deleted successfully." });
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
+  }
+};
+
+
+export const createOrder = async (req, res) => {
+  try {
+    const { hotelId, roomNumber, orderItems } = req.body;
+
+    // Validate request data
+    if (!hotelId || !roomNumber || !orderItems || orderItems.length === 0) {
+      return res.status(400).json({ message: "All fields are required!" });
+    }
+
+    // Check if the hotel exists
+    const hotel = await Hotel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found!" });
+    }
+
+    // Check if the room exists in the given hotel and populate the hotel details
+    const room = await Room.findOne({ _id: roomNumber, hotelId: hotelId }).populate('hotelId');
+    if (!room) {
+      return res.status(404).json({ message: "Room not found in the given hotel!" });
+    }
+
+    // Calculate total price
+    let totalPrice = 0;
+    for (const item of orderItems) {
+      const menuItem = await RestaurantMenu.findById(item.menuItem);
+      if (!menuItem) {
+        return res.status(404).json({ message: `Menu item with ID ${item.menuItem} not found!` });
+      }
+      totalPrice += menuItem.sellingPrice * item.quantity;
+    }
+
+    // Create new order and populate menu details
+    const newOrder = new RestaurantOrder({
+      hotelId,
+      roomNumber,
+      orderItems,
+      totalPrice,
+    });
+
+    await newOrder.save();
+
+    // Populate the order items with menu details
+    const populatedOrder = await RestaurantOrder.findById(newOrder._id)
+      .populate({
+        path: 'orderItems.menuItem',
+        model: 'RestaurantMenu',
+      });
+
+    // Send response with order, hotel, room, and menu details
+    res.status(201).json({
+      message: "Order placed successfully!",
+      order: populatedOrder,
+      hotel: {
+        _id: room.hotelId._id, // Populated hotel from room's hotelId reference
+        name: room.hotelId.name, // Assuming 'name' is a field in the hotel schema
+      },
+      room: {
+        _id: room._id,
+        roomNumber: room.roomNumber,
+        roomDetails: room.room, // Example room field
+      },
+      // menuItems: populatedOrder.orderItems.map(item => ({
+      //   menuItem: item.menuItem, // Populated menu item details
+      //   quantity: item.quantity,
+      // })),
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error!", error: error.message });
+  }
+};
+
+export const getOrders = async (req, res) => {
+  try {
+    // Retrieve all orders without populating any fields
+    const orders = await RestaurantOrder.find();
+
+    // Check if no orders exist
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found!' });
+    }
+
+    // Send back the orders
+    res.status(200).json({
+      message: 'Orders retrieved successfully!',
+      orders: orders,
+    });
+  } catch (error) {
+    console.error(error);  // Log the error to the server console for debugging
+    res.status(500).json({ message: 'Server error!', error: error.message });
+  }
+};
+export const getOrdersByRestaurantId = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const orders = await RestaurantOrder.find({ restaurantId: restaurantId })
+      .populate({
+        path: 'orderItems.menuItem',
+        select: 'name description sellingPrice',
+      })
+      .exec();
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this restaurant!' });
+    }
+    res.status(200).json({
+      message: 'Orders retrieved successfully!',
+      orders: orders,
+    });
+  } catch (error) {
+    console.error(error);  // Log the error to the server console for debugging
+    res.status(500).json({ message: 'Server error!', error: error.message });
   }
 };
