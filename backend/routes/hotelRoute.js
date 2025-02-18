@@ -1,5 +1,5 @@
 import express from 'express';
-import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom, changeRoleToHotel, createHotelAdmin, setHotelPassword, getRoomById, Checkpassword } from '../controllers/hotelController.js';
+import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom, changeRoleToHotel, createHotelAdmin, setHotelPassword, getRoomById, Checkpassword, getHotelByName } from '../controllers/hotelController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import { createOrder, getOrders, getOrdersByRestaurantId } from '../controllers/RestaurantController.js';
@@ -29,4 +29,8 @@ router.delete('/delete-room/:id',authMiddleware,deleteRoom); // id is room id
 router.post('/checkpassword/:id',Checkpassword)
 router.post('/createorder',createOrder)
 router.get('/getorders/:id',getOrdersByRestaurantId)
+
+
+
+router.get('/hotelName/:hotelName', getHotelByName)
 export default router;
