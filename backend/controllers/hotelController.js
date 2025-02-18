@@ -119,7 +119,7 @@ export const getAllHotels = async (req, res) => {
 export const getHotelById = async (req, res) => {
   const { id } = req.params;
   try {
-    const hotel = await Hotel.findOne({userId:id}).populate('userId');
+    const hotel = await Hotel.findOne({_id:id}).populate('userId');
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
@@ -303,10 +303,6 @@ export const getRoomById = async (req, res) => {
     const { id } = req.params;
     const { password } = req.body;
 
-    if (!password) {
-      return res.status(400).json({ message: "Password is required" });
-    }
-
     // Fetch the room
     const room = await Room.findById(id);
     if (!room) {
@@ -330,6 +326,38 @@ export const getRoomById = async (req, res) => {
 };
 
 
+
+
+export const Checkpassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    // Fetch the room
+    const room = await Room.findById(id);
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    // Fetch the associated hotel
+    const hotel = await Hotel.findById(room.hotelId);
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    // Check the password
+    if (password !== hotel.protected_password) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // If password is correct, just return the room (no need for additional response)
+    return res.status(200).json(room);
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+};
 
 
 
