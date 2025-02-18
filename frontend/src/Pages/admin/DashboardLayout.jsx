@@ -21,6 +21,7 @@ import AddBlogPage from './AddBlogPage';
 import Category from './Category';
 import EditBlog from './EditBlog';
 import { UserContext } from "../../context/UserContext";
+import HotelOrders from './HotelOrders';
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -64,6 +65,7 @@ const DashboardLayout = () => {
             <Route path='blogs/add' element={<AddBlogPage />} />
             <Route path='blogs/categories' element={<Category />} />
             <Route path='blogs/edit/:blogId' element={<EditBlog />} />
+            <Route path='hotelorders' element={<HotelOrders />} />
           </Routes>
         </main>
       </div>
