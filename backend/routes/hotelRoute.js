@@ -2,6 +2,7 @@ import express from 'express';
 import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom, changeRoleToHotel, createHotelAdmin, setHotelPassword, getRoomById } from '../controllers/hotelController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
+import { createOrder, getOrders, getOrdersByRestaurantId } from '../controllers/RestaurantController.js';
 
 
 const router = express.Router();
@@ -31,4 +32,7 @@ router.get('/rooms/:id',getRooms); // id is hotel id
 router.post('/add-room/:id',authMiddleware,createRoom); // id is hotel id
 router.delete('/delete-room/:id',authMiddleware,deleteRoom); // id is room id
 
+
+router.post('/createorder',createOrder)
+router.get('/getorders/:id',getOrdersByRestaurantId)
 export default router;
