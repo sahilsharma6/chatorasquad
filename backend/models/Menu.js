@@ -65,6 +65,8 @@ const MenuSchema = mongoose.Schema(
 MenuSchema.post('find', function (docs) {
   const now = new Date();
   const tomorrow = new Date(now);
+  console.log(tomorrow);
+  
   tomorrow.setDate(now.getDate() - 1); // Set 'tomorrow' to one day in the future
   docs.forEach(doc => {
     if (tomorrow > doc.offerDates.end) {

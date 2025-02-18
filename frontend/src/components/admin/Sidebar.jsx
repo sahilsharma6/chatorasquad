@@ -13,7 +13,8 @@ import {
   Activity,
   Settings,
   BadgeHelp,
-  LogOut
+  LogOut,
+  Hotel
 } from "lucide-react";
 import { MdOutlinePreview } from "react-icons/md";
 import { GiOpenedFoodCan } from "react-icons/gi";
@@ -52,6 +53,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isDesktop, user }) => {
   const sidebarItems = [
     { icon: Home, label: "Dashboard", path: "/admin" },
     { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
+    { icon: Hotel, label: "Hotel Orders", path: "/admin/hotelorders" },
     {
       icon: Book,
       label: "Menu",

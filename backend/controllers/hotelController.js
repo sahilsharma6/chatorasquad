@@ -58,6 +58,7 @@ export const createHotel = async (req, res) => {
 
 export const setHotelPassword = async (req, res) => {
   try {
+    console.log('nkjdsa');
     const { id } = req.params; // Get hotel ID from request params
     const { password } = req.body; // Get new password from request body
 
