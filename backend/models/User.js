@@ -45,8 +45,13 @@ const userSchema = mongoose.Schema(
     resturantId:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'Resturant'
+    },
+    AdminrestuarantId:{
+      type:mongoose.Schema.Types.ObjectId,
+      ref:'AdminRestaurantOrder'
     }
   },
+
   {
     timestamps: true,
   }

@@ -2,7 +2,7 @@ import express from 'express';
 import { getHotelById, createHotel, updateHotel, deleteHotel,  getValidatedHotels, getAllHotels, validateHotel, getRooms, createRoom, deleteRoom, changeRoleToHotel, createHotelAdmin, setHotelPassword, getRoomById, Checkpassword, getHotelByName } from '../controllers/hotelController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
-import { createOrder, getOrders, getOrdersByRestaurantId } from '../controllers/RestaurantController.js';
+import { createOrder, getOrders, getOrdersByRestaurantId, getOrdersByRoomId } from '../controllers/RestaurantController.js';
 
 
 const router = express.Router();
@@ -28,7 +28,10 @@ router.delete('/delete-room/:id',authMiddleware,deleteRoom); // id is room id
 
 router.post('/checkpassword/:id',Checkpassword)
 router.post('/createorder',createOrder)
+router.get('/get/orders',getOrders)
 router.get('/getorders/:id',getOrdersByRestaurantId)
+router.get('/getordersbyroomId/:id',getOrdersByRoomId)
+
 
 
 
