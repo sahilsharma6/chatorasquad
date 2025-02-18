@@ -7,7 +7,7 @@ const RestaurantOrderSchema = mongoose.Schema(
         ref: "Hotel", // Links to the RestaurantMenu model
         required: true,
     },
-    roomNumber: {
+    roomId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Room", // Links to the RestaurantMenu model
         required: true,
@@ -32,8 +32,8 @@ const RestaurantOrderSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Preparing", "Delivered", "Cancelled"],
-      default: "Pending",
+      enum: ["Processing","Delivered", "Cancelled"],
+      default: "Processing",
     },
     orderDate: {
       type: Date,

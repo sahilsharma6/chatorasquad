@@ -267,10 +267,10 @@ export const deleteRestaurant = async (req, res) => {
 
 export const createOrder = async (req, res) => {
   try {
-    const { hotelId, roomNumber, orderItems } = req.body;
+    const { hotelId, roomId, orderItems,name,phoneNo} = req.body;
 
     // Validate request data
-    if (!hotelId || !roomNumber || !orderItems || orderItems.length === 0) {
+    if (!hotelId || !roomId || !orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: "All fields are required!" });
     }
 
@@ -281,7 +281,7 @@ export const createOrder = async (req, res) => {
     }
 
     // Check if the room exists in the given hotel and populate the hotel details
-    const room = await Room.findOne({ _id: roomNumber, hotelId: hotelId }).populate('hotelId');
+    const room = await Room.findOne({ _id: roomId, hotelId: hotelId }).populate('hotelId');
     if (!room) {
       return res.status(404).json({ message: "Room not found in the given hotel!" });
     }
@@ -299,13 +299,15 @@ export const createOrder = async (req, res) => {
     // Create new order and populate menu details
     const newOrder = new RestaurantOrder({
       hotelId,
-      roomNumber,
+      roomId,
       orderItems,
       totalPrice,
+      name,
+      phoneNo,
+      status: "Processing",
     });
 
     await newOrder.save();
-
     // Populate the order items with menu details
     const populatedOrder = await RestaurantOrder.findById(newOrder._id)
       .populate({
@@ -323,7 +325,7 @@ export const createOrder = async (req, res) => {
       },
       room: {
         _id: room._id,
-        roomNumber: room.roomNumber,
+        roomId: room.roomId,
         roomDetails: room.room, // Example room field
       },
       // menuItems: populatedOrder.orderItems.map(item => ({
@@ -335,7 +337,8 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ message: "Server error!", error: error.message });
   }
 };
-
+//
+//getorder admin hotelid userid roomno
 export const getOrders = async (req, res) => {
   try {
     // Retrieve all orders without populating any fields
@@ -345,7 +348,6 @@ export const getOrders = async (req, res) => {
     if (orders.length === 0) {
       return res.status(404).json({ message: 'No orders found!' });
     }
-
     // Send back the orders
     res.status(200).json({
       message: 'Orders retrieved successfully!',
@@ -356,6 +358,28 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ message: 'Server error!', error: error.message });
   }
 };
+export const getOrdersByRoomId = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const orders = await RestaurantOrder.find({ roomId: roomId })
+      .populate({
+        path: 'orderItems.menuItem',
+        select: 'name description sellingPrice',
+      })
+      .exec();
+    if (orders.length === 0) {
+      return res.status(404).json({ message: 'No orders found for this restaurant!' });
+    }
+    res.status(200).json({
+      message: 'Orders retrieved successfully!',
+      orders: orders,
+    });
+  } catch (error) {
+    console.error(error);  // Log the error to the server console for debugging
+    res.status(500).json({ message: 'Server error!', error: error.message });
+  }
+};
+
 export const getOrdersByRestaurantId = async (req, res) => {
   try {
     const { restaurantId } = req.params;
