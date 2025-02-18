@@ -35,7 +35,7 @@ const hotelSchema = new mongoose.Schema(
     },
     protected_password: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
       default: ''
     }
