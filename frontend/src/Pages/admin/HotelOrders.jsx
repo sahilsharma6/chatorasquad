@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, ArrowUpDown, Check, X, AlertCircle, Clock } from 'lucide-react';
+import SearchFilter from '../../components/admin/HotelOrders/SearchFilter';
+import HotelOrderTable from '../../components/admin/HotelOrders/HotelOrderTable';
+import OrdersCard from '../../components/admin/HotelOrders/OrdersCard';
+import apiClient from '../../services/apiClient';
 
 const HotelOrders= ()=>{
      // Sample data
@@ -17,7 +21,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'completed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543210'
+      phoneNo: '+91 9876543210',
+      customerName:'anc'
     },
     {
       id: '67a37edb93f167c2b7f4eeab',
@@ -31,7 +36,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'completed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543211'
+      phoneNo: '+91 9876543211',
+      customerName:'anc'
     },
     {
       id: '67a373e893f167c2b7f4e9f5',
@@ -45,7 +51,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'failed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543212'
+      phoneNo: '+91 9876543212',
+      customerName:'anc'
     },
     {
       id: '67a37267a3f167c2b7f4e872',
@@ -59,7 +66,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'completed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543213'
+      phoneNo: '+91 9876543213',
+      customerName:'anc'
     },
     {
       id: '67a3710a93f167c2b7f4e6d6',
@@ -73,7 +81,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'failed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543214'
+      phoneNo: '+91 9876543214',
+      customerName:'anc'
     },
     {
       id: '67a370a893f167c2b7f4e686',
@@ -87,7 +96,8 @@ const HotelOrders= ()=>{
       paymentStatus: 'failed',
       customerName: 'Jatin Mehra',
       email: 'admin@example.com',
-      phoneNo: '+91 9876543215'
+      phoneNo: '+91 9876543215',
+      customerName:'anc'
     }
   ];
 
@@ -97,6 +107,16 @@ const HotelOrders= ()=>{
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
 
+  useEffect(()=>{
+    try {
+      async function fetchHotelOrders(){
+        const response = await apiClient.get('/hotel/orders');
+        setOrders(data);
+      }
+    } catch (error) {
+      
+    }
+  },[])
   // Sort function
   const requestSort = (key) => {
     let direction = 'ascending';
@@ -118,7 +138,9 @@ const HotelOrders= ()=>{
         order.hotelName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.date.includes(searchTerm) ||
         order.time.includes(searchTerm) ||
-        order.value.toString().includes(searchTerm)
+        order.value.toString().includes(searchTerm) ||
+        order.phoneNo.toString().includes(searchTerm) ||
+        order.customerName.toString().includes(searchTerm) 
       );
     }
     
@@ -151,16 +173,6 @@ const HotelOrders= ()=>{
   const currentItems = getFilteredAndSortedOrders().slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(getFilteredAndSortedOrders().length / itemsPerPage);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.05
-      }
-    }
-  };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
@@ -175,239 +187,19 @@ const HotelOrders= ()=>{
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4">
-      <div className="max-w-7xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="bg-gray-50 min-h-screen py-4">
+      <div className="max-w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="p-6 bg-gradient-to-r from-orange-500 to-yellow-600">
-          <h1 className="text-2xl font-bold text-white">Order Management System</h1>
-          <p className="text-blue-100 mt-2">Manage hotel and room orders efficiently</p>
-        </div>
+      
         
         {/* Search and Filter */}
-        <div className="p-4 border-b flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="relative w-full md:w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search by dish, room, hotel..."
-              className="pl-10 pr-4 py-2 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className="text-sm text-gray-600">
-            Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, getFilteredAndSortedOrders().length)} of {getFilteredAndSortedOrders().length} entries
-          </div>
-        </div>
+       <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} indexOfFirstItem={indexOfFirstItem} indexOfLastItem={indexOfFirstItem} getFilteredAndSortedOrders={getFilteredAndSortedOrders} />
         
         {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  #Item
-                </th>
-                <th 
-                  scope="col" 
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
-                  onClick={() => requestSort('dishName')}
-                >
-                  <div className="flex items-center">
-                    Dish Name
-                    <ArrowUpDown size={16} className="ml-1 text-gray-400 group-hover:text-gray-600" />
-                  </div>
-                </th>
-                <th 
-                  scope="col" 
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
-                  onClick={() => requestSort('roomName')}
-                >
-                  <div className="flex items-center">
-                    Room Name
-                    <ArrowUpDown size={16} className="ml-1 text-gray-400 group-hover:text-gray-600" />
-                  </div>
-                </th>
-                <th 
-                  scope="col" 
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
-                  onClick={() => requestSort('hotelName')}
-                >
-                  <div className="flex items-center">
-                    Hotel Name
-                    <ArrowUpDown size={16} className="ml-1 text-gray-400 group-hover:text-gray-600" />
-                  </div>
-                </th>
-                <th 
-                  scope="col" 
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
-                  onClick={() => requestSort('value')}
-                >
-                  <div className="flex items-center">
-                    Value (₹)
-                    <ArrowUpDown size={16} className="ml-1 text-gray-400 group-hover:text-gray-600" />
-                  </div>
-                </th>
-                <th 
-                  scope="col" 
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer group"
-                  onClick={() => requestSort('date')}
-                >
-                  <div className="flex items-center">
-                    Date & Time
-                    <ArrowUpDown size={16} className="ml-1 text-gray-400 group-hover:text-gray-600" />
-                  </div>
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Order Status
-                </th>
-                {/* <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Payment Status
-                </th> */}
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {currentItems.map((order, index) => (
-                <motion.tr 
-                  key={order.id}
-                  variants={itemVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  custom={index}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    <span className="font-mono">{order.id.substring(0, 8)}...</span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.dishName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.roomName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.hotelName}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    ₹{order.value.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div>{order.date}</div>
-                    <div className="text-xs text-gray-400">{order.time}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                      ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' : 
-                        order.orderStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
-                        order.orderStatus === 'Confirm' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}
-                    >
-                      {order.orderStatus}
-                    </span>
-                  </td>
-                  {/* <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                      ${order.paymentStatus === 'completed' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}
-                    >
-                      {order.paymentStatus}
-                    </span>
-                  </td> */}
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <select 
-                        className="text-xs border rounded p-1 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
-                        value={order.orderStatus}
-                        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Confirm">Confirm</option>
-                        <option value="Processing">Processing</option>
-                        <option value="Delivered">Delivered</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
         
         {/* Mobile Card View */}
-        <motion.div 
-          className="md:hidden px-4 py-2 space-y-4"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {currentItems.map((order, index) => (
-            <motion.div 
-              key={order.id}
-              variants={itemVariants}
-              custom={index}
-              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"
-            >
-              <div className="p-4 border-b border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium text-gray-900">{order.dishName}</h3>
-                    <p className="text-sm text-gray-600">
-                      Room: {order.roomName} | Hotel: {order.hotelName}
-                    </p>
-                  </div>
-                  <span className={`px-2 text-xs leading-5 font-semibold rounded-full
-                    ${order.orderStatus === 'Delivered' ? 'bg-green-100 text-green-800' : 
-                      order.orderStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
-                      order.orderStatus === 'Confirm' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}
-                  >
-                    {order.orderStatus}
-                  </span>
-                </div>
-              </div>
-              <div className="px-4 py-2 space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">ID:</span>
-                  <span className="text-sm font-mono text-gray-900">{order.id.substring(0, 8)}...</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Value:</span>
-                  <span className="text-sm font-medium text-gray-900">₹{order.value.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Date & Time:</span>
-                  <span className="text-sm text-gray-900">{order.date}, {order.time}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Payment:</span>
-                  <span className={`text-sm font-medium ${order.paymentStatus === 'completed' ? 'text-green-600' : 'text-red-600'}`}>
-                    {order.paymentStatus}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Phone:</span>
-                  <span className="text-sm text-gray-900">{order.phoneNo}</span>
-                </div>
-              </div>
-              <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Update Status:</label>
-                <select 
-                  className="w-full text-sm border rounded p-2 bg-white focus:outline-none focus:ring-2 focus:orange-blue-500"
-                  value={order.orderStatus}
-                  onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Confirm">Confirm</option>
-                  <option value="Processing">Processing</option>
-                  <option value="Delivered">Delivered</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
         
         {/* Pagination */}
         <div className="px-6 py-4 flex justify-between items-center border-t">
