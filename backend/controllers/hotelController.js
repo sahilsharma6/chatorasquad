@@ -334,16 +334,11 @@ export const Checkpassword = async (req, res) => {
     const { password } = req.body;
 
     // Fetch the room
-    const room = await Room.findById(id);
-    if (!room) {
-      return res.status(404).json({ message: "Room not found" });
+    const hotel = await Hotel.findById(id);
+    if (!hotel) {
+      return res.status(404).json({ message: "hotel not found" });
     }
 
-    // Fetch the associated hotel
-    const hotel = await Hotel.findById(room.hotelId);
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
 
     // Check the password
     if (password !== hotel.protected_password) {
@@ -351,7 +346,7 @@ export const Checkpassword = async (req, res) => {
     }
 
     // If password is correct, just return the room (no need for additional response)
-    return res.status(200).json(room);
+    return res.status(200).json(hotel);
 
   } catch (error) {
     console.error(error);
@@ -448,3 +443,16 @@ export const createHotelAdmin = async (req, res) => {
 //   }
 // };
 
+export const getHotelByName = async (req, res) => {
+    const { hotelName } = req.params;
+    console.log(hotelName);
+    
+    
+    const hotel = await Hotel.findOne({ name: hotelName });
+    console.log(hotel);
+    
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+    return res.status(200).json(hotel); 
+  } 
