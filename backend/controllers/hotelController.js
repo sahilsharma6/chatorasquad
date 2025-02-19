@@ -130,6 +130,26 @@ export const getHotelById = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 }
+export const getHotelsByUserId = async (req, res) => {
+  const { id } = req.params; // Extract userId from request parameters
+
+  try {
+    // Find all hotels where userId matches
+    const hotels = await Hotel.find({ userId:id }).populate('userId'); 
+
+    // If no hotels found, return 404
+    if (!hotels || hotels.length === 0) {
+      return res.status(404).json({ message: "No hotels found for this user" });
+    }
+
+    // Return hotels if found
+    return res.status(200).json(hotels);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 //rooms details
 // Update hotel details
 export const updateHotel = async (req, res) => {

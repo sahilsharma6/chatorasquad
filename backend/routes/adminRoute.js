@@ -39,9 +39,9 @@ router.use('/restaurant',restaurantRoute); // restaurant routes for admin
 
 router.put('/changeuserrole',authMiddleware,checkAdmin,changeUserRole)
 router.post('/orderforAdmin',createOrderforadmin)
-router.get('/order',getOrdersForAdmin)
+router.get('/order',authMiddleware,getOrdersForAdmin)
 router.get('/getorderbyId/:id',getorderbyId)
 router.put('/statuschange/:id',updateOrder)
-router.get('/getordersbyroomId/:id',getOrdersByRoomId)
+router.get('/getordersbyroomId/:id',authMiddleware,getOrdersByRoomId)
 //roomorders
 export default router;
