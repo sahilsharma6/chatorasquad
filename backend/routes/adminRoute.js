@@ -7,7 +7,7 @@ import restaurantRoute from './restaurantRoute.js';
 import { addCuisine, adddeliveryaddress, deleteCuisine, deletedeliveryaddress, getCuisineById, getCuisines, getDeliveryaddress, updateCuisine, updatedeliveryaddress , getOrders, updateOrderStatus, getOrderDetails, Orders, GetAllReviews, favoritesmenu } from '../controllers/orderController.js';
 import { changeUserRole, DeleteUser, getUsers } from '../controllers/userController.js';
 import uploadMiddleware from '../middlewares/uploadMiddleware.js';
-import { createOrderforadmin, getOrdersByRoomId, getOrdersForAdmin, updateOrder } from '../controllers/adminController.js';
+import { createOrderforadmin, getorderbyId, getOrdersByRoomId, getOrdersForAdmin, updateOrder } from '../controllers/adminController.js';
 const router = express.Router();
 
 router.get('/cuisines',authMiddleware, checkAdmin,getCuisines);     
@@ -40,6 +40,7 @@ router.use('/restaurant',restaurantRoute); // restaurant routes for admin
 router.put('/changeuserrole',authMiddleware,checkAdmin,changeUserRole)
 router.post('/orderforAdmin',createOrderforadmin)
 router.get('/order',getOrdersForAdmin)
+router.get('/getorderbyId/:id',getorderbyId)
 router.put('/statuschange/:id',updateOrder)
 router.get('/getordersbyroomId/:id',getOrdersByRoomId)
 //roomorders

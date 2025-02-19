@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
 
-export default function HotelOrderTable({ currentItems, requestSort, updateOrderStatus,itemVariants }) {
+export default function HotelOrderTable({ currentItems, requestSort, updateOrderStatus,itemVariants,onOpenMoadl }) {
   return (
     <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -83,7 +83,8 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                   animate="visible"
                   exit="hidden"
                   custom={index}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => onOpenMoadl(order)}
                 >
                   <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <span className="font-mono">{order.phoneNo}</span>
@@ -92,7 +93,7 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                     <span className="font-mono">{order.customerName}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.dishName}
+                    {order.dishName.length>1 ? order.dishName.slice(0,3).join(", ") + "..." : order.dishName.join(", ")}
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                     {order.hotelName}
@@ -123,18 +124,24 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                       {order.paymentStatus}
                     </span>
                   </td> */}
-                  <td className="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-3 py-4 whitespace-nowrap text-sm font-medium  cursor-auto" onClick={(e) => e.stopPropagation()}>
                     <div className="flex space-x-2">
                       <select 
                         className="text-xs border rounded p-1 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                         value={order.orderStatus}
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                       
                       >
-                        <option value="Pending">Pending</option>
-                        <option value="Confirm">Confirm</option>
+                        {/* <option value="Pending">Pending</option> */}
+                        {/* <option value="Confirm">Confirm</option> */}
+                        {order.orderStatus === 'Cancelled' ? <option value="Cancelled">Cancelled</option> 
+                        :
+                        <>
+                        {order.orderStatus === 'Delivered' ? <option value="Delivered">Delivered</option> :<>
                         <option value="Processing">Processing</option>
                         <option value="Delivered">Delivered</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="Cancelled">Cancelled</option></>}
+                        </>}
                       </select>
                     </div>
                   </td>

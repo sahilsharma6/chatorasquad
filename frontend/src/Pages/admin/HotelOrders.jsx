@@ -5,118 +5,68 @@ import SearchFilter from '../../components/admin/HotelOrders/SearchFilter';
 import HotelOrderTable from '../../components/admin/HotelOrders/HotelOrderTable';
 import OrdersCard from '../../components/admin/HotelOrders/OrdersCard';
 import apiClient from '../../services/apiClient';
+import {toast, ToastContainer} from 'react-toastify'
+import OrderDetailsModal from '../../components/admin/HotelOrders/OrderDetailsModal';
 
 const HotelOrders= ()=>{
      // Sample data
-  const initialOrders = [
-    {
-      id: '67a37edb93f167c2b7f4eeaa',
-      dishName: 'Des French Fries',
-      roomName: '301',
-      hotelName: 'Grand Plaza',
-      value: 578,
-      date: '2025-02-05',
-      time: '14:30',
-      orderStatus: 'Delivered',
-      paymentStatus: 'completed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543210',
-      customerName:'anc'
-    },
-    {
-      id: '67a37edb93f167c2b7f4eeab',
-      dishName: 'Dessert Brownies',
-      roomName: '205',
-      hotelName: 'Sunset Resort',
-      value: 1398,
-      date: '2025-02-05',
-      time: '15:45',
-      orderStatus: 'Delivered',
-      paymentStatus: 'completed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543211',
-      customerName:'anc'
-    },
-    {
-      id: '67a373e893f167c2b7f4e9f5',
-      dishName: 'Desi Samosas with chutni',
-      roomName: '102',
-      hotelName: 'Royal Suites',
-      value: 50,
-      date: '2025-02-05',
-      time: '12:15',
-      orderStatus: 'Confirm',
-      paymentStatus: 'failed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543212',
-      customerName:'anc'
-    },
-    {
-      id: '67a37267a3f167c2b7f4e872',
-      dishName: 'Des Spaghetti Aglio e Olio',
-      roomName: '405',
-      hotelName: 'Grand Plaza',
-      value: 299,
-      date: '2025-02-05',
-      time: '16:30',
-      orderStatus: 'Delivered',
-      paymentStatus: 'completed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543213',
-      customerName:'anc'
-    },
-    {
-      id: '67a3710a93f167c2b7f4e6d6',
-      dishName: 'Dessert Tiramisu',
-      roomName: '506',
-      hotelName: 'Ocean View',
-      value: 599,
-      date: '2025-02-05',
-      time: '18:00',
-      orderStatus: 'Pending',
-      paymentStatus: 'failed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543214',
-      customerName:'anc'
-    },
-    {
-      id: '67a370a893f167c2b7f4e686',
-      dishName: 'Desi Samosas with chutni',
-      roomName: '201',
-      hotelName: 'Royal Suites',
-      value: 50,
-      date: '2025-02-05',
-      time: '13:45',
-      orderStatus: 'Confirm',
-      paymentStatus: 'failed',
-      customerName: 'Jatin Mehra',
-      email: 'admin@example.com',
-      phoneNo: '+91 9876543215',
-      customerName:'anc'
-    }
-  ];
-
-  const [orders, setOrders] = useState(initialOrders);
+ 
+  const transformOrders = (orders) => {
+    return orders.map(order => {
+        // Extracting hotel and room details
+        const hotelName = order.hotelId.name; // Get hotel name
+        const roomName = order.roomId.room; // Get room number
+        // Extracting customer details (assuming `name` and `phoneNo` are in the order)
+        const customerName = order.name || 'Unknown'; // Fallback if name is not provided
+        const phoneNo = order.phoneNo || 'N/A'; // Fallback if phone number is not provided
+        // Extracting dish names and total value
+        const dishNames = order.orderItems.map(item => item.menuItem ? item.menuItem.name : 'Unknown Dish');
+        const totalValue = order.totalPrice;
+        // Formatting date and time
+        const orderDate = new Date(order.orderDate);
+        const formattedDate = orderDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        const formattedTime = orderDate.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
+        // Determining order status
+        const orderStatus = order.status;
+        return {
+            id: order._id,
+            dishName: dishNames,
+            roomName: roomName,
+            hotelName: hotelName,
+            value: totalValue,
+            date: formattedDate,
+            time: formattedTime,
+            orderStatus: orderStatus,
+            paymentStatus: 'completed', // Assuming payment status is always completed for example
+            customerName: customerName,
+            email: 'admin@example.com', // Placeholder since email is not part of the original data
+            phoneNo: phoneNo,
+        };
+    });
+};
+  const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [selectedItem,setSelectedItem]=useState([])
+  const [isOpen,setIsOpen]=useState(false)
+  const [itemsPerPage] = useState(15);
 
   useEffect(()=>{
     try {
       async function fetchHotelOrders(){
-        const response = await apiClient.get('/hotel/orders');
-        setOrders(data);
+        const response = await apiClient.get('/admin/order');
+        console.log(response.data);
+        setOrders(transformOrders(response.data.orders));
+        // setOrders(data);
+        
       }
+      fetchHotelOrders();
     } catch (error) {
       
     }
   },[])
+  console.log(orders);
   // Sort function
   const requestSort = (key) => {
     let direction = 'ascending';
@@ -133,7 +83,7 @@ const HotelOrders= ()=>{
     // Apply search filter
     if (searchTerm) {
       filteredOrders = filteredOrders.filter(order => 
-        order.dishName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.dishName.some(it => it.toLowerCase().includes(searchTerm.toLowerCase())) ||
         order.roomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.hotelName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.date.includes(searchTerm) ||
@@ -161,10 +111,21 @@ const HotelOrders= ()=>{
   };
 
   // Handle order status update
-  const updateOrderStatus = (id, newStatus) => {
-    setOrders(orders.map(order => 
+  const updateOrderStatus =async (id, newStatus) => {
+    try {
+      const res=await apiClient.put(`/admin/statuschange/${id}`,{status:newStatus});
+      if(!res.data){
+        toast.error('Order status update failed', { position: 'top-right' });
+        return;
+       }
+          setOrders(orders.map(order => 
       order.id === id ? {...order, orderStatus: newStatus} : order
     ));
+    toast.success('Order status updated successfully', { position: 'top-right' });
+    } catch (error) {
+      toast.error('Order status update failed', { position: 'top-right' });
+    }
+
   };
 
   // Pagination
@@ -186,8 +147,17 @@ const HotelOrders= ()=>{
     }
   };
 
+  const onOpenModal=(item)=>{
+    setSelectedItem(item)
+    setIsOpen(true)
+  }
+  const onCloseModal=()=>{ 
+    setIsOpen(false)
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen py-4">
+      <ToastContainer />
       <div className="max-w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
       
@@ -196,10 +166,10 @@ const HotelOrders= ()=>{
        <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} indexOfFirstItem={indexOfFirstItem} indexOfLastItem={indexOfFirstItem} getFilteredAndSortedOrders={getFilteredAndSortedOrders} />
         
         {/* Desktop Table View */}
-       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
+       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
         
         {/* Mobile Card View */}
-       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
+       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
         
         {/* Pagination */}
         <div className="px-6 py-4 flex justify-between items-center border-t">
@@ -242,6 +212,7 @@ const HotelOrders= ()=>{
           </button>
         </div>
       </div>
+      <OrderDetailsModal onClose={onCloseModal} isOpen={isOpen} order={selectedItem} />
     </div>
   );
 }

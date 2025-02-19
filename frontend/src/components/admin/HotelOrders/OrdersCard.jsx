@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 
-export default function OrdersCard({currentItems, updateOrderStatus, itemVariants}) {
+export default function OrdersCard({currentItems, updateOrderStatus, itemVariants,onOpenMoadl}) {
     
   // Animation variants
   const containerVariants = {
@@ -24,12 +24,13 @@ export default function OrdersCard({currentItems, updateOrderStatus, itemVariant
             key={order.id}
             variants={itemVariants}
             custom={index}
-            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200"
+            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 cursor-pointer"
+            onClick={() => onOpenMoadl(order)}
           >
             <div className="p-4 border-b border-gray-100">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-medium text-gray-900">{order.dishName}</h3>
+                  <h3 className="font-medium text-gray-900">{order.dishName.map(it=>it+',')}</h3>
                   <p className="text-sm text-gray-600">
                     Room: {order.roomName} | Hotel: {order.hotelName}
                   </p>
@@ -67,18 +68,21 @@ export default function OrdersCard({currentItems, updateOrderStatus, itemVariant
                 <span className="text-sm text-gray-900">{order.phoneNo}</span>
               </div>
             </div>
-            <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
+            <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 cursor-auto" onClick={(e) => e.stopPropagation()}>
               <label className="block text-sm font-medium text-gray-700 mb-1">Update Status:</label>
               <select 
                 className="w-full text-sm border rounded p-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                 value={order.orderStatus}
                 onChange={(e) => updateOrderStatus(order.id, e.target.value)}
               >
-                <option value="Pending">Pending</option>
-                <option value="Confirm">Confirm</option>
-                <option value="Processing">Processing</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Cancelled">Cancelled</option>
+                {order.orderStatus === 'Cancelled' ? <option value="Cancelled">Cancelled</option> 
+                        :
+                        <>
+                        {order.orderStatus === 'Delivered' ? <option value="Delivered">Delivered</option> :<>
+                        <option value="Processing">Processing</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option></>}
+                        </>}
               </select>
             </div>
           </motion.div>
