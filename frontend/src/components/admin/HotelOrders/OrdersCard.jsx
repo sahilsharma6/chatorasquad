@@ -29,7 +29,7 @@ export default function OrdersCard({currentItems, updateOrderStatus, itemVariant
             <div className="p-4 border-b border-gray-100">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-medium text-gray-900">{order.dishName}</h3>
+                  <h3 className="font-medium text-gray-900">{order.dishName.map(it=>it+',')}</h3>
                   <p className="text-sm text-gray-600">
                     Room: {order.roomName} | Hotel: {order.hotelName}
                   </p>
@@ -74,11 +74,14 @@ export default function OrdersCard({currentItems, updateOrderStatus, itemVariant
                 value={order.orderStatus}
                 onChange={(e) => updateOrderStatus(order.id, e.target.value)}
               >
-                <option value="Pending">Pending</option>
-                <option value="Confirm">Confirm</option>
-                <option value="Processing">Processing</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Cancelled">Cancelled</option>
+                {order.orderStatus === 'Cancelled' ? <option value="Cancelled">Cancelled</option> 
+                        :
+                        <>
+                        {order.orderStatus === 'Delivered' ? <option value="Delivered">Delivered</option> :<>
+                        <option value="Processing">Processing</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Cancelled">Cancelled</option></>}
+                        </>}
               </select>
             </div>
           </motion.div>

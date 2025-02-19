@@ -92,7 +92,7 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                     <span className="font-mono">{order.customerName}</span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {order.dishName}
+                    {order.dishName.length>1 ? order.dishName.slice(0,3).join(", ") + "..." : order.dishName.join(", ")}
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-500">
                     {order.hotelName}
@@ -130,11 +130,16 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                         value={order.orderStatus}
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
                       >
-                        <option value="Pending">Pending</option>
-                        <option value="Confirm">Confirm</option>
+                        {/* <option value="Pending">Pending</option> */}
+                        {/* <option value="Confirm">Confirm</option> */}
+                        {order.orderStatus === 'Cancelled' ? <option value="Cancelled">Cancelled</option> 
+                        :
+                        <>
+                        {order.orderStatus === 'Delivered' ? <option value="Delivered">Delivered</option> :<>
                         <option value="Processing">Processing</option>
                         <option value="Delivered">Delivered</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="Cancelled">Cancelled</option></>}
+                        </>}
                       </select>
                     </div>
                   </td>
