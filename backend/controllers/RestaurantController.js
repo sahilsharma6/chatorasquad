@@ -217,6 +217,27 @@ export const getRestaurantById = async (req, res) => {
     return res.status(500).json({ message: "internal Server error", error });
   }
 };
+export const getRestaurantsByUserId = async (req, res) => {
+  try {
+    const { id } = req.params; // Extract userId from request parameters
+    
+    // Find all restaurants where userId matches
+    const restaurants = await Restaurant.find({ userId:
+      id }).populate('userId');
+    
+    // If no restaurants found, return 404
+    if (!restaurants || restaurants.length === 0) {
+      return res.status(404).json({ message: "No restaurants found for this user." });
+    }
+
+    // Return restaurants if found
+    return res.status(200).json(restaurants);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 
 // Update restaurant details
 export const updateRestaurant = async (req, res) => {

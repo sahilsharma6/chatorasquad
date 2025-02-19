@@ -1,5 +1,5 @@
 import express from 'express';
-import { changeRoleToRestaurant, createRestaurant, createRestaurantAdmin, deleteRestaurant, getAllRestaurants, getRestaurantById, getValidatedRestaurants, updateRestaurant, validateRestaurant } from '../controllers/RestaurantController.js';
+import { changeRoleToRestaurant, createRestaurant, createRestaurantAdmin, deleteRestaurant, getAllRestaurants, getRestaurantById, getRestaurantsByUserId, getValidatedRestaurants, updateRestaurant, validateRestaurant } from '../controllers/RestaurantController.js';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import checkAdmin from '../middlewares/checkAdmin.js';
 import { addRestaurantCuisine, addRestaurantMenu, deleteRestaurantCuisine, deleteRestaurantMenu, getRestaurantCuisine, getRestaurantMenu, getRestaurantMenuById, updateRestaurantCuisine, updateRestaurantMenu } from '../controllers/RestuarantMenuController.js';
@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/valid-restaurants',getValidatedRestaurants);
 router.get('/all-restaurants',getAllRestaurants);
 router.get('/:id',getRestaurantById);
-
+router.get('/user/:id',getRestaurantsByUserId);
 
 router.put('/validate/:id',authMiddleware,checkAdmin,validateRestaurant); // id is restaurant id
 router.put('/update/:id',authMiddleware,updateRestaurant); // id is restaurant id
