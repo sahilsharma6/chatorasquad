@@ -77,7 +77,7 @@ export const createOrderforadmin = async (req, res) => {
       const orders = await AdminOrder.find()
         .populate({
           path: "orderItems.menuItem",
-          model: "RestaurantMenu",
+          model: "Menu",
         })
         .populate({
           path: "hotelId",
@@ -103,18 +103,16 @@ export const createOrderforadmin = async (req, res) => {
   };
   export const getOrdersByRoomId = async (req, res) => {
     try {
-      const { id } = req.params;  // Getting roomId from the query parameter
+      const { id } = req.params;
       if (!id) {
         return res.status(400).json({ message: "Room ID is required!" });
       }
-  
-      // Find orders by roomId
       const orders = await AdminOrder.find({ 
         roomId: id 
       })
       .populate({
         path: "orderItems.menuItem",  // Populating the menuItem inside orderItems
-        model: "RestaurantMenu",  // The model for menuItem
+        model: "Menu",  // The model for menuItem
         select: "name price description"  // Select specific fields to return (optional)
       })
       .populate({
@@ -168,7 +166,7 @@ export const updateOrder = async (req, res) => {
       // Populate the order details (optional, if you need detailed info in response)
       const populatedOrder = await updatedOrder.populate({
         path: "orderItems.menuItem",
-        model: "RestaurantMenu",
+        model: "Menu",
       });
   
       res.status(200).json({
@@ -188,7 +186,7 @@ export const updateOrder = async (req, res) => {
         .findById(id,{})
         .populate({
           path: "orderItems.menuItem",  // Populating the menuItem inside orderItems
-          model: "RestaurantMenu",  // The model for menuItem
+          model: "Menu",  // The model for menuItem
           // select: "name price description"  // Select specific fields to return (optional)
         })
         .populate({
