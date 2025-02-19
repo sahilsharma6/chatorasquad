@@ -31,6 +31,7 @@ router.post('/createorder',createOrder)
 router.get('/get/orders',getOrders)
 router.get('/getorders/:id',getOrdersByRestaurantId)
 router.get('/getordersbyroomId/:id',getOrdersByRoomId)
+router.get('/getorderbyId/:id',getOrdersByRestaurantId)
 
 
 
