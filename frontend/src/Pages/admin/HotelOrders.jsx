@@ -6,6 +6,7 @@ import HotelOrderTable from '../../components/admin/HotelOrders/HotelOrderTable'
 import OrdersCard from '../../components/admin/HotelOrders/OrdersCard';
 import apiClient from '../../services/apiClient';
 import {toast, ToastContainer} from 'react-toastify'
+import OrderDetailsModal from '../../components/admin/HotelOrders/OrderDetailsModal';
 
 const HotelOrders= ()=>{
      // Sample data
@@ -49,7 +50,7 @@ const HotelOrders= ()=>{
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedItem,setSelectedItem]=useState([])
   const [isOpen,setIsOpen]=useState(false)
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(15);
 
   useEffect(()=>{
     try {
@@ -146,6 +147,14 @@ const HotelOrders= ()=>{
     }
   };
 
+  const onOpenModal=(item)=>{
+    setSelectedItem(item)
+    setIsOpen(true)
+  }
+  const onCloseModal=()=>{ 
+    setIsOpen(false)
+  }
+
   return (
     <div className="bg-gray-50 min-h-screen py-4">
       <ToastContainer />
@@ -157,10 +166,10 @@ const HotelOrders= ()=>{
        <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} indexOfFirstItem={indexOfFirstItem} indexOfLastItem={indexOfFirstItem} getFilteredAndSortedOrders={getFilteredAndSortedOrders} />
         
         {/* Desktop Table View */}
-       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
+       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
         
         {/* Mobile Card View */}
-       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} />
+       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
         
         {/* Pagination */}
         <div className="px-6 py-4 flex justify-between items-center border-t">
@@ -203,6 +212,7 @@ const HotelOrders= ()=>{
           </button>
         </div>
       </div>
+      <OrderDetailsModal onClose={onCloseModal} isOpen={isOpen} order={selectedItem} />
     </div>
   );
 }

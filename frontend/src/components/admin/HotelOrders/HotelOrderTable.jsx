@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpDown } from "lucide-react";
 
-export default function HotelOrderTable({ currentItems, requestSort, updateOrderStatus,itemVariants }) {
+export default function HotelOrderTable({ currentItems, requestSort, updateOrderStatus,itemVariants,onOpenMoadl }) {
   return (
     <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -83,7 +83,8 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                   animate="visible"
                   exit="hidden"
                   custom={index}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-gray-50 transition-colors cursor-pointer"
+                  onClick={() => onOpenMoadl(order)}
                 >
                   <td className="px-3 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <span className="font-mono">{order.phoneNo}</span>
@@ -123,12 +124,13 @@ export default function HotelOrderTable({ currentItems, requestSort, updateOrder
                       {order.paymentStatus}
                     </span>
                   </td> */}
-                  <td className="px-3 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-3 py-4 whitespace-nowrap text-sm font-medium  cursor-auto" onClick={(e) => e.stopPropagation()}>
                     <div className="flex space-x-2">
                       <select 
                         className="text-xs border rounded p-1 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500"
                         value={order.orderStatus}
                         onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                       
                       >
                         {/* <option value="Pending">Pending</option> */}
                         {/* <option value="Confirm">Confirm</option> */}

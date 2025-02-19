@@ -107,24 +107,26 @@ export const createOrderforadmin = async (req, res) => {
       if (!id) {
         return res.status(400).json({ message: "Room ID is required!" });
       }
-
+  
       // Find orders by roomId
       const orders = await AdminOrder.find({ 
-        roomId:
-        id })
-        .populate({
-          path: "orderItems.menuItem",
-          model: "RestaurantMenu",
-        })
-        // .populate({
-        //   path: "hotelId",
-        //   model: "Hotel",
-        // })
-        // .populate({
-        //   path: "roomId",
-        //   model: "Room",
-        // });
-  
+        roomId: id 
+      })
+      .populate({
+        path: "orderItems.menuItem",  // Populating the menuItem inside orderItems
+        model: "RestaurantMenu",  // The model for menuItem
+        select: "name price description"  // Select specific fields to return (optional)
+      })
+      .populate({
+        path: "hotelId",  // Populating the hotel details
+        model: "Hotel",  // The model for Hotel
+        select: "name address contactNumber"  // Select specific fields to return (optional)
+      })
+      .populate({
+        path: "roomId",  // Populating the room details
+        model: "Room",  // The model for Room
+        select: "room"  // Select specific fields to return (optional)
+      });
       if (orders.length === 0) {
         return res.status(404).json({ message: "No orders found for this room!" });
       }
@@ -179,3 +181,38 @@ export const updateOrder = async (req, res) => {
     }
   };
   
+  export const getorderbyId=async(req,res)=>{
+    try {
+      const { id } = req.params;
+      const order = await AdminOrder
+        .findById(id,{})
+        .populate({
+          path: "orderItems.menuItem",  // Populating the menuItem inside orderItems
+          model: "RestaurantMenu",  // The model for menuItem
+          // select: "name price description"  // Select specific fields to return (optional)
+        })
+        .populate({
+          path: "hotelId",  // Populating the hotel details
+          model: "Hotel",  // The model for Hotel
+          select: "name address contactNumber"  // Select specific fields to return (optional)
+        })
+        .populate({
+          path: "roomId",  // Populating the room details
+          model: "Room",  // The model for Room
+          // select: "room"  // Select specific fields to return (optional)
+        }); console.log(order);
+        if(order){
+          res.status(200).json({
+            message: "Order retrieved successfully!",
+            order,
+          });
+        }
+       
+        
+        else{
+          res.status(404).json({ message: "Order not found!" });
+        }
+    } catch (error) {
+      res.status(500).json({ message: "Server error!", error: error.message });
+    }
+  }

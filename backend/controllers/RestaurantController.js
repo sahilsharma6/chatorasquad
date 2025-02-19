@@ -401,3 +401,27 @@ export const getOrdersByRestaurantId = async (req, res) => {
     res.status(500).json({ message: 'Server error!', error: error.message });
   }
 };
+export const getOrderById = async (req, res) => {
+  try {
+    const { orderId } = req.params;  // Capture the order ID from the request parameters.
+    const order = await RestaurantOrder.findById(orderId)  // Find the order by its unique ID.
+      .populate({
+        path: 'orderItems.menuItem',
+        select: 'name description sellingPrice',
+      })
+      .exec();
+    
+    if (!order) {  // If no order is found, return a 404 error.
+      return res.status(404).json({ message: 'Order not found!' });
+    }
+    
+    res.status(200).json({  // If the order is found, return it.
+      message: 'Order retrieved successfully!',
+      order: order,
+    });
+  } catch (error) {
+    console.error(error);  // Log the error to the server console for debugging.
+    res.status(500).json({ message: 'Server error!', error: error.message });
+  }
+};
+
