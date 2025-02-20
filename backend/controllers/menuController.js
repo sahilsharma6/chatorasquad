@@ -1,6 +1,7 @@
 import Menu from "../models/Menu.js";
 import Cuisine from "../models/Cuisine.js";
 import Reviews from "../models/Reviews.js";
+import CuisineModel from '../models/Cuisine.js'
 import fs from "fs";
 import path from "path";
 
@@ -49,6 +50,8 @@ export const getAllMenu = async (req, res) => {
         const skip = (page - 1) * limit;
         const menu = await Menu.find().skip(skip).limit(limit);
         const totalCount = await Menu.countDocuments();
+        console.log(menu);
+        
         res.status(200).json({
             totalCount,
             totalPages: Math.ceil(totalCount / limit),
@@ -126,12 +129,18 @@ export const updateMenu = async (req, res) => {
         }
         
         const menu = await Menu.findById(req.params.id);
+        
         if (!menu) {
             return res.status(404).json({ message: "Menu not found" });
         }
+       
         
         // Remove images that are not part of `oldImages`
         console.log(menu.images);
+        let endDate
+        if(menu.discountedPrice !== discountedPrice){
+            endDate = new Date();
+        }
         
         if (menu.images) {
             const imagesToRemove = menu.images.filter((img) => {
@@ -149,7 +158,7 @@ export const updateMenu = async (req, res) => {
             });
         }
         console.log('abc ', updatedImages);
-        
+        // if(menu.discountedPrice)
         // Update menu
         menu.name = name;
         menu.type = type;
@@ -160,7 +169,12 @@ export const updateMenu = async (req, res) => {
         menu.images = updatedImages; // This should now be an array of strings
         menu.quantity = quantity;
         menu.title = title;
+        menu.offerDates.end = endDate;
         
+        if(menu.cuisine !== Cuisine){ 
+            const cuisine_item = await CuisineModel.findOne({ name: Cuisine });
+            await CuisineModel.findByIdAndUpdate({ _id: cuisine_item._id }, { $push: { items: menu._id } });
+        }
         await menu.save();
         
         res.status(200).json({ message: "Menu updated successfully", menu });

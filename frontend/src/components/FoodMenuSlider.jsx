@@ -97,7 +97,7 @@ const FoodMenuSwiper = ({param}) => {
                     <IndianRupee />
                     <span className="text-white font-bold">
                       {" "}
-                      {item?.sellingPrice}
+                      {item?.discountedPrice}
                       {/* ferf */}
                     </span>
                   </div>

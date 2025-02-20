@@ -141,7 +141,7 @@ const ViewMenu = () => {
             id={item._id}
             key={index}
             title={item.name}
-            price={item.sellingPrice}
+            price={item.discountedPrice}
             rating={item.rating}
             inStock={item.isAvailable}
             images={ item.images.filter(img=> img !==null && img !=='null')}

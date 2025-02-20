@@ -60,7 +60,9 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
       }
        const isChanged=await apiClient.put(roleUrl,{newRole:selectedRole,userId:customer._id,name:hotelName})
 
-       if(isChanged.data.user){
+       if(isChanged.data){
+          setIsChangedName(true)
+        
         // console.log();
         toast.success('User Role Changed successfully',
               {

@@ -36,6 +36,7 @@ const FoodMainMenu = () => {
         setCurrentPage(response.data.currentPage);
         setTotalPages(response.data.totalPages);
         setMenuItems(response.data.menu);
+  console.log(menuItems);
       } catch (error) {
         console.error("Error fetching menu items:", error);
       }
@@ -44,6 +45,7 @@ const FoodMainMenu = () => {
     fetchMenuItems();
   }, [currentPage]);
 
+  
   // Memoized filtering to improve performance
   const filteredItems = useMemo(() => {
     return menuItems.filter((item) => {
@@ -54,11 +56,11 @@ const FoodMainMenu = () => {
         .includes(searchQuery.toLowerCase());
       const matchesPrice =
         selectedPriceRange === "all" ||
-        (selectedPriceRange === "low" && item.sellingPrice < 10) ||
+        (selectedPriceRange === "low" && item.discountedPrice < 10) ||
         (selectedPriceRange === "mid" &&
-          item.sellingPrice >= 10 &&
-          item.sellingPrice <= 20) ||
-        (selectedPriceRange === "high" && item.sellingPrice > 20);
+          item.discountedPrice >= 10 &&
+          item.discountedPrice <= 20) ||
+        (selectedPriceRange === "high" && item.discountedPrice > 20);
 
       return matchesCategory && matchesSearch && matchesPrice;
     });
@@ -247,7 +249,9 @@ const FoodMainMenu = () => {
                   <p className="text-xs sm:text-sm">{item.description.substring(0,60)}</p>
                 </div>
                 <div className="text-base sm:text-xl font-bold text-black">
-                  ₹{item?.sellingPrice}
+                  {console.log(item)
+                  }
+                  ₹{item.discountedPrice}
                 </div>
               </motion.div>
             </Link>
