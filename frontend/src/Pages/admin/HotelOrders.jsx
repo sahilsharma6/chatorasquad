@@ -5,67 +5,67 @@ import SearchFilter from '../../components/admin/HotelOrders/SearchFilter';
 import HotelOrderTable from '../../components/admin/HotelOrders/HotelOrderTable';
 import OrdersCard from '../../components/admin/HotelOrders/OrdersCard';
 import apiClient from '../../services/apiClient';
-import {toast, ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import OrderDetailsModal from '../../components/admin/HotelOrders/OrderDetailsModal';
 
-const HotelOrders= ()=>{
-     // Sample data
- 
+const HotelOrders = () => {
+  // Sample data
+
   const transformOrders = (orders) => {
     return orders.map(order => {
-        // Extracting hotel and room details
-        const hotelName = order.hotelId.name; // Get hotel name
-        const roomName = order.roomId.room; // Get room number
-        // Extracting customer details (assuming `name` and `phoneNo` are in the order)
-        const customerName = order.name || 'Unknown'; // Fallback if name is not provided
-        const phoneNo = order.phoneNo || 'N/A'; // Fallback if phone number is not provided
-        // Extracting dish names and total value
-        const dishNames = order.orderItems.map(item => item.menuItem ? item.menuItem.name : 'Unknown Dish');
-        const totalValue = order.totalPrice;
-        // Formatting date and time
-        const orderDate = new Date(order.orderDate);
-        const formattedDate = orderDate.toISOString().split('T')[0]; // YYYY-MM-DD
-        const formattedTime = orderDate.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
-        // Determining order status
-        const orderStatus = order.status;
-        return {
-            id: order._id,
-            dishName: dishNames,
-            roomName: roomName,
-            hotelName: hotelName,
-            value: totalValue,
-            date: formattedDate,
-            time: formattedTime,
-            orderStatus: orderStatus,
-            paymentStatus: 'completed', // Assuming payment status is always completed for example
-            customerName: customerName,
-            email: 'admin@example.com', // Placeholder since email is not part of the original data
-            phoneNo: phoneNo,
-        };
+      // Extracting hotel and room details
+      const hotelName = order.hotelId.name; // Get hotel name
+      const roomName = order.roomId.room; // Get room number
+      // Extracting customer details (assuming `name` and `phoneNo` are in the order)
+      const customerName = order.name || 'Unknown'; // Fallback if name is not provided
+      const phoneNo = order.phoneNo || 'N/A'; // Fallback if phone number is not provided
+      // Extracting dish names and total value
+      const dishNames = order.orderItems.map(item => item.menuItem ? item.menuItem.name : 'Unknown Dish');
+      const totalValue = order.totalPrice;
+      // Formatting date and time
+      const orderDate = new Date(order.orderDate);
+      const formattedDate = orderDate.toISOString().split('T')[0]; // YYYY-MM-DD
+      const formattedTime = orderDate.toTimeString().split(' ')[0].substring(0, 5); // HH:MM
+      // Determining order status
+      const orderStatus = order.status;
+      return {
+        id: order._id,
+        dishName: dishNames,
+        roomName: roomName,
+        hotelName: hotelName,
+        value: totalValue,
+        date: formattedDate,
+        time: formattedTime,
+        orderStatus: orderStatus,
+        paymentStatus: 'completed', // Assuming payment status is always completed for example
+        customerName: customerName,
+        email: 'admin@example.com', // Placeholder since email is not part of the original data
+        phoneNo: phoneNo,
+      };
     });
-};
+  };
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedItem,setSelectedItem]=useState([])
-  const [isOpen,setIsOpen]=useState(false)
-  const [itemsPerPage] = useState(15);
+  const [selectedItem, setSelectedItem] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [itemsPerPage] = useState(20);
 
-  useEffect(()=>{
+  useEffect(() => {
     try {
-      async function fetchHotelOrders(){
+      async function fetchHotelOrders() {
         const response = await apiClient.get('/admin/order');
         console.log(response.data);
         setOrders(transformOrders(response.data.orders));
         // setOrders(data);
-        
+
       }
       fetchHotelOrders();
     } catch (error) {
-      
+
     }
-  },[])
+  }, [])
   console.log(orders);
   // Sort function
   const requestSort = (key) => {
@@ -79,10 +79,10 @@ const HotelOrders= ()=>{
   // Filtered and sorted orders
   const getFilteredAndSortedOrders = () => {
     let filteredOrders = [...orders];
-    
+
     // Apply search filter
     if (searchTerm) {
-      filteredOrders = filteredOrders.filter(order => 
+      filteredOrders = filteredOrders.filter(order =>
         order.dishName.some(it => it.toLowerCase().includes(searchTerm.toLowerCase())) ||
         order.roomName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.hotelName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,10 +90,10 @@ const HotelOrders= ()=>{
         order.time.includes(searchTerm) ||
         order.value.toString().includes(searchTerm) ||
         order.phoneNo.toString().includes(searchTerm) ||
-        order.customerName.toString().includes(searchTerm) 
+        order.customerName.toString().includes(searchTerm)
       );
     }
-    
+
     // Apply sorting
     if (sortConfig.key) {
       filteredOrders.sort((a, b) => {
@@ -106,22 +106,22 @@ const HotelOrders= ()=>{
         return 0;
       });
     }
-    
+
     return filteredOrders;
   };
 
   // Handle order status update
-  const updateOrderStatus =async (id, newStatus) => {
+  const updateOrderStatus = async (id, newStatus) => {
     try {
-      const res=await apiClient.put(`/admin/statuschange/${id}`,{status:newStatus});
-      if(!res.data){
+      const res = await apiClient.put(`/admin/statuschange/${id}`, { status: newStatus });
+      if (!res.data) {
         toast.error('Order status update failed', { position: 'top-right' });
         return;
-       }
-          setOrders(orders.map(order => 
-      order.id === id ? {...order, orderStatus: newStatus} : order
-    ));
-    toast.success('Order status updated successfully', { position: 'top-right' });
+      }
+      setOrders(orders.map(order =>
+        order.id === id ? { ...order, orderStatus: newStatus } : order
+      ));
+      toast.success('Order status updated successfully', { position: 'top-right' });
     } catch (error) {
       toast.error('Order status update failed', { position: 'top-right' });
     }
@@ -137,8 +137,8 @@ const HotelOrders= ()=>{
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: {
         type: 'spring',
@@ -147,11 +147,11 @@ const HotelOrders= ()=>{
     }
   };
 
-  const onOpenModal=(item)=>{
+  const onOpenModal = (item) => {
     setSelectedItem(item)
     setIsOpen(true)
   }
-  const onCloseModal=()=>{ 
+  const onCloseModal = () => {
     setIsOpen(false)
   }
 
@@ -160,53 +160,68 @@ const HotelOrders= ()=>{
       <ToastContainer />
       <div className="max-w-full mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
-      
-        
+
+
         {/* Search and Filter */}
-       <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} indexOfFirstItem={indexOfFirstItem} indexOfLastItem={indexOfFirstItem} getFilteredAndSortedOrders={getFilteredAndSortedOrders} />
-        
+        <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} indexOfFirstItem={indexOfFirstItem} indexOfLastItem={indexOfFirstItem} getFilteredAndSortedOrders={getFilteredAndSortedOrders} />
+
         {/* Desktop Table View */}
-       <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
-        
+        <HotelOrderTable requestSort={requestSort} currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
+
         {/* Mobile Card View */}
-       <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
-        
+        <OrdersCard currentItems={currentItems} updateOrderStatus={updateOrderStatus} itemVariants={itemVariants} onOpenMoadl={onOpenModal} />
+
         {/* Pagination */}
         <div className="px-6 py-4 flex justify-between items-center border-t">
           <button
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className={`px-3 py-1 rounded-md border ${currentPage === 1 
-              ? 'text-gray-400 border-gray-200' 
+            className={`px-3 py-1 rounded-md border ${currentPage === 1
+              ? 'text-gray-400 border-gray-200'
               : 'text-gray-700 border-gray-300 hover:bg-gray-50'
-            }`}
+              }`}
           >
             Previous
           </button>
-          
-          <div className="flex space-x-1">
-            {Array.from({ length: totalPages }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentPage(index + 1)}
-                className={`w-8 h-8 flex items-center justify-center rounded-md ${
-                  currentPage === index + 1
-                    ? 'bg-orange-600 text-white'
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {index + 1}
-              </button>
-            ))}
+
+          <div className="flex space-x-1 flex-wrap">
+            {Array.from({ length: totalPages }).map((_, index) => {
+              // Calculate the range of pages to display
+              const pageRange = 5; // Number of pages to show around the current page
+              let startPage = Math.max(0, currentPage - Math.floor(pageRange / 2) - 1);
+              let endPage = Math.min(totalPages - 1, startPage + pageRange - 1);
+              if (endPage - startPage < pageRange - 1) {
+                if (startPage === 0) {
+                  endPage = Math.min(totalPages - 1, startPage + pageRange - 1);
+                } else if (endPage === totalPages - 1) {
+                  startPage = Math.max(0, endPage - pageRange + 1);
+                }
+              }
+              if (index >= startPage && index <= endPage) {
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPage(index + 1)}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md ${currentPage === index + 1
+                        ? 'bg-orange-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                  >
+                    {index + 1}
+                  </button>
+                );
+              }
+              return null; // Skip rendering for pages outside the range
+            })}
           </div>
-          
+
           <button
             onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className={`px-3 py-1 rounded-md border ${currentPage === totalPages 
-              ? 'text-gray-400 border-gray-200' 
+            className={`px-3 py-1 rounded-md border ${currentPage === totalPages
+              ? 'text-gray-400 border-gray-200'
               : 'text-gray-700 border-gray-300 hover:bg-gray-50'
-            }`}
+              }`}
           >
             Next
           </button>

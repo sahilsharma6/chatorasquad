@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 export default function CustomerTableModal({ isOpen, onClose, customer }) {
   // console.log(customer);
   
-  const [selectedRole, setSelectedRole] = useState(customer.role);
+  const [selectedRole, setSelectedRole] = useState(customer.role.toLowerCase());
   const [hotelName,setHotelName]=useState('')
   const [isChangedName,setIsChangedName]=useState(false)
   console.log(selectedRole);
