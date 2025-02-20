@@ -5,8 +5,11 @@ import apiClient from "../../../services/apiClient";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function CustomerTableModal({ isOpen, onClose, customer }) {
-  const [selectedRole, setSelectedRole] = useState(customer.role);
+  // console.log(customer);
+  
+  const [selectedRole, setSelectedRole] = useState(customer.role.toLowerCase());
   const [hotelName,setHotelName]=useState('')
+  const [isChangedName,setIsChangedName]=useState(false)
   console.log(selectedRole);
 
 
@@ -18,7 +21,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
         return '0%';
       case 'hotel':
         return '33.33%';
-      case 'resturant':
+      case 'restaurant':
         return '66.66%';
       default:
         return '0%';
@@ -27,15 +30,21 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
   useEffect(() => {
     try {
       async function fetchUser(url) {
-        const response = await apiClient.get(url);
+        try {
+          const response = await apiClient.get(url);
         if(!response.data) return
         console.log(response.data);
         
-        setHotelName(response.data.name)
+        setHotelName(response.data[0].name)
+        setIsChangedName(true)
+        } catch (error) {
+          setIsChangedName(false)
+        }
+        
       }
 
       if(selectedRole!=='user' && customer._id && customer.role!=='admin'){ 
-        const url = selectedRole === 'hotel' ? `/hotel/${customer._id}` : `/restaurant/${customer._id}`;
+        const url = selectedRole === 'hotel' ? `/hotel/user/${customer._id}` : `/restaurant/user/${customer._id}`;
         fetchUser(url);
       }
     } catch (error) {
@@ -168,7 +177,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
           {[
     { id: 'user', label: 'User', icon: '👤' },
     { id: 'hotel', label: 'Hotel', icon: '🏨' },
-    { id: 'resturant', label: 'Resturant', icon: '🍽️ ' }
+    { id: 'restaurant', label: 'Resturant', icon: '🍽️ ' }
   ].map((role) => (
             <motion.button
               key={role.id}
@@ -178,6 +187,7 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
+              {console.log(selectedRole===role.id)}
               <span className="text-xl mb-1">{role.icon}</span>
               <span className="block font-medium">{role.label}</span>
             </motion.button>
@@ -195,12 +205,13 @@ export default function CustomerTableModal({ isOpen, onClose, customer }) {
                 }}
                 placeholder={selectedRole=='hotel'? "Enter Hotel Name " :"Enter Rsturant Name "}
                 className="w-full p-4 border rounded mb-2 focus:outline-none focus:ring-2 focus:ring-orange-400 mt-6"
+                disabled={isChangedName}
               />
 }
       </div>
       <motion.button
-        className="mt-6 w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-medium
-          hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50"
+        className={`mt-6 w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-medium
+          hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50 ${isChangedName ? 'cursor-not-allowed opacity-50':''}`}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={handelChangeRole}
