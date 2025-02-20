@@ -289,25 +289,17 @@ export const deleteRestaurant = async (req, res) => {
 export const createOrder = async (req, res) => {
   try {
     const { hotelId, roomId, orderItems,name,phoneNo} = req.body;
-
-    // Validate request data
     if (!hotelId || !roomId || !orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: "All fields are required!" });
     }
-
-    // Check if the hotel exists
     const hotel = await Hotel.findById(hotelId);
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found!" });
     }
-
-    // Check if the room exists in the given hotel and populate the hotel details
     const room = await Room.findOne({ _id: roomId, hotelId: hotelId }).populate('hotelId');
     if (!room) {
       return res.status(404).json({ message: "Room not found in the given hotel!" });
     }
-
-    // Calculate total price
     let totalPrice = 0;
     for (const item of orderItems) {
       const menuItem = await RestaurantMenu.findById(item.menuItem);
@@ -329,7 +321,6 @@ export const createOrder = async (req, res) => {
     });
 
     await newOrder.save();
-    // Populate the order items with menu details
     const populatedOrder = await RestaurantOrder.findById(newOrder._id)
       .populate({
         path: 'orderItems.menuItem',
