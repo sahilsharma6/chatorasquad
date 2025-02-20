@@ -12,7 +12,6 @@ export const createOrderforadmin = async (req, res) => {
       if (!hotelId || !roomId || !orderItems || orderItems.length === 0) {
         return res.status(400).json({ message: "All fields are required!" });
       }
-      // Check if the hotel exists
       const hotel = await Hotel.findById(hotelId);
       if (!hotel) {
         return res.status(404).json({ message: "Hotel not found!" });
@@ -31,7 +30,7 @@ export const createOrderforadmin = async (req, res) => {
         if (!menuItem) {
           return res.status(404).json({ message: `Menu item with ID ${item.menuItem} not found!` });
         }
-        totalPrice += menuItem.sellingPrice * item.quantity;
+        totalPrice += menuItem.discountedPrice * item.quantity;
       }
       const newOrder = new AdminOrder({
         hotelId,
@@ -44,7 +43,6 @@ export const createOrderforadmin = async (req, res) => {
       });
   
       await newOrder.save();
-      // Populate the order items with menu details
       const populatedOrder = await AdminOrder.findById(newOrder._id)
         .populate({
           path: 'orderItems.menuItem',

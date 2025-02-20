@@ -42,6 +42,6 @@ router.post('/orderforAdmin',createOrderforadmin)
 router.get('/order',authMiddleware,getOrdersForAdmin)
 router.get('/getorderbyId/:id',getorderbyId)
 router.put('/statuschange/:id',updateOrder)
-router.get('/getordersbyroomId/:id',authMiddleware,getOrdersByRoomId)
+router.get('/getordersbyroomId/:id',getOrdersByRoomId)
 //roomorders
 export default router;
