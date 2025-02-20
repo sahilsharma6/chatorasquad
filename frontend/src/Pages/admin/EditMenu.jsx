@@ -176,14 +176,14 @@ const EditMenu = () => {
             <label className="block text-gray-700 mb-2">Cuisine</label>
             <select
               className="w-full px-4 py-4 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-gray-700 border-orange-500"
-              name="cuisine"
-              value={menuData.Cuisine} // Fixed the casing here
-              onChange={handleInputChange}
+              name="Cuisine" // Ensure the casing is consistent
+              value={menuData.Cuisine} // This should also match the state property
+              onChange={handleInputChange} // This will now update the correct state property
               required
             >
-              {/* <option value={menuData.cuisine}>Select a cuisine</option> */}
+              <option value="" disabled>Select a cuisine</option> {/* Option for not selected */}
               {cuisines.map((cuisine) => (
-                <option key={cuisine._id} value={cuisine.name} >
+                <option key={cuisine._id} value={cuisine.name}>
                   {cuisine.name}
                 </option>
               ))}
