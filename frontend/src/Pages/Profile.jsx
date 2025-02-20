@@ -32,6 +32,7 @@ const Profile = () => {
   });
 
   const { loggedIn } = useContext(UserContext);
+console.log(loggedIn);
 
   const handleSideBar = () => {
     setSidebarOpen(!sidebarOpen);

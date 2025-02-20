@@ -7,13 +7,15 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const response = await apiClient.get("/user/details");
+        console.log(response.data);
+        
         if (response.data) {
           setUser(response.data);
           setLoggedIn(true);
@@ -30,7 +32,7 @@ export const UserProvider = ({ children }) => {
     };
 
     fetchUserDetails();
-  }, [loggedIn]);
+  }, [loggedIn,setLoading]);
 
   const isAdmin = () => {
     return user && user.role === "admin";
