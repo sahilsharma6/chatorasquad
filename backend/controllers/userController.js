@@ -80,6 +80,8 @@ export const getUserById = async (req, res) => {
     const { id } = req.params; // Extract user ID from URL params
 
     // Step 1: Find the user by ID, excluding the password field
+    console.log(id);
+    
     const user = await User.findById(id, { password: 0 });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -278,7 +280,9 @@ export const setDefaultAddress = async (req, res) => {
 
 export const getAddresses = async (req, res) => {
   try {
-    const id = req.user._id;
+    const id = req.user._id
+    console.log(req.user);
+    
     const addresses = await Address.find({ userid: id });
     res.status(200).json(addresses);
   } catch (error) {

@@ -13,7 +13,6 @@ router.put('/updatedetails',authMiddleware,UpdateUser); // id is user id
 router.put('/updatepassword',authMiddleware,UpdatePassword); // id is user id
 router.put('/updatephone',authMiddleware,UpdatePhone); // id is user id
 router.put('/updateemail',authMiddleware,UpdateEmail); // id is user id
-router.get('/:id',authMiddleware,getUserById);
 
 
 router.post('/addaddress',authMiddleware,addAddress); // id is user id
@@ -22,6 +21,7 @@ router.get('/getaddresses',authMiddleware,getAddresses); // id is user id
 router.put('/updateaddress',authMiddleware,UpdateAddress); // id is address id
 router.put('/setdefaultaddress/:id',authMiddleware,setDefaultAddress); // id is address id
 router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is address id
+router.get('/:id',authMiddleware,getUserById);
 
 
 

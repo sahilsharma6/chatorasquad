@@ -42,7 +42,7 @@ const HotelOrders = () => {
         email: 'admin@example.com', // Placeholder since email is not part of the original data
         phoneNo: phoneNo,
       };
-    });
+    }).reverse();
   };
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
