@@ -154,7 +154,7 @@ console.log(loggedIn);
               }}
             >
               <span className="mr-3">📋</span>
-              <span>Personal Information</span>
+              <span>Personal Information </span>
             </button>
 
             <button
