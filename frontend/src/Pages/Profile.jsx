@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, Menu, X } from "lucide-react";
 
 
 const Profile = () => {
@@ -103,59 +103,88 @@ console.log(loggedIn);
    
   return (
     <>
-      <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
         <ToastContainer />
+      <div className="min-h-screen flex flex-col md:flex-row bg-gray-100 gap-4">
+        <div>
         {/* Sidebar */}
+        <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-lg md:hidden hover:bg-gray-100 transition-colors"
+        aria-label="Toggle menu"
+      >
+        {sidebarOpen ? (
+          <X className="h-6 w-6 text-gray-600" />
+        ) : (
+          <Menu className="h-6 w-6 text-gray-600" />
+        )}
+      </button>
+
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
         <div
-          className={`fixed inset-y-0 left-0 z-30 w-64 bg-gray-200 p-6 shadow-md transform ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform md:translate-x-0 md:static md:inset-0`}
-        >
+          className="fixed inset-0 bg-black/50 z-40 md:hidden "
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar - Fixed position on all screens */}
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-40 transform transition-transform duration-300 ease-in-out mt-14 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
+      >
+        <div className="h-full overflow-y-auto p-6">
           <div className="text-center mb-6">
             <img
               src="https://cdn-icons-png.flaticon.com/512/64/64572.png"
               alt="Profile"
-              className="w-24 h-24 mx-auto rounded-full border-4 border-orange-500 "
+              className="w-24 h-24 mx-auto rounded-full border-4 border-orange-500"
             />
-            <h2 className="text-xl font-semibold mt-4 ">
+            <h2 className="text-xl font-semibold mt-4">
               {personalInfo.firstName}
             </h2>
           </div>
-          <nav>
-            <ul className="flex flex-col">
-              <li className="mb-4">
-                <button
-                  className="flex items-center text-orange-500 hover:text-red-600 font-medium"
-                  onClick={() => {
-                    navigate("/profile");
-                    handleSideBar();
-                  }}
-                >
-                  <span className="mr-3">📋</span> Personal Information
-                </button>
-              </li>
-              <li className="mb-4">
-                <button
-                  className="flex items-center text-gray-700 hover:text-red-600 font-medium"
-                  onClick={() => navigate("/update")}
-                >
-                  <span className="mr-3">⚙️</span> Settings
-                </button>
-              </li>
-              <li className="mb-4">
-                <button
-                  className="flex items-center text-gray-700 hover:text-red-600 font-medium"
-                  onClick={() => navigate("/admin")}
-                >
-                  <span className="mr-3"><LayoutDashboard /> </span> Dashboard
-                </button>
-              </li>
-            </ul>
+
+          <nav className="space-y-4">
+            <button
+              className="flex items-center w-full p-3  text-orange-500 hover:bg-orange-50 rounded-lg transition-colors"
+              onClick={() => {
+                navigate("/profile");
+                setSidebarOpen(false);
+              }}
+            >
+              <span className="mr-3">📋</span>
+              <span>Personal Information</span>
+            </button>
+
+            <button
+              className="flex items-center w-full p-3 text-gray-700 hover:bg-orange-50 rounded-lg transition-colors"
+              onClick={() => {
+                navigate("/update");
+                setSidebarOpen(false);
+              }}
+            >
+              <span className="mr-3">⚙️</span>
+              <span>Settings</span>
+            </button>
+
+            <button
+              className="flex items-center w-full p-3 text-gray-700 hover:bg-orange-50 rounded-lg transition-colors"
+              onClick={() => {
+                navigate("/admin");
+                setSidebarOpen(false);
+              }}
+            >
+              <LayoutDashboard className="mr-3" />
+              <span>Dashboard</span>
+            </button>
           </nav>
         </div>
-
+      </div>
+</div>
         {/* Main Content */}
-        <div className="flex-1 p-6 pt-16 md:pt-20">
+        <div className={`flex-1 p-6 pt-16 md:pt-20 transition-all md:pl-64 duration-300 `}>
+
           {/* Personal Information Section */}
           <div className="bg-white p-6 rounded-lg shadow mb-6">
             <h2 className="text-2xl font-bold mb-4">Personal Information</h2>

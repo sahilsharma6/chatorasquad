@@ -77,7 +77,7 @@ const LoginForm = () => {
       }}
     >
       <div className="min-h-screen flex items-center justify-center ">
-        <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[40vh] md:h-[50vh]">
+        <div className="flex bg-white shadow-2xl rounded-lg overflow-hidden w-full max-w-4xl h-[70vh] md:h-[80vh]">
           <motion.div
             variants={containerVariants}
             initial="hidden"
