@@ -2,6 +2,12 @@ import mongoose from "mongoose";
 
 const RestaurantOrderSchema = mongoose.Schema(
   {
+    restaurantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+    
     hotelId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hotel", // Links to the RestaurantMenu model

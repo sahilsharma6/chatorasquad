@@ -286,33 +286,58 @@ export const deleteRestaurant = async (req, res) => {
 };
 
 
+
+
 export const createOrder = async (req, res) => {
   try {
-    const { hotelId, roomId, orderItems,name,phoneNo} = req.body;
+    const { hotelId, roomId, orderItems, name, phoneNo } = req.body;
+
     if (!hotelId || !roomId || !orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: "All fields are required!" });
     }
+
+    // Validate Hotel
     const hotel = await Hotel.findById(hotelId);
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found!" });
     }
-    const room = await Room.findOne({ _id: roomId, hotelId: hotelId }).populate('hotelId');
+
+    // Validate Room
+    const room = await Room.findOne({ _id: roomId, hotelId: hotelId }).populate("hotelId");
     if (!room) {
       return res.status(404).json({ message: "Room not found in the given hotel!" });
     }
+
     let totalPrice = 0;
+    let restaurantId = null;
+
     for (const item of orderItems) {
       const menuItem = await RestaurantMenu.findById(item.menuItem);
       if (!menuItem) {
         return res.status(404).json({ message: `Menu item with ID ${item.menuItem} not found!` });
       }
+
+      // Ensure all menu items belong to the same restaurant
+      if (!restaurantId) {
+        restaurantId = menuItem.restaurantId.toString();
+      } else if (restaurantId !== menuItem.restaurantId.toString()) {
+        return res.status(400).json({ message: "All menu items must belong to the same restaurant!" });
+      }
+
       totalPrice += menuItem.sellingPrice * item.quantity;
     }
 
-    // Create new order and populate menu details
+    // Validate Restaurant
+    if (!restaurantId) {
+      return res.status(400).json({ message: "Invalid restaurant data!" });
+    }
+    console.log("Final restaurantId:", restaurantId);
+
+    // Create new order
     const newOrder = new RestaurantOrder({
       hotelId,
       roomId,
+      restaurantId, // Store restaurant ID
       orderItems,
       totalPrice,
       name,
@@ -321,34 +346,32 @@ export const createOrder = async (req, res) => {
     });
 
     await newOrder.save();
+
     const populatedOrder = await RestaurantOrder.findById(newOrder._id)
       .populate({
-        path: 'orderItems.menuItem',
-        model: 'RestaurantMenu',
+        path: "orderItems.menuItem",
+        model: "RestaurantMenu",
       });
 
-    // Send response with order, hotel, room, and menu details
     res.status(201).json({
       message: "Order placed successfully!",
       order: populatedOrder,
       hotel: {
-        _id: room.hotelId._id, // Populated hotel from room's hotelId reference
-        name: room.hotelId.name, // Assuming 'name' is a field in the hotel schema
+        _id: room.hotelId._id,
+        name: room.hotelId.name, // Assuming hotel has a 'name' field
       },
       room: {
         _id: room._id,
         roomId: room.roomId,
-        roomDetails: room.room, // Example room field
+        roomDetails: room.room, // Example field
       },
-      // menuItems: populatedOrder.orderItems.map(item => ({
-      //   menuItem: item.menuItem, // Populated menu item details
-      //   quantity: item.quantity,
-      // })),
     });
   } catch (error) {
+    console.error("Error creating order:", error);
     res.status(500).json({ message: "Server error!", error: error.message });
   }
 };
+
 //
 //getorder admin hotelid userid roomno
 export const getOrders = async (req, res) => {
@@ -391,11 +414,10 @@ export const getOrdersByRoomId = async (req, res) => {
     res.status(500).json({ message: 'Server error!', error: error.message });
   }
 };
-
 export const getOrdersByRestaurantId = async (req, res) => {
   try {
-    const { restaurantId } = req.params;
-    const orders = await RestaurantOrder.find({ restaurantId: restaurantId })
+    const { id } = req.params;
+    const orders = await RestaurantOrder.find({ restaurantId: id })
       .populate({
         path: 'orderItems.menuItem',
         select: 'name description sellingPrice',
@@ -412,7 +434,7 @@ export const getOrdersByRestaurantId = async (req, res) => {
     console.error(error);  // Log the error to the server console for debugging
     res.status(500).json({ message: 'Server error!', error: error.message });
   }
-};
+}
 export const getOrderById = async (req, res) => {
   try {
     const { orderId } = req.params;  // Capture the order ID from the request parameters.
