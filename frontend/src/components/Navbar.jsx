@@ -5,6 +5,8 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaBowlFood } from "react-icons/fa6";
 import { FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
+import { FcAbout } from "react-icons/fc";
+import { FaBloggerB } from "react-icons/fa6";
 import {
   FaCalendarAlt,
   FaImage,
@@ -15,6 +17,7 @@ import apiClient from "../services/apiClient";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
 import { useCart } from "../context/CartContext";
+import { ShoppingBag } from "lucide-react";
 // import {CartContext} from "../context/CartContext";
 
 const Navbar = () => {
@@ -355,6 +358,33 @@ const Navbar = () => {
               <span>Contact</span>
             </NavLink>
           </li>
+          <li>
+              <NavLink
+                to="/orders"
+                className={({ isActive }) =>
+                  isActive
+                    ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
+                    : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
+                }
+              >
+                <ShoppingBag className="w-7 h-7" />
+                <span>orders</span> 
+              </NavLink>
+            </li>
+      
+            <li>
+              <NavLink
+                to="/blogs"
+                className={({ isActive }) =>
+                  isActive
+                ? "flex items-center space-x-2 text-orange-500 font-semibold text-lg py-2 px-4 rounded-md hover:bg-gray-100"
+                : "flex items-center space-x-2 text-gray-700 hover:text-orange-500 text-lg py-2 px-4 rounded-md hover:bg-gray-100"
+                }
+              >
+             <FaBloggerB  className="text-xl h-6 w-6"/>
+          <span> Blogs</span>  
+              </NavLink>
+            </li>
         </ul>
       </div>
     </header>

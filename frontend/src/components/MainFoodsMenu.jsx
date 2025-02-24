@@ -26,7 +26,7 @@ const FoodMainMenu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 18;
 
   useEffect(() => {
     const fetchMenuItems = async () => {

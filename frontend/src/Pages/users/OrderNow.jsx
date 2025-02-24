@@ -245,8 +245,11 @@ const OrderNow = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handlePayment}
-              className="w-full py-3 flex items-center justify-center bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold gap-2"
+              className={`w-full py-3 flex items-center justify-center bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-semibold gap-2 ${addresses.length<1 ? "cursor-not-allowed opacity-50":""}`}
+
             >
+              {console.log(addresses)
+              }
               <span>Proceed to Payment</span>
               <ChevronRight size={18} className="mt-[2px]" />
             </motion.button>
