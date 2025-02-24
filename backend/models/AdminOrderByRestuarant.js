@@ -14,18 +14,19 @@ const AdminOrderSchema = mongoose.Schema(
     },
     name: {
       type: String,
-    //   required: true, 
+      required: true,
     },
     phoneNo: {
       type: String,
-    //   required: true, 
+      required: true, // Make sure this is required if necessary
       validate: {
-        validator: function (v) {
+        validator: function(v) {
           return /^[0-9]{10}$/.test(v); 
         },
-        message: "Invalid phone number format!",
-      },
-    },
+        message: "Invalid phone number format!"
+      }
+    }
+,    
     orderItems: [
       {
         menuItem: {
@@ -44,9 +45,16 @@ const AdminOrderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    gst: {
+      type: Number,
+      default: function () {
+        // GST is 5% of totalPrice
+        return this.totalPrice * 0.05;
+      },
+    },
     status: {
       type: String,
-      enum: ["Processing", "Delivered", "Cancelled",],
+      enum: ["Processing", "Delivered", "Cancelled"],
       default: "Processing",
     },
     orderDate: {
@@ -55,7 +63,7 @@ const AdminOrderSchema = mongoose.Schema(
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
