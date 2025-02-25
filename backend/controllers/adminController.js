@@ -166,7 +166,8 @@ export const createOrderforadmin = async (req, res) => {
           name: order.name,
           phoneNo: order.phoneNo,
           status: order.status,
-          subtotal:order.subtotal
+          subtotal:order.subtotal,
+          orderDate:order.orderDate
         };
       });
   
