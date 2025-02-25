@@ -27,7 +27,7 @@ export const createOrderforadmin = async (req, res) => {
       return res.status(404).json({ message: "Room not found in the given hotel!" });
     }
 
-    // Calculate total price and GST
+    // Calculate total price
     let totalPrice = 0;
     for (const item of orderItems) {
       const menuItem = await Menu.findById(item.menuItem);
@@ -36,20 +36,22 @@ export const createOrderforadmin = async (req, res) => {
       }
       totalPrice += menuItem.discountedPrice * item.quantity;
     }
-
-    // Calculate GST (5% of the totalPrice)
+    const sub=totalPrice;
     const gst = totalPrice * 0.05;
+    totalPrice += gst;
+    totalPrice = parseFloat(totalPrice.toFixed(2));
 
     // Create new order with GST
     const newOrder = new AdminOrder({
       hotelId,
       roomId,
       orderItems,
-      totalPrice,
-      gst,  // Add the calculated GST
+      totalPrice, // Now rounded to 2 decimal places
+      gst,  
       name,
-      phoneNo,  // Ensure phoneNo is being passed to the order
+      phoneNo,  
       status: "Processing",
+      subtotal:sub
     });
 
     // Save the new order
@@ -80,6 +82,7 @@ export const createOrderforadmin = async (req, res) => {
     res.status(500).json({ message: "Server error!", error: error.message });
   }
 };
+
 
 
 
@@ -119,37 +122,64 @@ export const createOrderforadmin = async (req, res) => {
       if (!id) {
         return res.status(400).json({ message: "Room ID is required!" });
       }
-      const orders = await AdminOrder.find({ 
-        roomId: id 
-      })
-      .populate({
-        path: "orderItems.menuItem",  // Populating the menuItem inside orderItems
-        model: "Menu",  // The model for menuItem
-        select: "name price description"  // Select specific fields to return (optional)
-      })
-      .populate({
-        path: "hotelId",  // Populating the hotel details
-        model: "Hotel",  // The model for Hotel
-        select: "name address contactNumber"  // Select specific fields to return (optional)
-      })
-      .populate({
-        path: "roomId",  // Populating the room details
-        model: "Room",  // The model for Room
-        select: "room"  // Select specific fields to return (optional)
-      });
+  
+      // Fetch orders with populated fields
+      const orders = await AdminOrder.find({ roomId: id })
+        .populate({
+          path: "orderItems.menuItem", // Populating the menuItem inside orderItems
+          model: "Menu", // The model for menuItem
+          select: "name price description discountedPrice", // Select specific fields to return
+        })
+        .populate({
+          path: "hotelId", // Populating the hotel details
+          model: "Hotel", // The model for Hotel
+          select: "name address contactNumber", // Select specific fields to return
+        })
+        .populate({
+          path: "roomId", // Populating the room details
+          model: "Room", // The model for Room
+          select: "room", // Select specific fields to return
+        });
+  
       if (orders.length === 0) {
         return res.status(404).json({ message: "No orders found for this room!" });
       }
   
+      // Modify the response to include total cost for each order item
+      const formattedOrders = orders.map((order) => {
+        const updatedOrderItems = order.orderItems.map((item) => {
+          return {
+            menuItem: item.menuItem,
+            quantity: item.quantity,
+            discountedPrice: item.menuItem?.discountedPrice || 0,
+            totalCost: parseFloat((item.quantity * (item.menuItem?.discountedPrice || 0)).toFixed(2)), // Multiply quantity by discounted price and round to 2 decimal places
+          };
+        });
+  
+        return {
+          _id: order._id,
+          hotelId: order.hotelId,
+          roomId: order.roomId,
+          orderItems: updatedOrderItems,
+          totalPrice: order.totalPrice,
+          gst: order.gst,
+          name: order.name,
+          phoneNo: order.phoneNo,
+          status: order.status,
+          subtotal:order.subtotal
+        };
+      });
+  
       res.status(200).json({
         message: "Orders retrieved successfully for the specified room!",
-        orders,
+        orders: formattedOrders,
       });
     } catch (error) {
-      console.error(error);  // Log the error for debugging purposes
+      console.error(error); // Log the error for debugging purposes
       res.status(500).json({ message: "Server error!", error: error.message });
     }
   };
+  
   
   // Update the status of an existing order
 export const updateOrder = async (req, res) => {

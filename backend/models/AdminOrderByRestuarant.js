@@ -45,6 +45,9 @@ const AdminOrderSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    subtotal:{
+      type:Number,
+    },
     gst: {
       type: Number,
       default: function () {
