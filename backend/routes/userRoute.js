@@ -18,7 +18,7 @@ router.put('/updateemail',authMiddleware,UpdateEmail); // id is user id
 router.post('/addaddress',authMiddleware,addAddress); // id is user id
 router.get('/getdefaultaddress/:id',authMiddleware,getdefaultAddress); // id is user id
 router.get('/getaddresses',authMiddleware,getAddresses); // id is user id
-router.put('/updateaddress',authMiddleware,UpdateAddress); // id is address id
+router.put('/updateaddress/:id',authMiddleware,UpdateAddress); // id is address id
 router.put('/setdefaultaddress/:id',authMiddleware,setDefaultAddress); // id is address id
 router.delete('/deleteaddress/:id',authMiddleware,deleteAddress); // id is address id
 router.get('/:id',authMiddleware,getUserById);

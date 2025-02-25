@@ -182,10 +182,12 @@ export const UpdateEmail = async (req, res) => {
 export const UpdateAddress = async (req, res) => {
   try {
     const id = req.params.id;
-    const { zipcode, city, state, location } = req.body;
+    const { zipCode, city, state, location } = req.body;
+    console.log(zipCode);
+    
     const address = await Address.findById(id);
     if (address) {
-      address.zipcode = zipcode;
+      address.zipCode = zipCode;
       address.city = city;
       address.state = state;
       address.location = location;
