@@ -506,6 +506,7 @@ console.log(menuItems);
                                                 whileHover={{ scale: 1.03 }}
                                                 whileTap={{ scale: 0.97 }}
                                                 className="w-full mt-4 py-3 bg-orange-500 text-white rounded-md font-medium"
+                                                onClick={()=>setOpen(true)}
                                             >
                                                 Proceed to Checkout
                                             </motion.button>
