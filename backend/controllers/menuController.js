@@ -46,7 +46,7 @@ console.log(title);
 export const getAllMenu = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1; 
-        const limit = parseInt(req.query.limit) || 2;
+        const limit = parseInt(req.query.limit) || 1000;
         const skip = (page - 1) * limit;
         const menu = await Menu.find().skip(skip).limit(limit);
         const totalCount = await Menu.countDocuments();
