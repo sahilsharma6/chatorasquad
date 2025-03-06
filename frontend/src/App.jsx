@@ -31,6 +31,7 @@ import Blogs from "./Pages/Blogs";
 import OrderNow from "./Pages/users/OrderNow";
 import ForgetPassword from "./components/ForgetPassword";
 import BlogPostDetail from "./Pages/BlogPostDetail";
+import TestMenu from "./Pages/TestMenu";
 
 function Layout() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function Layout() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/menu/getmenu" element={<GetMenu />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/test/menu" element={<TestMenu />} />
         <Route path="/about" element={<About />} />
         <Route path="/orders"  element={
             <ProtectedRoute allowedRoles={["admin", "user"]}>

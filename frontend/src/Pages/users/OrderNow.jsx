@@ -6,7 +6,7 @@ import apiClient from "../../services/apiClient";
 import { UserContext } from "../../context/UserContext";
 import { useContext } from "react";
 
-const OrderNow = () => {
+const OrderNow = ({}) => {
   const { id } = useParams();
   const [quantity, setQuantity] = useState(1);
   const [productData, setProductData] = useState(null);
