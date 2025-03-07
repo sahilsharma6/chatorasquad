@@ -20,7 +20,7 @@ const ViewCart = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1300);
+    }, 900);
 
     const fetchAddresses = async () => {
       try {
@@ -65,19 +65,21 @@ const ViewCart = () => {
       date: new Date().toISOString(),
       time: new Date().toLocaleTimeString(),
       items: items.map((item) => ({
-        itemid: item.itemId,
+        itemid: item.itemId || item.id,
         name: item.name,
         quantity: item.quantity,
-        price: item.sellingPrice,
+        price: item.sellingPrice || item.price,
       })),
       total: items.reduce(
-        (sum, item) => sum + item.sellingPrice * item.quantity,
+        (sum, item) => sum + item.sellingPrice ||item.price* item.quantity,
         0
       ),
       deliveryAddress: selectedAddress,
     };
 
     try {
+      console.log(payload);
+      
       const response = await apiClient.post("/user/pay", payload);
 
       if (response.data.url) {
@@ -110,7 +112,7 @@ const ViewCart = () => {
   }
 
   const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.sellingPrice * item.quantity,
+    (sum, item) => sum + item.sellingPrice ||item.price * item.quantity,
     0
   );
 

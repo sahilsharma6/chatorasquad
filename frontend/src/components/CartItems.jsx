@@ -25,7 +25,7 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
           <h3 className="font-semibold text-lg">{item.name}</h3>
           <p className="text-gray-600 text-sm">{item.restaurant}</p>
           <div className="flex items-center mt-2">
-            <span className="text-xl font-bold">₹{item.sellingPrice}</span>
+            <span className="text-xl font-bold">₹{item.sellingPrice || item.price}</span>
             {/* <span className="ml-2 line-through text-gray-500">
               ₹{item.originalPrice}
             </span> */}

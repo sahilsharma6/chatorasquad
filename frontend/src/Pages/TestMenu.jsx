@@ -70,7 +70,7 @@ const TestMenu = () => {
                     price: item.discountedPrice,
                     image: item.images[0].replace(/\\/g, '/'), // Convert backslashes to slashes for URL
                     category: item.Cuisine, // You can modify this logic based on your needs
-                    quantity: item.isAvailable ? item.quantity : 0
+                    quantity: item.isAvailable ? 1 : 0
                 }));
                 setMenuItems(convertedData)}
               
@@ -154,9 +154,12 @@ console.log(menuItems);
     const finalTotal = cartTotal + gst;
 
     // Filter menu items by active category
-    const filteredItems = menuItems.filter(
-        (item) => item.category === activeCategory
-    );
+    const filteredItems = menuItems.filter((item) => {
+        const matchesCategory = item.category === activeCategory;
+        const matchesName = item.name.toLowerCase().includes(searchItem.toLowerCase());
+        const matchesPrice = item.price >= Number(searchItem) || item.price <= Number(searchItem);
+        return matchesCategory &&( matchesName || matchesPrice );
+    });
     console.log(filteredItems);
     
 
@@ -169,6 +172,7 @@ console.log(menuItems);
                         type="text"
                         placeholder="Search menu items..."
                         className="w-full p-2 pl-10 border border-gray-300 rounded-md focus:outline-orange-400"
+                        onChange={(e)=>setSearchItem(e.target.value)}
                     />
                     <Search className="absolute left-3 top-3 text-gray-400" size={18} />
                 </div>
@@ -189,7 +193,7 @@ console.log(menuItems);
                             {categories.map((category) => (
                                 <motion.li
                                     key={category}
-                                    className={`p-3 my-1 rounded-md cursor-pointer ${activeCategory === category
+                                    className={`font-bold text-lg p-3 my-1 rounded-md cursor-pointer ${activeCategory === category
                                             ? 'bg-orange-100 text-orange-600'
                                             : 'hover:bg-gray-100'
                                         }`}
@@ -280,7 +284,7 @@ console.log(menuItems);
                                         <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-md sm:w-full"
+                                            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-md "
                                             onClick={() => addToCart(item)}
                                         >
                                             Add to Cart
