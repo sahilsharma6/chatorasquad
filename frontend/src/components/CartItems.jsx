@@ -10,7 +10,7 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
       animate={{ opacity: 1, y: 0 }}
       className="p-4 border rounded-lg mb-4"
     >
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-wrap  items-center">
         <img
           src={
             item.image
@@ -18,7 +18,7 @@ export default function CartItems({ item, updateQuantity, removeItem }) {
               : "/default-image.jpg"
           }
           alt={item.name}
-          className="w-24 h-24 rounded-lg object-cover"
+          className="w-40 h-40 rounded-lg object-cover"
         />
 
         <div className="flex-1">

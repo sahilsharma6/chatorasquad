@@ -160,7 +160,7 @@ const Navbar = () => {
         </button>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Link
+          {/* <Link
             to="/viewcart"
             className="relative flex items-center space-x-2 bg-orange-500 text-white px-6 py-2 rounded-tl-lg rounded-br-lg shadow-md hover:bg-orange-600"
           >
@@ -172,7 +172,7 @@ const Navbar = () => {
                 {cartItems.length}
               </span>
             )}
-          </Link>
+          </Link> */}
 
           {/* <Link
             to="/orders"
@@ -233,14 +233,14 @@ const Navbar = () => {
         </button>
 
         <div className="px-6 mt-10 py-4 flex justify-center border-gray-200">
-          <Link
+          {/* <Link
             to="/viewcart"
             className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md mb-4"
             onClick={() => setIsMenuOpen(false)}
           >
             <BsCart4 className="text-2xl" />
             <span className="text-lg">Cart</span>
-          </Link>
+          </Link> */}
           {/* <Link
             to="/orders"
             className="flex items-center space-x-2 text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-md mb-4"
