@@ -49,12 +49,12 @@ function Layout() {
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/update" element={<ProfileSettings />} />
-        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu" element={<TestMenu />} />
         <Route path="/viewcart" element={<ViewCart />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/menu/getmenu" element={<GetMenu />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/test/menu" element={<TestMenu />} />
+        {/* <Route path="/test/menu" element={<TestMenu />} /> */}
         <Route path="/about" element={<About />} />
         <Route path="/orders"  element={
             <ProtectedRoute allowedRoles={["admin", "user"]}>

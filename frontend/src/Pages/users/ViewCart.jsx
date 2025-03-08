@@ -9,14 +9,15 @@ import apiClient from "../../services/apiClient";
 import { UserContext } from "../../context/UserContext";
 
 const ViewCart = () => {
-  const { cartItems = [], updateQuantity, removeItem } = useCart();
+  let { cartItems , updateQuantity, removeItem } = useCart();
   const [loading, setLoading] = useState(true);
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
 
   const { user } = useContext(UserContext);
-
+console.log(cartItems);
+cartItems=cartItems.length ? JSON.parse(localStorage.getItem('cartItems')) :JSON.parse(localStorage.getItem('cartItems'))
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -59,7 +60,8 @@ const ViewCart = () => {
     }
 
     const userId = user?._id;
-
+    // const gst = Math.round(cartTotal * 0.05);
+    // const finalTotal = cartTotal + gst;
     const payload = {
       userId,
       date: new Date().toISOString(),
@@ -71,11 +73,13 @@ const ViewCart = () => {
         price: item.sellingPrice || item.price,
       })),
       total: items.reduce(
-        (sum, item) => sum + item.sellingPrice ||item.price* item.quantity,
+        (sum, item) => sum  +Math.floor( item.price * item.quantity+0.05*item.price*item.quantity),
         0
-      ),
+      )+3,
       deliveryAddress: selectedAddress,
     };
+    console.log(payload);
+    
 
     try {
       console.log(payload);
@@ -112,17 +116,19 @@ const ViewCart = () => {
   }
 
   const totalAmount = cartItems.reduce(
-    (sum, item) => sum + item.sellingPrice ||item.price * item.quantity,
+    (sum, item) => sum +Math.floor ( item.price * item.quantity+0.05*item.price*item.quantity),
     0
   );
+  console.log(totalAmount);
+  
 
   return (
     <>
-      <div className="max-w-full mx-auto p-4 bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
-        <div className="flex-1 min-h-screen overflow-y-auto shadow px-4 py-4">
+      <div className="max-w-full mx-auto  mt-6 bg-white rounded-lg shadow-sm flex flex-col md:flex-row gap-4">
+        <div className="flex-1 h-full overflow-y-auto shadow  ">
           {cartItems.map((item) => (
             <CartItems
-              key={item.itemId}
+              key={item.id}
               item={item}
               updateQuantity={updateQuantity}
               removeItem={removeItem}
@@ -141,6 +147,10 @@ const ViewCart = () => {
         <div className="w-full md:w-1/3 bg-gray-50 p-4 rounded-lg sticky shadow top-4">
           <h3 className="font-semibold mb-4">Price Details</h3>
           <div className="space-y-2 text-sm">
+            <div className="flex justify-between">
+              <span>GST Fee </span>
+              <span>5% </span>
+            </div>
             <div className="flex justify-between">
               <span>
                 Price ({cartItems.reduce((sum, item) => sum + item.quantity, 0)}{" "}
@@ -211,7 +221,7 @@ const ViewCart = () => {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

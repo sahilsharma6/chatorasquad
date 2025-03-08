@@ -30,7 +30,7 @@ const TestMenu = () => {
         }
     ]);
 
-    const [activeCategory, setActiveCategory] = useState('Indian');
+    const [activeCategory, setActiveCategory] = useState('All');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [categories, setCategories] = useState([
         'BREAKFAST & SNACKS',
@@ -56,7 +56,7 @@ const TestMenu = () => {
                 if (res.data) {
                     
                     setCategories(res.data.map(val => val.name))
-                    setActiveCategory(res.data[1].name)
+                    setActiveCategory('All')
                 }
             }
 
@@ -70,7 +70,8 @@ const TestMenu = () => {
                     price: item.discountedPrice,
                     image: item.images[0].replace(/\\/g, '/'), // Convert backslashes to slashes for URL
                     category: item.Cuisine, // You can modify this logic based on your needs
-                    quantity: item.isAvailable ? 1 : 0
+                    quantity: item.isAvailable ? 1 : 0,
+                    isAvailable:item.isAvailable
                 }));
                 setMenuItems(convertedData)}
               
@@ -158,6 +159,7 @@ console.log(menuItems);
         const matchesCategory = item.category === activeCategory;
         const matchesName = item.name.toLowerCase().includes(searchItem.toLowerCase());
         const matchesPrice = item.price >= Number(searchItem) || item.price <= Number(searchItem);
+        if(activeCategory==='All') return true && ( matchesName || matchesPrice)
         return matchesCategory &&( matchesName || matchesPrice );
     });
     console.log(filteredItems);
@@ -181,19 +183,31 @@ console.log(menuItems);
             <div className="flex flex-col md:flex-row max-w-7xl mx-auto w-full">
                 {/* Categories - Sidebar on Desktop, Horizonta l scroll on Mobile */}
                 <motion.div
-                    className="md:w-48 md:min-w-48 md:flex-shrink-0 md:border-r border-gray-200 md:h-screen md:overflow-y-auto"
+                    className="md:w-48 md:min-w-48 md:flex-shrink-0 md:border-r border-gray-200 md:h-screen md:overflow-y-auto "
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3 }}
                 >
                     {/* Desktop Categories */}
-                    <div className="hidden md:block p-4 fixed">
+                    <div className="hidden md:block p-4  sticky h-screen">
                         <h2 className="font-bold mb-4">Menu Categories</h2>
-                        <ul>
+                        <ul className='flex flex-col  '>
+                        <motion.li
+                                    key={'All'}
+                                    className={`font-bold text-lg  p-3 break-words  my-1 rounded-md cursor-pointer ${activeCategory === 'All'
+                                            ? 'bg-orange-300 text-orange-600'
+                                            : 'hover:bg-gray-100'
+                                        }`}
+                                    onClick={() => setActiveCategory("All")}
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                >
+                                    All
+                                </motion.li>
                             {categories.map((category) => (
                                 <motion.li
                                     key={category}
-                                    className={`font-bold text-lg p-3 my-1 rounded-md cursor-pointer ${activeCategory === category
+                                    className={`font-bold text-lg  p-3 break-words  my-1 rounded-md cursor-pointer ${activeCategory === category
                                             ? 'bg-orange-100 text-orange-600'
                                             : 'hover:bg-gray-100'
                                         }`}
@@ -209,6 +223,17 @@ console.log(menuItems);
 
                     {/* Mobile Categories - Horizontal Scroll */}
                     <div className="md:hidden overflow-x-auto whitespace-nowrap p-2 border-b border-gray-200 sticky">
+                    <motion.button
+                                key='All'
+                                className={`px-4 py-2 mx-1 rounded-md inline-block ${activeCategory === 'All'
+                                        ? 'bg-orange-100 text-orange-600 border-b-2 border-orange-500'
+                                        : 'text-gray-600'
+                                    }`}
+                                onClick={() => setActiveCategory('All')}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                               All
+                            </motion.button>
                         {categories.map((category) => (
                             <motion.button
                                 key={category}
@@ -222,6 +247,7 @@ console.log(menuItems);
                                 {category}
                             </motion.button>
                         ))}
+                       
                     </div>
                 </motion.div>
 
@@ -244,14 +270,14 @@ console.log(menuItems);
                                 transition={{ duration: 0.3 }}
                                 whileHover={{ scale: 1.01 }}
                             >
-                                <div className="md:w-1/2 w-full">
+                                <div className="lg:w-1/2 w-full">
                                     <img
                                         src={`${import.meta.env.VITE_API_URL}/${item.image}` }
                                         alt={item.name}
                                         className="w-full h-60 object-cover"
                                     />
                                 </div>
-                                <div className="p-4 md:w-1/2  justify-between">
+                                <div className="p-4 lg:w-1/2 w-full justify-between">
                                     <div>
                                         <div className="flex justify-between">
                                             <h3 className="font-medium text-lg">{item.name}</h3>
@@ -281,14 +307,24 @@ console.log(menuItems);
                                             </motion.button>
                                         </div>
                                     ) : (
-                                        <motion.button
+                                        
+                                       item.isAvailable ? <motion.button
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
-                                            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-md "
+                                            className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-md lg:w-auto w-full"
                                             onClick={() => addToCart(item)}
                                         >
                                             Add to Cart
-                                        </motion.button>
+                                        </motion.button> :(
+                                            <motion.button
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md lg:w-auto w-full cursor-auto"
+                                           
+                                        >
+                                            Notify Us
+                                        </motion.button> 
+                                        )
                                     )}
                                 </div>
                             </motion.div>
@@ -522,7 +558,7 @@ console.log(menuItems);
                     </>
                 )}
             </AnimatePresence>
-           { open &&<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+           { open &&<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 z-50">
   
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
