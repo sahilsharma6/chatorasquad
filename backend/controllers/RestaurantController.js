@@ -1,3 +1,4 @@
+import AdminOrder from "../models/AdminOrderByRestuarant.js";
 import Hotel from "../models/Hotel.js";
 import Restaurant from "../models/Restaurant.js";
 import RestaurantMenu from "../models/RestaurantMenu.js";
@@ -459,3 +460,31 @@ export const getOrderById = async (req, res) => {
   }
 };
 
+export async function GetOrderByHotel(req,res){
+  try {
+    const id=req.user._id
+    console.log(id);
+    
+    const getUser=await Hotel.findOne({userId:id})
+    if(!getUser) return res.status(400).json({succed:false,message:"UserId Not Found"});
+    // console.log(getUser.hotelId);
+    
+    const getOrdersByHotel=await AdminOrder.find({hotelId:getUser._id})
+    .populate({
+      path: "orderItems.menuItem",
+      model: "Menu",
+    })
+    .populate({
+      path: "hotelId",
+      model: "Hotel",
+    })
+    .populate({
+      path: "roomId",
+      model: "Room",
+    });
+  
+    res.status(200).json(getOrdersByHotel);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error!', error: error.message });
+  }
+}
