@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const AdminOrderSchema = mongoose.Schema(
+const AdminOrderSchema =new mongoose.Schema(
   {
     hotelId: {
       type: mongoose.Schema.Types.ObjectId,
